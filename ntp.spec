@@ -74,6 +74,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 Summary:	Network Time Protocol client
 Summary(pl):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications
+Conflicts:	ntp < 4.2.0-3
 
 %description client
 Network Time Protocol client.
