@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.1.1a
-Release:	2
+Release:	3
 License:	distributable
 Group:		Daemons
 Obsoletes:	xntp3
@@ -95,7 +95,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc NEWS TODO conf/*.conf
+%doc NEWS TODO WHERE-TO-START conf/*.conf
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
