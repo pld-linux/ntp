@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	5
+Release:	6
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -18,6 +18,7 @@ Source7:	%{name}-client.init
 Source8:	%{name}-client.sysconfig
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
+Patch2:		%{name}-ipv6.patch
 URL:		http://www.ntp.org/
 BuildRequires:	automake
 BuildRequires:	readline-devel >= 4.2
@@ -86,6 +87,7 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 cp /usr/share/automake/config.sub .
