@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.1.0
-Release:	2
+Release:	3
 License:	Distributable
 Group:		Daemons
 Group(de):	Server
@@ -20,6 +20,7 @@ URL:		http://www.ntp.org/
 BuildConflicts:	libelf
 BuildRequires:	readline-devel >= 4.2
 Prereq:		rc-scripts
+Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
@@ -81,7 +82,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add ntp
-
 if [ -f /var/lock/subsys/ntp ]; then
 	/etc/rc.d/init.d/ntp restart >&2
 else
