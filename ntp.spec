@@ -19,7 +19,7 @@ Patch3:		%{name}-usegethost.patch
 Patch4:		%{name}-vsnprintf.patch
 Patch5:		%{name}-tmp.patch
 URL:		http://www.ntp.org/
-BuildRequires:	libelf-devel
+BuildConflicts:	libelf
 BuildRequires:	readline-devel >= 4.2
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
