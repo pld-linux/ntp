@@ -21,7 +21,9 @@ Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
 URL:		http://www.ntp.org/
+BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
 Requires(post,preun):	/sbin/chkconfig
