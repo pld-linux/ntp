@@ -36,9 +36,11 @@ rdatei xntpd, demon aktualizuj±cy czas w sposób ci±g³y.
 
 %build
 LDFLAGS="-s"; export LDFLAGS
-
-echo "y" \
-%configure
+CFLAGS="$RPM_OPT_FLAGS"; export CFLAGS
+./configure \
+	--prefix=%{_prefix} \
+	--sysconfdir=%{_sysconfdir} \
+	--bindir=%{_bindir}
 
 %{__make} 
 
