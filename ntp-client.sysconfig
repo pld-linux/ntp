@@ -1,6 +1,4 @@
 # Sync time at startup
-SYNC_TIME=no
 NTPDATE_OPTIONS="-o 1"
 #NTPDATE_SERVERS="ntp.nasa.gov clock.isc.org"
-
 NTPDATE_SERVERS="ntp.certum.pl vega.cbk.poznan.pl"
