@@ -27,7 +27,7 @@ case "$1" in
 #       	/usr/sbin/ntpdate -o 1  clock.llnl.gov norad.arc.nasa.gov
 #           	echo
             	msg_starting ntp
-            	daemon ntpd
+            	daemon ntpd -c /etc/ntp/ntp.conf
         else
 	      	msg_Already_Running ntp
 		exit 1
@@ -41,7 +41,7 @@ case "$1" in
         rm -f /var/lock/subsys/ntp
         ;;
   status)
-	status ntp
+	status ntp ntpd
 	;;
   restart|reload)
 	$0 stop
