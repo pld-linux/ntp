@@ -7,6 +7,7 @@ License:	distributable
 Group:		Daemons
 Obsoletes:	xntp3
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
+# Source0-md5: 
 #Source0-md5:	884c8d90f62bf3de0a464f755a8409a4	
 Source1:	%{name}.conf
 Source2:	%{name}.keys
