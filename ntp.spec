@@ -36,13 +36,13 @@ demon aktualizuj±cy czas w sposób ci±g³y.
 LDFLAGS="-s"; export LDFLAGS
 %configure
 
-make 
+%{__make} 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{ntp,rc.d/init.d,sysconfig}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/ntp/ntp.conf
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/ntp/keys
