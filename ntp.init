@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# ntp           This shell script takes care of starting and stopping
+#               ntp (NTP daemon).
+#
+# chkconfig:	- 55 10
+# description:	ntp is the NTP daemon.
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+[ -x /usr/sbin/ntpd -a -f /etc/ntp/ntp.conf ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+        if [ ! -f /var/lock/subsys/ntp ]; then
+        	# Adjust time to make life easy for ntp
+#       	echo -n "Syncing time for ntp"
+#       	/usr/sbin/ntpdate -o 1  clock.llnl.gov norad.arc.nasa.gov
+#           	echo
+            	msg_starting ntp
+            	daemon ntpd
+        else
+	      	msg_Already_Running ntp
+		exit 1
+	fi
+        touch /var/lock/subsys/ntp
+        ;;
+  stop)
+        # Stop daemons.
+        msg_stopping ntpd
+	killproc ntpd
+        rm -f /var/lock/subsys/ntp
+        ;;
+  status)
+	status ntp
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+esac
+
+exit 0
