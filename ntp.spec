@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.0.99k
-Release:	12
+Release:	13
 License:	Distributable
 Group:		Daemons
 Group(de):	Server
@@ -19,6 +19,8 @@ Patch3:		%{name}-usegethost.patch
 Patch4:		%{name}-vsnprintf.patch
 Patch5:		%{name}-tmp.patch
 URL:		http://www.ntp.org/
+BuildRequires:	libelf-devel
+BuildRequires:	readline-devel >= 4.2
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
