@@ -1,7 +1,7 @@
 diff -urN ntp-4.2.0.org/ntpdate/ntpdate.c ntp-4.2.0/ntpdate/ntpdate.c
 --- ntp-4.2.0.org/ntpdate/ntpdate.c	2004-05-17 00:41:52.720460048 +0200
-+++ ntp-4.2.0/ntpdate/ntpdate.c	2004-05-17 00:43:55.543788064 +0200
-@@ -1697,8 +1697,9 @@
++++ ntp-4.2.0/ntpdate/ntpdate.c	2004-05-17 01:33:48.375808440 +0200
+@@ -1697,12 +1697,14 @@
      	   }
  #ifdef IPV6_V6ONLY
             /* Restricts AF_INET6 socket to IPv6 communications (see RFC 2553bis-03) */
@@ -13,3 +13,8 @@ diff -urN ntp-4.2.0.org/ntpdate/ntpdate.c ntp-4.2.0/ntpdate/ntpdate.c
     		           netsyslog(LOG_ERR, "setsockopt() IPV6_V6ONLY failed: %m");
     		           exit(1);
  		           /*NOTREACHED*/
+     	        }
++	   }
+ #endif
+ 
+            /* Remember the socket family in fd_family structure */
