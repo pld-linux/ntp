@@ -28,30 +28,31 @@ fi
 
 [ -x /usr/sbin/ntpd -a -f /etc/ntp/ntp.conf ] || exit 0
 
+
 # See how we were called.
 case "$1" in
   start)
 	# Check if the service is already running?
-        if [ ! -f /var/lock/subsys/ntp ]; then
+	if [ ! -f /var/lock/subsys/ntp ]; then
 		if is_yes "$SYNC_TIME"; then
-	        	# Adjust time to make life easy for ntp
-       			run_cmd "Syncing time for ntp" "/usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS"
+			# Adjust time to make life easy for ntp
+			run_cmd "Syncing time for ntp" "/usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS"
 		fi
-            	msg_starting ntp
-            	daemon ntpd -c /etc/ntp/ntp.conf
-        	RETVAL=$?
+		msg_starting ntp
+		daemon ntpd -c /etc/ntp/ntp.conf
+		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntp
-        else
-	      	msg_already_running ntp
+	else
+		msg_already_running ntp
 		exit 1
 	fi
-        ;;
+	;;
   stop)
-  	if [ -f /var/lock/subsys/ntp ]; then
-        	msg_stopping ntp
+	if [ -f /var/lock/subsys/ntp ]; then
+		msg_stopping ntp
 		killproc ntpd
-        	rm -f /var/lock/subsys/ntp
-        else
+		rm -f /var/lock/subsys/ntp
+	else
 		msg_not_running ntp
 		exit 1
 	fi
@@ -64,8 +65,8 @@ case "$1" in
 	$0 start
 	;;
   *)
-        msg_usage "$0 {start|stop|restart|reload|status}"
-        exit 1
+	msg_usage "$0 {start|stop|restart|reload|status}"
+	exit 1
 esac
 
 exit $RETVAL
