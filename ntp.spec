@@ -1,21 +1,21 @@
 Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
-Name:		xntp3
-Version:	5.93
-Release:	5
+Name:		ntp
+Version:	4.0.99k
+Release:	1
 Copyright:	distributable
 Group:		Daemons
 Group(pl):	Serwery
 Source0:	ftp://ftp.udel.edu/pub/ntp/%{name}-%{version}.tar.gz
 Source1:	ntp.conf
 Source2:	ntp.keys
-Source3:	xntpd.rc
-Source4:	xntpd.sysconfig
-Patch:		%{name}-config.patch
+Source3:	ntp.rc
+Source4:	ntp.sysconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
 %define		_bindir		%{_sbindir}
+%define		_prefix		/usr
 
 %description
 This package contains utilities and daemons to help synchronize your
@@ -30,11 +30,11 @@ demon aktualizuj±cy czas w sposób ci±g³y.
 
 %prep 
 %setup -q
-%patch -p1 
 
 %build
 LDFLAGS="-s"; export LDFLAGS
-%configure
+
+echo "y" | ./configure --prefix=%{_prefix} --sysconfdir=%{_sysconfdir} --bindir=%{_bindir}
 
 %{__make} 
 
@@ -46,8 +46,8 @@ install -d $RPM_BUILD_ROOT/etc/{ntp,rc.d/init.d,sysconfig}
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/ntp/ntp.conf
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/ntp/keys
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xntpd
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/xntpd
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 
 gzip -9fn NEWS TODO conf/*.conf
 
@@ -55,18 +55,18 @@ gzip -9fn NEWS TODO conf/*.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/chkconfig --add xntpd
+/sbin/chkconfig --add ntp
 
-if [ -f /var/lock/subsystem/xntpd ]; then
-	/etc/rc.d/init.d/xntpd restart >&2
+if [ -f /var/lock/subsystem/ntp ]; then
+	/etc/rc.d/init.d/ntp restart >&2
 else
-	echo "Run \"/etc/rc.d/init.d/xntpd start\" to start xntpd daemon."
+	echo "Run \"/etc/rc.d/init.d/ntp start\" to start ntp daemon."
 fi
     
 %preun
 if [ $1 = 0 ]; then
-	/sbin/chkconfig --del xntpd
-	/etc/rc.d/init.d/xntpd stop >&2
+	/sbin/chkconfig --del ntp
+	/etc/rc.d/init.d/ntp stop >&2
 fi
 
 %files
@@ -77,4 +77,4 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) /etc/ntp/*
 %attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(754,root,root) /etc/rc.d/init.d/xntpd
+%attr(754,root,root) /etc/rc.d/init.d/ntp
