@@ -14,6 +14,7 @@ Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-overflow.patch
+URL:		http://www.ntp.org/
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
