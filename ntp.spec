@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.0.99k
-Release:	4
+Release:	5
 Copyright:	distributable
 Group:		Daemons
 Group(pl):	Serwery
@@ -63,7 +63,8 @@ Dokumentacja do ntp w HTML.
 	--localstatedir=%{_localstatedir} \
 	--sharedstatedir=%{_sharedstatedir} \
 	--mandir=%{_mandir} \
-	--infodir=%{_infodir}
+	--infodir=%{_infodir} \
+	--program-transform-name=""
 
 %{__make} 
 
