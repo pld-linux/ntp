@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.0.99k
-Release:	14
+Release:	15
 License:	Distributable
 Group:		Daemons
 Group(de):	Server
