@@ -3,7 +3,7 @@
 # ntp           This shell script takes care of starting and stopping
 #               ntp (NTP daemon).
 #
-# chkconfig:	- 55 10
+# chkconfig:	2345 55 10
 # description:	ntp is the NTP daemon.
 
 # Source function library.
