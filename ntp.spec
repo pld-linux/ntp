@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.0.99k
-Release:	6
+Release:	7
 Copyright:	distributable
 Group:		Daemons
 Group(de):	Server
@@ -13,6 +13,7 @@ Source2:	%{name}.keys
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Patch0:		%{name}-time.patch
+Patch1:		%{name}-overflow.patch
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -48,26 +49,10 @@ Dokumentacja do ntp w HTML.
 %prep 
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
-./configure \
-	--target=%{_target_platform} \
-	--host=%{_host} \
-	--build=%{_build} \
-	--prefix=%{_prefix} \
-	--exec-prefix=%{_exec_prefix} \
-	--bindir=%{_bindir} \
-	--sbindir=%{_sbindir} \
-	--sysconfdir=%{_sysconfdir} \
-	--datadir=%{_datadir} \
-	--includedir=%{_includedir} \
-	--libdir=%{_libdir} \
-	--libexecdir=%{_libexecdir} \
-	--localstatedir=%{_localstatedir} \
-	--sharedstatedir=%{_sharedstatedir} \
-	--mandir=%{_mandir} \
-	--infodir=%{_infodir} \
-	--program-transform-name=""
+%configure
 
 %{__make} 
 
@@ -85,7 +70,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 gzip -9nf NEWS TODO conf/*.conf
 
 %clean
-#rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add ntp
