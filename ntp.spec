@@ -1,12 +1,12 @@
 Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
-Version:	4.1.0
-Release:	5
+Version:	4.1.1a
+Release:	1
 License:	distributable
 Group:		Daemons
 Obsoletes:	xntp3
-Source0:	ftp://ftp.udel.edu/pub/ntp/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
