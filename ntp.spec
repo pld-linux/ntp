@@ -72,14 +72,14 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 
 %package client
 Summary:	Network Time Protocol client
-Summary(pl):	Klient do synchronizacji czasu (Network Time Protocol)
+Summary(pl):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications
 
 %description client
-Network Time Protocol client
+Network Time Protocol client.
 
 %description doc-html -l pl
-Klient do synchronizacji czasu (Network Time Protocol)
+Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
 %prep
 %setup -q
@@ -146,11 +146,11 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf
-%attr(750,root,root) %dir %{_sysconfdir}/*
+%attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
-%attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/ntpd
+%attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) /etc/sysconfig/ntpd
 %{_mandir}/man8/*
 %exclude %{_mandir}/man8/ntpdate*
 %exclude %{_sbindir}/ntpdate
@@ -162,5 +162,5 @@ fi
 %files client
 %attr(755,root,root) %{_sbindir}/ntpdate
 %attr(754,root,root) /etc/rc.d/init.d/ntp
-%attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/ntp
+%attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) /etc/sysconfig/ntp
 %{_mandir}/man8/ntpdate*
