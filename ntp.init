@@ -12,6 +12,9 @@
 # Source networking configuration.
 . /etc/sysconfig/network
 
+# Source ntp configuration
+. /etc/sysconfig/ntp
+
 # Check that networking is up.
 [ "${NETWORKING}" = "no" ] && exit 0
 
