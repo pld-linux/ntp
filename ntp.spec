@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.1.0
-Release:	3
+Release:	4
 License:	distributable
 Group:		Daemons
 Group(de):	Server
@@ -38,7 +38,7 @@ continuously adjusts system time).
 %description -l pl
 Pakiet zawiera narzêdzia i demony s³u¿±ce do dok³adnego
 synchronizowania czasu Twojego komputera: ntpdate, program podobny do
-rdatei xntpd, demon aktualizuj±cy czas w sposób ci±g³y.
+rdate oraz ntpd, demon aktualizuj±cy czas w sposób ci±g³y.
 
 %package doc-html
 Summary:	HTML documentation for ntp
