@@ -15,7 +15,7 @@ Source5:	%{name}d.8
 Source6:	%{name}date.8
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-vsnprintf.patch
-Patch2:		%{name}-no_libelf.patch 
+Patch2:		%{name}-no_libelf.patch
 URL:		http://www.ntp.org/
 BuildRequires:	readline-devel >= 4.2
 PreReq:		rc-scripts
