@@ -2,12 +2,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.1.2
+Version:	4.2.0
 Release:	1
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
-# Source0-md5:	98e16c7aa4ecd4c004b51bff18962e95
+# Source0-md5:	0f8fabe87cf54f409b57c6283f0c0c3d
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -15,8 +15,7 @@ Source4:	%{name}.sysconfig
 Source5:	%{name}d.8
 Source6:	%{name}date.8
 Patch0:		%{name}-time.patch
-Patch1:		%{name}-vsnprintf.patch
-Patch2:		%{name}-no_libelf.patch
+Patch1:		%{name}-no_libelf.patch
 URL:		http://www.ntp.org/
 BuildRequires:	readline-devel >= 4.2
 Requires(post,preun):	/sbin/chkconfig
@@ -72,7 +71,6 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %configure
