@@ -34,7 +34,7 @@ case "$1" in
         	RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntp
         else
-	      	msg_Already_Running ntp
+	      	msg_already_running ntp
 		exit 1
 	fi
         ;;
@@ -44,7 +44,7 @@ case "$1" in
 		killproc ntpd
         	rm -f /var/lock/subsys/ntp
         else
-		msg_Not_Running ntp
+		msg_not_running ntp
 		exit 1
 	fi
 	;;
