@@ -5,8 +5,6 @@ Version:	4.1.0
 Release:	5
 License:	distributable
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 Source0:	ftp://ftp.udel.edu/pub/ntp/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}.keys
@@ -44,8 +42,6 @@ rdate oraz ntpd, demon aktualizuj±cy czas w sposób ci±g³y.
 Summary:	HTML documentation for ntp
 Summary(pl):	Dokumentacja HTML dla ntp
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 
 %description doc-html
 HTML documentation for ntp.
