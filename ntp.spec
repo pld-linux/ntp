@@ -45,7 +45,24 @@ Dokumentacja do ntp w HTML.
 %setup -q
 
 %build
-%configure
+./configure \
+	--target=%{_target_platform} \
+	--host=%{_host} \
+	--build=%{_build} \
+	--prefix=%{_prefix} \
+	--exec-prefix=%{_exec_prefix} \
+	--bindir=%{_bindir} \
+	--sbindir=%{_sbindir} \
+	--sysconfdir=%{_sysconfdir} \
+	--datadir=%{_datadir} \
+	--includedir=%{_includedir} \
+	--libdir=%{_libdir} \
+	--libexecdir=%{_libexecdir} \
+	--localstatedir=%{_localstatedir} \
+	--sharedstatedir=%{_sharedstatedir} \
+	--mandir=%{_mandir} \
+	--infodir=%{_infodir}
+
 %{__make} 
 
 %install
