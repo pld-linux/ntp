@@ -84,10 +84,21 @@ gzip -9nf NEWS TODO conf/*.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post
-DESC="ntp daemon"; %chkconfig_add
+/sbin/chkconfig --add ntp
+
+if [ -f /var/lock/subsys/ntp ]; then
+	/etc/rc.d/init.d/ntp restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/ntp start\" to start ntp daemon."
+fi
     
 %preun
-%chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/ntp ]; then
+		/etc/rc.d/init.d/ntp stop >&2
+	fi
+	/sbin/chkconfig --del ntp
+fi
 
 %files
 %defattr(644,root,root,755)
