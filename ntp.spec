@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.1.1a
-Release:	1
+Release:	2
 License:	distributable
 Group:		Daemons
 Obsoletes:	xntp3
@@ -15,8 +15,8 @@ Source5:	%{name}d.8
 Source6:	%{name}date.8
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-vsnprintf.patch
+Patch2:		%{name}-no_libelf.patch 
 URL:		http://www.ntp.org/
-BuildConflicts:	libelf
 BuildRequires:	readline-devel >= 4.2
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -54,6 +54,7 @@ Dokumentacja do ntp w HTML.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure
