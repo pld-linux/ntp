@@ -26,7 +26,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc/ntp
 %define		_bindir		%{_sbindir}
 
-%description 
+%description
 The Network Time Protocol (NTP) is used to synchronize a computer's
 time with another reference time source. The ntp package contains
 utilities and daemons which will synchronize your computer's time to
@@ -50,10 +50,10 @@ Group(pl):	Serwery
 %description doc-html
 HTML documentation for ntp.
 
-%description doc-html
+%description doc-html -l pl
 Dokumentacja do ntp w HTML.
 
-%prep 
+%prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
@@ -61,7 +61,7 @@ Dokumentacja do ntp w HTML.
 %build
 %configure
 
-%{__make} 
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -88,7 +88,7 @@ if [ -f /var/lock/subsys/ntp ]; then
 else
 	echo "Run \"/etc/rc.d/init.d/ntp start\" to start ntp daemon."
 fi
-    
+
 %preun
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/ntp ]; then
