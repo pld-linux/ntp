@@ -36,12 +36,12 @@ case "$1" in
         ;;
   stop)
         # Stop daemons.
-        msg_stopping ntpd
+        msg_stopping ntp
 	killproc ntpd
         rm -f /var/lock/subsys/ntp
         ;;
   status)
-	status ntp ntpd
+	status ntpd
 	;;
   restart|reload)
 	$0 stop
