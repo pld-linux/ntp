@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	2
+Release:	3
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -14,6 +14,8 @@ Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Source5:	%{name}d.8
 Source6:	%{name}date.8
+Source7:	%{name}-client.init
+Source8:	%{name}-client.sysconfig
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 URL:		http://www.ntp.org/
@@ -68,6 +70,17 @@ Dokumentacja do ntp w HTML.
 %description doc-html -l pt_BR
 Este pacote contém documentação adicional sobre o NTP versão 4.
 
+%package client
+Summary:	Network Time Protocol client
+Summary(pl):	Klient do synchronizacji czasu (Network Time Protocol)
+Group:		Applications
+
+%description client
+Network Time Protocol client
+
+%description doc-html -l pl
+Klient do synchronizacji czasu (Network Time Protocol)
+
 %prep
 %setup -q
 %patch0 -p1
@@ -88,8 +101,10 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig},%{_mandir
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
+install %{SOURCE7} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
+install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
 
@@ -97,14 +112,30 @@ install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
 rm -rf $RPM_BUILD_ROOT
 
 %post
+/sbin/chkconfig --add ntpd
+if [ -f /var/lock/subsys/ntpd ]; then
+	/etc/rc.d/init.d/ntpd restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/ntpd start\" to start ntpd daemon."
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/ntpd ]; then
+		/etc/rc.d/init.d/ntpd stop >&2
+	fi
+	/sbin/chkconfig --del ntpd
+fi
+
+%post client
 /sbin/chkconfig --add ntp
 if [ -f /var/lock/subsys/ntp ]; then
 	/etc/rc.d/init.d/ntp restart >&2
 else
-	echo "Run \"/etc/rc.d/init.d/ntp start\" to start ntp daemon."
+	echo "Run \"/etc/rc.d/init.d/ntp start\" to start ntp."
 fi
 
-%preun
+%preun client
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/ntp ]; then
 		/etc/rc.d/init.d/ntp stop >&2
@@ -115,13 +146,21 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf
-%attr(750,root,root) %dir %{_sysconfdir}
+%attr(750,root,root) %dir %{_sysconfdir}/*
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(754,root,root) /etc/rc.d/init.d/ntp
-%attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/*
+%attr(754,root,root) /etc/rc.d/init.d/ntpd
+%attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/ntpd
 %{_mandir}/man8/*
+%exclude %{_mandir}/man8/ntpdate*
+%exclude %{_sbindir}/ntpdate
 
 %files doc-html
 %defattr(644,root,root,755)
 %doc html/*
+
+%files client
+%attr(755,root,root) %{_sbindir}/ntpdate
+%attr(754,root,root) /etc/rc.d/init.d/ntp
+%attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/ntp
+%{_mandir}/man8/ntpdate*
