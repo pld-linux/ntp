@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# ntp           This shell script takes care of starting and stopping
-#               ntp (NTP daemon).
+# ntp		This shell script takes care of starting and stopping
+#		ntp (NTP daemon).
 #
 # chkconfig:	2345 55 10
 # description:	ntp is the NTP daemon.
@@ -16,7 +16,15 @@
 . /etc/sysconfig/ntp
 
 # Check that networking is up.
-[ "${NETWORKING}" = "no" ] && exit 0
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		# nls "ERROR: Networking is down. %s can't be run." <service>
+		msg_network_down ntp
+		exit 1
+	fi
+else
+	exit 0
+fi
 
 [ -x /usr/sbin/ntpd -a -f /etc/ntp/ntp.conf ] || exit 0
 
@@ -27,7 +35,7 @@ case "$1" in
         if [ ! -f /var/lock/subsys/ntp ]; then
 		if is_yes "$SYNC_TIME"; then
 	        	# Adjust time to make life easy for ntp
-       			run_cmd "Syncing time for ntp" /usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS
+       			run_cmd "Syncing time for ntp" "/usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS"
 		fi
             	msg_starting ntp
             	daemon ntpd -c /etc/ntp/ntp.conf
@@ -56,8 +64,8 @@ case "$1" in
 	$0 start
 	;;
   *)
-        echo "Usage: $0 {start|stop|restart|status}"
+        msg_usage "$0 {start|stop|restart|reload|status}"
         exit 1
 esac
 
-exit 0
+exit $RETVAL
