@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	6
+Release:	7
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -97,7 +97,7 @@ cp /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.daily},%{_mandir}/man8}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -110,6 +110,11 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
+
+cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntp <<EOF
+#!/bin/sh
+/etc/rc.d/init.d/ntp cronsettime
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -166,5 +171,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/ntpdate
 %attr(754,root,root) /etc/rc.d/init.d/ntp
+%attr(754,root,root) /etc/cron.hourly/ntp
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) /etc/sysconfig/ntp
 %{_mandir}/man8/ntpdate*
