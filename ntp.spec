@@ -11,7 +11,7 @@ Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
-Requires:	rc-scripts
+Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
