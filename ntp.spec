@@ -42,6 +42,7 @@ rdatei xntpd, demon aktualizuj±cy czas w sposób ci±g³y.
 
 %package doc-html
 Summary:	HTML documentation for ntp
+Summary(pl):	Dokumentacja HTML dla ntp
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
