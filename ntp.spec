@@ -1,6 +1,6 @@
 Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
-Summary(pt_BR): Network Time Protocol versão 4
+Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.1.2
 Release:	1
@@ -56,7 +56,7 @@ Este pacote obsoleta o antigo xntp3.
 %package doc-html
 Summary:	HTML documentation for ntp
 Summary(pl):	Dokumentacja HTML dla ntp
-Summary(pt_BR): Documentação adicional para o pacote ntp
+Summary(pt_BR):	Documentação adicional para o pacote ntp
 Group:		Daemons
 
 %description doc-html
