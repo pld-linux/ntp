@@ -97,7 +97,7 @@ cp /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.daily},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourly},%{_mandir}/man8}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
