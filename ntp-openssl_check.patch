@@ -1,0 +1,72 @@
+diff -dur ntp-4.2.0.orig/configure.in ntp-4.2.0/configure.in
+--- ntp-4.2.0.orig/configure.in	2004-11-19 21:00:04.000000000 +0100
++++ ntp-4.2.0/configure.in	2004-11-19 21:53:20.876855603 +0100
+@@ -2576,44 +2576,19 @@
+ 
+ AC_SUBST(MAKE_NTP_KEYGEN)
+ 
+-AC_MSG_CHECKING(for openssl library directory)
+ AC_ARG_WITH(openssl-libdir,
+ 	AC_HELP_STRING([--with-openssl-libdir], [+ =/something/reasonable]),
+ [ans=$withval], [ans=yes])
+ case "$ans" in
+  no) ;;
+- yes) # Look in:
+-    ans="/usr/lib /usr/lib/openssl /usr/local/lib /usr/local/ssl/lib"
+-    ;;
+- *) # Look where they said
+-    ;;
+-esac
+-case "$ans" in
+- no) ;;
+- *) # Look for libcrypto.a and libssl.a:
+-    for i in $ans no
+-    do
+-	case "$host" in
+-	 *-*-darwin*)
+-	    test -f $i/libcrypto.dylib -a -f $i/libssl.dylib && break
+-	    ;;
+-	 *)
+-	    test -f $i/libcrypto.a -a -f $i/libssl.a && break
+-	    ;;
+-	esac
+-    done
+-    case "$i" in
+-     no)
+-	ans=no
+-	OPENSSL_LIB=
+-	;;
+-     *) ans=$i
+-	OPENSSL_LIB=$ans
+-	;;
+-    esac
+-    ;;
++ *)
++   if test "$ans" != "yes" ; then
++       LDFLAGS="$LDFLAGS -L$ans"
++   fi
++   AC_CHECK_LIB([crypto],[DES_crypt],[AC_SUBST(LCRYPTO,[-lcrypto])])
++   AC_CHECK_LIB([ssl],[SSL_CTX_new],[AC_SUBST(LSSL,[-lssl])])
++   ;;
+ esac
+-AC_MSG_RESULT($ans)
+ 
+ AC_MSG_CHECKING(for openssl include directory)
+ AC_ARG_WITH(openssl-incdir,
+@@ -2653,15 +2628,13 @@
+ case "$ans" in
+  no) ;;
+  yes|openssl)
+-    if test -z "$OPENSSL_LIB" -o -z "$OPENSSL_INC"
++    if test -z "$LCRYPTO" -o -z "$OPENSSL_INC"
+     then
+ 	ans=no
+     else
+ 	# We have OpenSSL inc/lib - use them.
+ 	ans=openssl
+ 	CPPFLAGS="$CPPFLAGS -I$OPENSSL_INC"
+-	LDFLAGS="$LDFLAGS -L$OPENSSL_LIB"
+-	AC_SUBST(LCRYPTO, [-lcrypto])
+ 	MAKE_NTP_KEYGEN=ntp-keygen
+ 	AC_DEFINE(OPENSSL, , [Use OpenSSL?])
+ 	AC_CHECK_FUNCS(EVP_md2 EVP_mdc2)
