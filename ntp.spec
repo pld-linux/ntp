@@ -18,8 +18,8 @@ Patch1:		%{name}-vsnprintf.patch
 URL:		http://www.ntp.org/
 BuildConflicts:	libelf
 BuildRequires:	readline-devel >= 4.2
-Prereq:		rc-scripts
-Prereq:		/sbin/chkconfig
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
@@ -73,8 +73,6 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
 
-gzip -9nf NEWS TODO conf/*.conf
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -96,7 +94,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc conf/*.gz *.gz
+%doc NEWS TODO conf/*.conf
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
