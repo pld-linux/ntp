@@ -8,7 +8,7 @@ diff -urN ntp-4.0.99k.org/ntpd/ntp_control.c ntp-4.0.99k/ntpd/ntp_control.c
 -					    ',')
 +					    ',') {
  						*tp++ = *cp++;
-+						if (tp > buf + sizeof(buf)) {
++						if (tp >= buf + sizeof(buf)) {
 +						    msyslog(LOG_WARNING, "Attempted \"ntpdx\" exploit from IP %d.%d.%d.%d:%d (possibly spoofed)\n",
 +						(ntohl(rmt_addr->sin_addr.s_addr) >> 24) & 0xff,
 +						(ntohl(rmt_addr->sin_addr.s_addr) >> 16) & 0xff,
