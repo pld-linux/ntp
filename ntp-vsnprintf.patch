@@ -1,0 +1,12 @@
+--- ntp-4.0.99j/libntp/msyslog.c.vsnprintf	Wed Aug 23 13:04:18 2000
++++ ntp-4.0.99j/libntp/msyslog.c	Wed Aug 23 13:06:05 2000
+@@ -126,7 +126,8 @@
+ 	    *n++ = '\n';
+ 	*n = '\0';
+ 
+-	vsprintf(buf, nfmt, ap);
++	vsnprintf(buf, sizeof(buf), nfmt, ap);
++	buf[sizeof(buf)-1] = '\0';
+ #if !defined(VMS) && !defined (SYS_VXWORKS)
+ 	if (syslogit)
+ #ifndef SYS_WINNT
