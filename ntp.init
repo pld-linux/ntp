@@ -23,23 +23,26 @@ case "$1" in
 	# Check if the service is already running?
         if [ ! -f /var/lock/subsys/ntp ]; then
         	# Adjust time to make life easy for ntp
-#       	echo -n "Syncing time for ntp"
-#       	/usr/sbin/ntpdate -o 1  clock.llnl.gov norad.arc.nasa.gov
-#           	echo
+       		run_cmd "Syncing time for ntp" /usr/sbin/ntpdate -o 1 ntp.nasa.gov clock.isc.org
             	msg_starting ntp
             	daemon ntpd -c /etc/ntp/ntp.conf
+        	RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntp
         else
 	      	msg_Already_Running ntp
 		exit 1
 	fi
-        touch /var/lock/subsys/ntp
         ;;
   stop)
-        # Stop daemons.
-        msg_stopping ntp
-	killproc ntpd
-        rm -f /var/lock/subsys/ntp
-        ;;
+  	if [ -f /var/lock/subsys/ntp ]; then
+        	msg_stopping ntp
+		killproc ntpd
+        	rm -f /var/lock/subsys/ntp
+        else
+		msg_Not_Running ntp
+		exit 1
+	fi
+	;;
   status)
 	status ntpd
 	;;
