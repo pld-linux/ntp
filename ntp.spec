@@ -2,8 +2,8 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.0.99k
-Release:	8
-Copyright:	distributable
+Release:	12
+License:	Distributable
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
@@ -14,6 +14,10 @@ Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-overflow.patch
+Patch2:		%{name}-typos.patch
+Patch3:		%{name}-usegethost.patch
+Patch4:		%{name}-vsnprintf.patch
+Patch5:		%{name}-tmp.patch
 URL:		http://www.ntp.org/
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -51,6 +55,10 @@ Dokumentacja do ntp w HTML.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 %configure
