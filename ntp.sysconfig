@@ -6,4 +6,4 @@ SERVICE_RUN_NICE_LEVEL="+1"
 # Sync time at startup
 SYNC_TIME=no
 NTPDATE_OPTIONS="-o 1"
-NTPDATE_SERVERS="ntp.nasa.gov clock.isc.org"
+NTPDATE_SERVERS="ntp.nasa.gov clock.isc.org vega.cbk.poznan.pl"
