@@ -10,8 +10,8 @@ Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
-Source5:	ntpd.8
-Source6:	ntpdate.8
+Source5:	%{name}d.8
+Source6:	%{name}date.8
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-vsnprintf.patch
 URL:		http://www.ntp.org/
