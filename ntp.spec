@@ -2,7 +2,7 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.1.0
-Release:	1
+Release:	2
 License:	Distributable
 Group:		Daemons
 Group(de):	Server
@@ -12,6 +12,8 @@ Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
+Source5:	ntpd.8
+Source6:	ntpdate.8
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-vsnprintf.patch
 URL:		http://www.ntp.org/
@@ -61,7 +63,7 @@ Dokumentacja do ntp w HTML.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig},%{_mandir}/man8}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
@@ -69,6 +71,8 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
+install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
 
 gzip -9nf NEWS TODO conf/*.conf
 
@@ -95,12 +99,12 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc conf/*.gz *.gz
-
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/ntp
 %attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/*
+%{_mandir}/man8/*
 
 %files doc-html
 %defattr(644,root,root,755)
