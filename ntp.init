@@ -45,7 +45,7 @@ case "$1" in
   stop)
 	if [ -f /var/lock/subsys/ntpd ]; then
 		msg_stopping ntpd
-		killproc ntpd
+		killproc -9 ntpd
 		rm -f /var/lock/subsys/ntpd
 	else
 		msg_not_running ntpd
