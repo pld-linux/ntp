@@ -32,11 +32,8 @@ RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-	if is_yes "$SYNC_TIME"; then
-		# Adjust time
-		run_cmd "Syncing time for ntp" "/usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS"
-		RETVAL=$?
-	fi
+	run_cmd "Syncing time for ntp" /usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS
+	RETVAL=$?
 	;;
   stop)
 	exit $RETVAL
