@@ -22,8 +22,10 @@ case "$1" in
   start)
 	# Check if the service is already running?
         if [ ! -f /var/lock/subsys/ntp ]; then
-        	# Adjust time to make life easy for ntp
-       		run_cmd "Syncing time for ntp" /usr/sbin/ntpdate -o 1 ntp.nasa.gov clock.isc.org
+		if is_yes "$SYNC_TIME"; then
+	        	# Adjust time to make life easy for ntp
+       			run_cmd "Syncing time for ntp" /usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS
+		fi
             	msg_starting ntp
             	daemon ntpd -c /etc/ntp/ntp.conf
         	RETVAL=$?
