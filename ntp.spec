@@ -2,13 +2,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR): Network Time Protocol versão 4
 Name:		ntp
-Version:	4.1.1a
-Release:	3
+Version:	4.1.2
+Release:	1
 License:	distributable
 Group:		Daemons
-Obsoletes:	xntp3
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
-# Source0-md5:	884c8d90f62bf3de0a464f755a8409a4	
+# Source0-md5:	98e16c7aa4ecd4c004b51bff18962e95
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -20,8 +19,9 @@ Patch1:		%{name}-vsnprintf.patch
 Patch2:		%{name}-no_libelf.patch
 URL:		http://www.ntp.org/
 BuildRequires:	readline-devel >= 4.2
-PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
+PreReq:		rc-scripts
+Obsoletes:	xntp3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
@@ -83,7 +83,8 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig},%{_mandir}/man8}
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
