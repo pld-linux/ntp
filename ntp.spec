@@ -159,6 +159,7 @@ fi
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf
 %attr(750,root,root) %dir %{_sysconfdir}
+%ghost %{_sysconfdir}/drift
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
