@@ -17,7 +17,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc/ntp
 %define		_bindir		%{_sbindir}
 
-%description
+%description 
 The Network Time Protocol (NTP) is used to synchronize a computer's
 time with another reference time source. The ntp package contains
 utilities and daemons which will synchronize your computer's time to
@@ -30,6 +30,16 @@ continuously adjusts system time).
 Pakiet zawiera narzêdzia i demony s³u¿±ce do dok³adnego
 synchronizowania czasu Twojego komputera: ntpdate, program podobny do
 rdatei xntpd, demon aktualizuj±cy czas w sposób ci±g³y.
+
+%package doc-html
+Summary:        HTML documentation for ntp
+Group:          Daemons
+
+%description doc-html
+HTML documentation for ntp.
+
+%description doc-html
+Dokumentacja do ntp w HTML.
 
 %prep 
 %setup -q
@@ -57,8 +67,9 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 
 gzip -9nf NEWS TODO conf/*.conf
 
+
 %clean
-rm -rf $RPM_BUILD_ROOT
+#rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add ntp
@@ -86,3 +97,6 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/ntp
 %attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/*
+
+%files doc-html
+%doc html/*
