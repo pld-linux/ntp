@@ -35,14 +35,18 @@ The Network Time Protocol (NTP) is used to synchronize a computer's
 time with another reference time source. The ntp package contains
 utilities and daemons which will synchronize your computer's time to
 Coordinated Universal Time (UTC) via the NTP protocol and NTP servers.
-The ntp package includes ntpdate (a program for retrieving the date
-and time from remote machines via a network) and ntpd (a daemon which
-continuously adjusts system time).
+ntp package includes ntpd (a daemon which continuously adjusts system
+time), while ntp-client package contains ntpdate (a program for
+retrieving the date and time from remote machines via a network).
 
 %description -l pl
-Pakiet zawiera narzêdzia i demony s³u¿±ce do dok³adnego
-synchronizowania czasu Twojego komputera: ntpdate, program podobny do
-rdate oraz ntpd, demon aktualizuj±cy czas w sposób ci±g³y.
+Network Time Protocol (NTP) s³u¿y do synchronizacji czasu komputera z
+innym, wzorcowym ¼ród³em czasu. Pakiet ntp zawiera narzêdzia i demony
+s³u¿±ce do dok³adnego synchronizowania czasu komputera wed³ug czasu
+uniwersalnego (UTC) poprzez protokó³ NTP z serwerami NTP. Pakiet ntp
+zawiera ntpd (demona, który w sposób ci±g³y aktualizuje czas
+systemowy), natomiast pakiet ntp-client zawiera program ntpdate
+(program do odczytywania daty i czasu z innych maszyn po sieci).
 
 %description -l pt_BR
 Esta é a versão 4 do Network Time Protocol (NTP). Este protocolo é
@@ -90,7 +94,7 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %patch2 -p1
 
 %build
-cp /usr/share/automake/config.sub .
+cp -f /usr/share/automake/config.sub .
 %configure
 
 %{__make}
