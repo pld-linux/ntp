@@ -1,5 +1,6 @@
 Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
+Summary(pt_BR): Network Time Protocol versão 4
 Name:		ntp
 Version:	4.1.1a
 Release:	3
@@ -40,9 +41,22 @@ Pakiet zawiera narzêdzia i demony s³u¿±ce do dok³adnego
 synchronizowania czasu Twojego komputera: ntpdate, program podobny do
 rdate oraz ntpd, demon aktualizuj±cy czas w sposób ci±g³y.
 
+%description -l pt_BR
+Esta é a versão 4 do Network Time Protocol (NTP). Este protocolo é
+utilizado para sincronizar o relógio do computador com uma outra
+referência de horário. Este pacote contém utilitários e servidores
+que sincronizarão o relógio do seu computador com o horário universal
+(UTC) através do protocolo NTP e utilizando servidores NTP públicos.
+
+Instale o pacote ntp se você necessitar de ferramentas para manter o
+relógio do seu computador constantemente atualizado.
+
+Este pacote obsoleta o antigo xntp3.
+
 %package doc-html
 Summary:	HTML documentation for ntp
 Summary(pl):	Dokumentacja HTML dla ntp
+Summary(pt_BR): Documentação adicional para o pacote ntp
 Group:		Daemons
 
 %description doc-html
@@ -50,6 +64,9 @@ HTML documentation for ntp.
 
 %description doc-html -l pl
 Dokumentacja do ntp w HTML.
+
+%description doc-html -l pt_BR
+Este pacote contém documentação adicional sobre o NTP versão 4.
 
 %prep
 %setup -q
