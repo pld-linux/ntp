@@ -45,13 +45,7 @@ Dokumentacja do ntp w HTML.
 %setup -q
 
 %build
-LDFLAGS="-s"; export LDFLAGS
-CFLAGS="$RPM_OPT_FLAGS"; export CFLAGS
-./configure \
-	--prefix=%{_prefix} \
-	--sysconfdir=%{_sysconfdir} \
-	--bindir=%{_bindir}
-
+%configure
 %{__make} 
 
 %install
@@ -66,7 +60,6 @@ install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 
 gzip -9nf NEWS TODO conf/*.conf
-
 
 %clean
 #rm -rf $RPM_BUILD_ROOT
