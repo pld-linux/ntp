@@ -2,9 +2,10 @@ Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Name:		ntp
 Version:	4.0.99k
-Release:	5
+Release:	6
 Copyright:	distributable
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Source0:	ftp://ftp.udel.edu/pub/ntp/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
@@ -22,7 +23,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 The Network Time Protocol (NTP) is used to synchronize a computer's
 time with another reference time source. The ntp package contains
 utilities and daemons which will synchronize your computer's time to
-Coordinated Universal Time (UTC) via the NTP protocol and NTP servers. 
+Coordinated Universal Time (UTC) via the NTP protocol and NTP servers.
 The ntp package includes ntpdate (a program for retrieving the date
 and time from remote machines via a network) and ntpd (a daemon which
 continuously adjusts system time).
@@ -33,8 +34,10 @@ synchronizowania czasu Twojego komputera: ntpdate, program podobny do
 rdatei xntpd, demon aktualizuj±cy czas w sposób ci±g³y.
 
 %package doc-html
-Summary:        HTML documentation for ntp
-Group:          Daemons
+Summary:	HTML documentation for ntp
+Group:		Daemons
+Group(de):	Server
+Group(pl):	Serwery
 
 %description doc-html
 HTML documentation for ntp.
@@ -112,4 +115,5 @@ fi
 %attr(640,root,root) %config %verify(not size md5 mtime) /etc/sysconfig/*
 
 %files doc-html
+%defattr(644,root,root,755)
 %doc html/*
