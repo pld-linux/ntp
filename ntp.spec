@@ -11,6 +11,7 @@ Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
+Patch0:		%{name}-time.patch
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -43,6 +44,7 @@ Dokumentacja do ntp w HTML.
 
 %prep 
 %setup -q
+%patch0 -p1
 
 %build
 ./configure \
