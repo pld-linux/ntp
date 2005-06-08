@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	9
+Release:	10
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -166,7 +166,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc NEWS TODO WHERE-TO-START conf/*.conf
+%doc NEWS TODO WHERE-TO-START conf/*.conf COPYRIGHT
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
@@ -182,6 +182,7 @@ fi
 
 %files client
 %defattr(644,root,root,755)
+%doc COPYRIGHT
 %attr(755,root,root) %{_sbindir}/ntpdate
 %attr(754,root,root) /etc/rc.d/init.d/ntp
 %attr(754,root,root) /etc/cron.hourly/ntp
