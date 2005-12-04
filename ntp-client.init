@@ -1,7 +1,6 @@
 #!/bin/sh
 #
-# ntp		This shell script takes care of starting and stopping
-#		ntp (NTP client).
+# ntp		This shell script synchronizes time with ntpdate (NTP client)
 #
 # chkconfig:	2345 55 10
 # description:	ntp is the NTP client.
@@ -18,7 +17,6 @@
 # Check that networking is up.
 if is_yes "${NETWORKING}"; then
 	if [ ! -f /var/lock/subsys/network -a "$1" != stop -a "$1" != status ]; then
-		# nls "ERROR: Networking is down. %s can't be run." <service>
 		msg_network_down ntp
 		exit 1
 	fi
@@ -31,22 +29,23 @@ fi
 RETVAL=0
 # See how we were called.
 case "$1" in
-  cronsettime)
-  	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
+cronsettime)
+	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
 	RETVAL=$?
 	;;
-  start)
-  	run_cmd "Syncing time for ntp" /usr/sbin/ntpdate $NTPDATE_OPTIONS $NTPDATE_SERVERS
+start)
+	show "Syncing time with ntpdate (backgrounding)"
+	daemon --fork /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS
 	RETVAL=$?
-  	;;
-  stop)
+	;;
+stop)
 	exit $RETVAL
 	;;
-  restart|force-reload)
+restart|force-reload)
 	$0 start
 	exit $?
 	;;
-  *)
+*)
 	msg_usage "$0 {start|restart|force-reload}"
 	exit 3
 esac
