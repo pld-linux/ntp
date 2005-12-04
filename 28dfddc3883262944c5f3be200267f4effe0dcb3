@@ -1,0 +1,6 @@
+- spec adaperized,
+- added Requires: rc-scripts,
+- added using %configure macro,
+- standarized %post/postpreun,
+- check in %post/posun /var/lock/subsys/ntp (not /var/lock/subsystem/ntp).
+- new %description (borowed from RH).
