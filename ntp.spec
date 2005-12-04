@@ -27,7 +27,7 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
 Requires(post,preun):	/sbin/chkconfig
-PreReq:		rc-scripts
+Requires:	rc-scripts >= 0.4.0.10
 Obsoletes:	xntp3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -55,8 +55,8 @@ systemowy), natomiast pakiet ntp-client zawiera program ntpdate
 %description -l pt_BR
 Esta é a versão 4 do Network Time Protocol (NTP). Este protocolo é
 utilizado para sincronizar o relógio do computador com uma outra
-referência de horário. Este pacote contém utilitários e servidores
-que sincronizarão o relógio do seu computador com o horário universal
+referência de horário. Este pacote contém utilitários e servidores que
+sincronizarão o relógio do seu computador com o horário universal
 (UTC) através do protocolo NTP e utilizando servidores NTP públicos.
 
 Instale o pacote ntp se você necessitar de ferramentas para manter o
@@ -168,10 +168,10 @@ fi
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf COPYRIGHT
 %attr(750,root,root) %dir %{_sysconfdir}
-%attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
-%attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) /etc/sysconfig/ntpd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %{_mandir}/man8/*
 %exclude %{_mandir}/man8/ntpdate*
 %exclude %{_sbindir}/ntpdate
@@ -186,5 +186,5 @@ fi
 %attr(755,root,root) %{_sbindir}/ntpdate
 %attr(754,root,root) /etc/rc.d/init.d/ntp
 %attr(754,root,root) /etc/cron.hourly/ntp
-%attr(640,root,root) %config(noreplace) %verify(not size md5 mtime) /etc/sysconfig/ntp
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntp
 %{_mandir}/man8/ntpdate*
