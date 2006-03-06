@@ -26,6 +26,7 @@ BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts >= 0.4.0.10
 Obsoletes:	xntp3
@@ -133,34 +134,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add ntpd
-if [ -f /var/lock/subsys/ntpd ]; then
-	/etc/rc.d/init.d/ntpd restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/ntpd start\" to start ntpd daemon."
-fi
+%service ntpd restart "ntpd daemon"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/ntpd ]; then
-		/etc/rc.d/init.d/ntpd stop >&2
-	fi
+	%service ntpd stop
 	/sbin/chkconfig --del ntpd
 	rm -f /etc/ntp/drift
 fi
 
 %post client
 /sbin/chkconfig --add ntp
-if [ -f /var/lock/subsys/ntp ]; then
-	/etc/rc.d/init.d/ntp restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/ntp start\" to start ntp."
-fi
+%service ntp restart
 
 %preun client
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/ntp ]; then
-		/etc/rc.d/init.d/ntp stop >&2
-	fi
+	%service ntp stop
 	/sbin/chkconfig --del ntp
 fi
 
