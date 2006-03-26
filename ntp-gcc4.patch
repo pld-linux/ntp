@@ -1,0 +1,48 @@
+diff -urN ntp-4.2.0/include/ntp_control.h ntp-4.2.0.new/include/ntp_control.h
+--- ntp-4.2.0/include/ntp_control.h	2003-08-14 09:31:47.000000000 +0200
++++ ntp-4.2.0.new/include/ntp_control.h	2006-03-26 13:08:54.000000000 +0200
+@@ -266,6 +266,7 @@
+ 	u_char tr_flags;		/* trap flags */
+ 	u_char tr_version;		/* version number of trapper */
+ };
++extern struct ctl_trap ctl_trap[];
+ 
+ /*
+  * Flag bits
+diff -urN ntp-4.2.0/include/ntpd.h ntp-4.2.0.new/include/ntpd.h
+--- ntp-4.2.0/include/ntpd.h	2003-09-13 05:08:04.000000000 +0200
++++ ntp-4.2.0.new/include/ntpd.h	2006-03-26 13:07:59.000000000 +0200
+@@ -226,8 +226,6 @@
+ #endif
+ 
+ /* ntp_control.c */
+-struct ctl_trap;
+-extern struct ctl_trap ctl_trap[];
+ extern int	num_ctl_traps;
+ extern keyid_t	ctl_auth_keyid;		/* keyid used for authenticating write requests */
+ 
+diff -urN ntp-4.2.0/include/ntp_refclock.h ntp-4.2.0.new/include/ntp_refclock.h
+--- ntp-4.2.0/include/ntp_refclock.h	2003-07-17 12:27:16.000000000 +0200
++++ ntp-4.2.0.new/include/ntp_refclock.h	2006-03-26 13:06:24.000000000 +0200
+@@ -65,6 +65,7 @@
+ 	const char *clocktype;	/* long description */
+ 	const char *abbrev;	/* short description */
+ };
++extern struct clktype clktypes[];
+ 
+ /*
+  * Configuration flag values
+diff -urN ntp-4.2.0/include/ntp_stdlib.h ntp-4.2.0.new/include/ntp_stdlib.h
+--- ntp-4.2.0/include/ntp_stdlib.h	2003-07-17 12:27:16.000000000 +0200
++++ ntp-4.2.0.new/include/ntp_stdlib.h	2006-03-26 13:04:40.000000000 +0200
+@@ -133,10 +133,6 @@
+ extern u_char *	cache_key;		/* key pointer */
+ extern u_int	cache_keylen;		/* key length */
+ 
+-/* clocktypes.c */
+-struct clktype;
+-extern struct clktype clktypes[];
+-
+ /* getopt.c */
+ extern char *	ntp_optarg;		/* global argument pointer */
+ extern int	ntp_optind;		/* global argv index */
