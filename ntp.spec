@@ -4,7 +4,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	16
+Release:	15.2
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -13,10 +13,10 @@ Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
-Source5:	%{name}d.8
-Source6:	%{name}date.8
-Source7:	%{name}-client.init
-Source8:	%{name}-client.sysconfig
+Source5:	%{name}-client.init
+Source6:	%{name}-client.sysconfig
+Source7:	%{name}-manpages.tar.gz
+# Source7-md5:	208fcc9019e19ab26d28e4597290bffb
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
@@ -106,7 +106,7 @@ Network Time Protocol client.
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
 %prep
-%setup -q
+%setup -q -a7
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -124,7 +124,7 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourly},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourly},%{_mandir}/man1}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -132,11 +132,10 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourl
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
-install %{SOURCE7} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
-install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/ntp
-install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
-install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntp
+install man/*.1  $RPM_BUILD_ROOT%{_mandir}/man1
 
 cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntp <<'EOF'
 #!/bin/sh
@@ -175,14 +174,16 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
-%{_mandir}/man8/*
-%exclude %{_mandir}/man8/ntpdate*
+%{_mandir}/man1/*
+%exclude %{_mandir}/man1/ntpdate*
+%exclude %{_mandir}/man1/ntptrace*
 %exclude %{_sbindir}/ntpdate
 %exclude %{_sbindir}/ntptrace
 
 %files ntptrace
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/ntptrace
+%{_mandir}/man1/ntptrace*
 
 %files doc-html
 %defattr(644,root,root,755)
@@ -195,4 +196,4 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/ntp
 %attr(754,root,root) /etc/cron.hourly/ntp
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntp
-%{_mandir}/man8/ntpdate*
+%{_mandir}/man1/ntpdate*
