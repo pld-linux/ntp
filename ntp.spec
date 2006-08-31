@@ -1,9 +1,10 @@
+%include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	15
+Release:	16
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -27,6 +28,7 @@ BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
+BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts >= 0.4.0.10
@@ -66,11 +68,21 @@ relógio do seu computador constantemente atualizado.
 
 Este pacote obsoleta o antigo xntp3.
 
+%package ntptrace
+Summary:	Trace a chain of NTP servers back to the primary source
+Group:		Applications/Networking
+Conflicts:	ntp < 4.2.0-15.1
+
+%description ntptrace
+ntptrace determines where a given Network Time Protocol (NTP) server
+gets its time from, and follows the chain of NTP servers back to their
+master time source.
+
 %package doc-html
 Summary:	HTML documentation for ntp
 Summary(pl):	Dokumentacja HTML dla ntp
 Summary(pt_BR):	Documentação adicional para o pacote ntp
-Group:		Daemons
+Group:		Documentation
 
 %description doc-html
 HTML documentation for ntp.
@@ -84,7 +96,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %package client
 Summary:	Network Time Protocol client
 Summary(pl):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
-Group:		Applications
+Group:		Applications/Networking
 Conflicts:	ntp < 4.2.0-3
 
 %description client
@@ -126,9 +138,9 @@ install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/ntp
 install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man8
 
-cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntp <<EOF
+cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntp <<'EOF'
 #!/bin/sh
-/etc/rc.d/init.d/ntp cronsettime
+/sbin/service ntp cronsettime
 EOF
 
 %clean
@@ -166,6 +178,11 @@ fi
 %{_mandir}/man8/*
 %exclude %{_mandir}/man8/ntpdate*
 %exclude %{_sbindir}/ntpdate
+%exclude %{_sbindir}/ntptrace
+
+%files ntptrace
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_sbindir}/ntptrace
 
 %files doc-html
 %defattr(644,root,root,755)
