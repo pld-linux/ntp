@@ -4,7 +4,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	18
+Release:	19
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -71,7 +71,7 @@ Este pacote obsoleta o antigo xntp3.
 %package ntptrace
 Summary:	Trace a chain of NTP servers back to the primary source
 Group:		Applications/Networking
-Conflicts:	ntp < 4.2.0-15.1
+Requires:	ntp = %{version}-%{release}
 
 %description ntptrace
 ntptrace determines where a given Network Time Protocol (NTP) server
