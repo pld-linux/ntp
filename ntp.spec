@@ -70,13 +70,18 @@ Este pacote obsoleta o antigo xntp3.
 
 %package ntptrace
 Summary:	Trace a chain of NTP servers back to the primary source
+Summary(pl):	¦ledzenie ³añcucha serwerów NTP a¿ do g³ównego ¼ród³a
 Group:		Applications/Networking
-Requires:	ntp = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description ntptrace
 ntptrace determines where a given Network Time Protocol (NTP) server
 gets its time from, and follows the chain of NTP servers back to their
 master time source.
+
+%description ntptrace -l pl
+ntptrace okre¶la sk±d dany serwer NTP (Network Time Protocol) pobiera
+swój czas i pod±¿a ³añcuchem serwerów NTP a¿ do g³ównego ¼ród³a czasu.
 
 %package doc-html
 Summary:	HTML documentation for ntp
