@@ -1,0 +1,15 @@
+prefer MD5Init() from openssl libs (-lcrypto)
+
+--- ntp-4.2.0/configure.in~	2006-09-01 01:34:38.431438260 +0300
++++ ntp-4.2.0/configure.in	2006-09-13 10:51:32.253439861 +0300
+@@ -205,8 +205,10 @@
+ AC_CHECK_FUNC(openlog, , 
+   AC_CHECK_LIB(gen, openlog, , 
+   AC_CHECK_LIB(syslog, openlog, , , -lsocket)))
++AC_CHECK_LIB(crypto, MD5Init, , 
+ AC_CHECK_LIB(md5, MD5Init, , 
+   AC_CHECK_LIB(md, MD5Init))
++)
+ AC_CHECK_FUNCS(MD5Init)
+ dnl HMS: What a hack...
+ AC_CHECK_HEADERS(readline/history.h readline/readline.h)
