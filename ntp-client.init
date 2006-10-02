@@ -24,26 +24,33 @@ else
 	exit 0
 fi
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-cronsettime)
-	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
-	RETVAL=$?
-	;;
-start)
+start() {
 	show "Syncing time with ntpdate (backgrounding)"
 	daemon --fork /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntp
+}
+
+stop() {
+	rm -f /var/lock/subsys/ntp
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+start)
+	start
 	;;
 stop)
-	rm -f /var/lock/subsys/ntp
-	exit $RETVAL
+	stop
 	;;
 restart|force-reload)
-	$0 start
-	exit $?
+	stop
+	start
+	;;
+cronsettime)
+	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
+	RETVAL=$?
 	;;
 *)
 	msg_usage "$0 {start|restart|force-reload}"
