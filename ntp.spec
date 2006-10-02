@@ -4,7 +4,7 @@ Summary(pl):	Narzêdzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
-Release:	19
+Release:	19.1
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
@@ -22,6 +22,7 @@ Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
 Patch4:		%{name}-gcc4.patch
+Patch5:		%{name}-md5.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -117,13 +118,15 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__automake}
-%configure
+%configure \
+  --with-crypto=openssl
 
 %{__make}
 
