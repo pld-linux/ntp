@@ -126,7 +126,7 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %{__autoconf}
 %{__automake}
 %configure \
-  --with-crypto=openssl
+	--with-crypto=openssl
 
 %{__make}
 
