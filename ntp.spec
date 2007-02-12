@@ -1,7 +1,7 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
-Summary(pl):	NarzÍdzia do synchronizacji czasu (Network Time Protocol)
-Summary(pt_BR):	Network Time Protocol vers„o 4
+Summary(pl.UTF-8):   Narzƒôdzia do synchronizacji czasu (Network Time Protocol)
+Summary(pt_BR.UTF-8):   Network Time Protocol vers√£o 4
 Name:		ntp
 Version:	4.2.0
 Release:	19.1
@@ -48,30 +48,30 @@ ntp package includes ntpd (a daemon which continuously adjusts system
 time), while ntp-client package contains ntpdate (a program for
 retrieving the date and time from remote machines via a network).
 
-%description -l pl
-Network Time Protocol (NTP) s≥uøy do synchronizacji czasu komputera z
-innym, wzorcowym ºrÛd≥em czasu. Pakiet ntp zawiera narzÍdzia i demony
-s≥uø±ce do dok≥adnego synchronizowania czasu komputera wed≥ug czasu
-uniwersalnego (UTC) poprzez protokÛ≥ NTP z serwerami NTP. Pakiet ntp
-zawiera ntpd (demona, ktÛry w sposÛb ci±g≥y aktualizuje czas
+%description -l pl.UTF-8
+Network Time Protocol (NTP) s≈Çu≈ºy do synchronizacji czasu komputera z
+innym, wzorcowym ≈∫r√≥d≈Çem czasu. Pakiet ntp zawiera narzƒôdzia i demony
+s≈Çu≈ºƒÖce do dok≈Çadnego synchronizowania czasu komputera wed≈Çug czasu
+uniwersalnego (UTC) poprzez protok√≥≈Ç NTP z serwerami NTP. Pakiet ntp
+zawiera ntpd (demona, kt√≥ry w spos√≥b ciƒÖg≈Çy aktualizuje czas
 systemowy), natomiast pakiet ntp-client zawiera program ntpdate
 (program do odczytywania daty i czasu z innych maszyn po sieci).
 
-%description -l pt_BR
-Esta È a vers„o 4 do Network Time Protocol (NTP). Este protocolo È
-utilizado para sincronizar o relÛgio do computador com uma outra
-referÍncia de hor·rio. Este pacote contÈm utilit·rios e servidores que
-sincronizar„o o relÛgio do seu computador com o hor·rio universal
-(UTC) atravÈs do protocolo NTP e utilizando servidores NTP p˙blicos.
+%description -l pt_BR.UTF-8
+Esta √© a vers√£o 4 do Network Time Protocol (NTP). Este protocolo √©
+utilizado para sincronizar o rel√≥gio do computador com uma outra
+refer√™ncia de hor√°rio. Este pacote cont√©m utilit√°rios e servidores que
+sincronizar√£o o rel√≥gio do seu computador com o hor√°rio universal
+(UTC) atrav√©s do protocolo NTP e utilizando servidores NTP p√∫blicos.
 
-Instale o pacote ntp se vocÍ necessitar de ferramentas para manter o
-relÛgio do seu computador constantemente atualizado.
+Instale o pacote ntp se voc√™ necessitar de ferramentas para manter o
+rel√≥gio do seu computador constantemente atualizado.
 
 Este pacote obsoleta o antigo xntp3.
 
 %package ntptrace
 Summary:	Trace a chain of NTP servers back to the primary source
-Summary(pl):	¶ledzenie ≥aÒcucha serwerÛw NTP aø do g≥Ûwnego ºrÛd≥a
+Summary(pl.UTF-8):   ≈öledzenie ≈Ça≈Ñcucha serwer√≥w NTP a≈º do g≈Ç√≥wnego ≈∫r√≥d≈Ça
 Group:		Applications/Networking
 Requires:	%{name} = %{version}-%{release}
 
@@ -80,35 +80,35 @@ ntptrace determines where a given Network Time Protocol (NTP) server
 gets its time from, and follows the chain of NTP servers back to their
 master time source.
 
-%description ntptrace -l pl
-ntptrace okre∂la sk±d dany serwer NTP (Network Time Protocol) pobiera
-swÛj czas i pod±øa ≥aÒcuchem serwerÛw NTP aø do g≥Ûwnego ºrÛd≥a czasu.
+%description ntptrace -l pl.UTF-8
+ntptrace okre≈õla skƒÖd dany serwer NTP (Network Time Protocol) pobiera
+sw√≥j czas i podƒÖ≈ºa ≈Ça≈Ñcuchem serwer√≥w NTP a≈º do g≈Ç√≥wnego ≈∫r√≥d≈Ça czasu.
 
 %package doc-html
 Summary:	HTML documentation for ntp
-Summary(pl):	Dokumentacja HTML dla ntp
-Summary(pt_BR):	DocumentaÁ„o adicional para o pacote ntp
+Summary(pl.UTF-8):   Dokumentacja HTML dla ntp
+Summary(pt_BR.UTF-8):   Documenta√ß√£o adicional para o pacote ntp
 Group:		Documentation
 
 %description doc-html
 HTML documentation for ntp.
 
-%description doc-html -l pl
+%description doc-html -l pl.UTF-8
 Dokumentacja do ntp w HTML.
 
-%description doc-html -l pt_BR
-Este pacote contÈm documentaÁ„o adicional sobre o NTP vers„o 4.
+%description doc-html -l pt_BR.UTF-8
+Este pacote cont√©m documenta√ß√£o adicional sobre o NTP vers√£o 4.
 
 %package client
 Summary:	Network Time Protocol client
-Summary(pl):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
+Summary(pl.UTF-8):   Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
 Conflicts:	ntp < 4.2.0-3
 
 %description client
 Network Time Protocol client.
 
-%description doc-html -l pl
+%description doc-html -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
 %prep
