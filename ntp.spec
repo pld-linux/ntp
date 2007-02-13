@@ -1,7 +1,7 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
-Summary(pl.UTF-8):   Narzędzia do synchronizacji czasu (Network Time Protocol)
-Summary(pt_BR.UTF-8):   Network Time Protocol versão 4
+Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
+Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.0
 Release:	19.1
@@ -71,7 +71,7 @@ Este pacote obsoleta o antigo xntp3.
 
 %package ntptrace
 Summary:	Trace a chain of NTP servers back to the primary source
-Summary(pl.UTF-8):   Śledzenie łańcucha serwerów NTP aż do głównego źródła
+Summary(pl.UTF-8):	Śledzenie łańcucha serwerów NTP aż do głównego źródła
 Group:		Applications/Networking
 Requires:	%{name} = %{version}-%{release}
 
@@ -86,8 +86,8 @@ swój czas i podąża łańcuchem serwerów NTP aż do głównego źródła czas
 
 %package doc-html
 Summary:	HTML documentation for ntp
-Summary(pl.UTF-8):   Dokumentacja HTML dla ntp
-Summary(pt_BR.UTF-8):   Documentação adicional para o pacote ntp
+Summary(pl.UTF-8):	Dokumentacja HTML dla ntp
+Summary(pt_BR.UTF-8):	Documentação adicional para o pacote ntp
 Group:		Documentation
 
 %description doc-html
@@ -101,7 +101,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 
 %package client
 Summary:	Network Time Protocol client
-Summary(pl.UTF-8):   Klient do synchronizacji czasu po NTP (Network Time Protocol)
+Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
 Conflicts:	ntp < 4.2.0-3
 
