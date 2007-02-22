@@ -29,3 +29,14 @@
  # include "rsa_md5.h"
  #endif
 +#endif
+--- ntp-4.2.0/libntp/md5c.c~	2003-07-17 12:27:22.000000000 +0200
++++ ntp-4.2.0/libntp/md5c.c	2007-02-22 13:51:00.000000000 +0100
+@@ -24,7 +24,7 @@
+  */
+ 
+ #include "global.h"
+-#ifndef HAVE_MD5INIT
++#if !HAVE_MD5INIT && !HAVE_LIBCRYPTO
+ #include "ntp_md5.h"
+ 
+ /* Constants for MD5Transform routine.
