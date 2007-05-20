@@ -1,15 +1,16 @@
-diff -ur ntp-4.1.1a.orig/configure.in ntp-4.1.1a/configure.in
---- ntp-4.1.1a.orig/configure.in	Thu Mar 28 23:42:00 2002
-+++ ntp-4.1.1a/configure.in	Thu Nov 21 11:56:41 2002
-@@ -184,8 +184,8 @@
-     AC_CHECK_LIB(advapi32, main)
-     ;;
- esac
--AC_CHECK_LIB(elf, nlist)	dnl Only needed for tickadj...
--dnl AC_CHECK_LIB(kvm, main, , , -lelf)
-+#AC_CHECK_LIB(elf, nlist)	dnl Only needed for tickadj...
-+#dnl AC_CHECK_LIB(kvm, main, , , -lelf)
- AC_CHECK_LIB(kvm, main)		dnl We already know about -lelf here...
- AC_CHECK_LIB(ld, nlist)
- AC_CHECK_LIB(mld, nlist)
-Only in ntp-4.1.1a: configure.in~
+diff -ur ntp-4.1.1a.orig/configure.ac ntp-4.1.1a/configure.ac
+--- ntp-4.1.1a.orig/configure.ac	Thu Mar 28 23:42:00 2002
++++ ntp-4.1.1a/configure.ac	Thu Nov 21 11:56:41 2002
+@@ -512,9 +512,9 @@
+ case "$ac_cv_func___adjtimex" in
+  yes) ;;
+  *)
+-    AC_CHECK_LIB(elf, nlist)	dnl Only needed for tickadj...
++    #AC_CHECK_LIB(elf, nlist)	dnl Only needed for tickadj...
+     dnl AC_CHECK_LIB(kvm, main, , , -lelf)
+-    AC_CHECK_LIB(kvm, main)		dnl We already know about -lelf here...
++    #AC_CHECK_LIB(kvm, main)		dnl We already know about -lelf here...
+     AC_CHECK_LIB(ld, nlist)
+     AC_CHECK_LIB(mld, nlist)
+     AC_CHECK_HEADER(nlist.h,
+

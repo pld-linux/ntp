@@ -1,18 +1,20 @@
-diff -dur ntp-4.2.0.orig/configure.in ntp-4.2.0/configure.in
---- ntp-4.2.0.orig/configure.in	2004-11-19 21:00:04.000000000 +0100
-+++ ntp-4.2.0/configure.in	2004-11-19 21:53:20.876855603 +0100
-@@ -2576,44 +2576,19 @@
- 
- AC_SUBST(MAKE_NTP_KEYGEN)
+diff -dur ntp-4.2.0.orig/configure.ac ntp-4.2.0/configure.ac
+--- ntp-4.2.0.orig/configure.ac	2004-11-19 21:00:04.000000000 +0100
++++ ntp-4.2.0/configure.ac	2004-11-19 21:53:20.876855603 +0100
+@@ -3012,7 +3012,6 @@
+ AC_SUBST(OPENSSL_INC)
+ AC_SUBST(OPENSSL_LIB)
  
 -AC_MSG_CHECKING(for openssl library directory)
  AC_ARG_WITH(openssl-libdir,
  	AC_HELP_STRING([--with-openssl-libdir], [+ =/something/reasonable]),
- [ans=$withval], [ans=yes])
+ [ans=$withval],
+@@ -3022,39 +3021,14 @@
+ esac])
  case "$ans" in
   no) ;;
 - yes) # Look in:
--    ans="/usr/lib /usr/lib/openssl /usr/local/lib /usr/local/ssl/lib"
+-    ans="/usr/lib /usr/lib/openssl /usr/sfw/lib /usr/local/lib /usr/local/ssl/lib"
 -    ;;
 - *) # Look where they said
 -    ;;
@@ -27,6 +29,7 @@ diff -dur ntp-4.2.0.orig/configure.in ntp-4.2.0/configure.in
 -	    test -f $i/libcrypto.dylib -a -f $i/libssl.dylib && break
 -	    ;;
 -	 *)
+-	    test -f $i/libcrypto.so -a -f $i/libssl.so && break
 -	    test -f $i/libcrypto.a -a -f $i/libssl.a && break
 -	    ;;
 -	esac
@@ -40,20 +43,19 @@ diff -dur ntp-4.2.0.orig/configure.in ntp-4.2.0/configure.in
 -	OPENSSL_LIB=$ans
 -	;;
 -    esac
--    ;;
-+ *)
++  *)
 +   if test "$ans" != "yes" ; then
 +       LDFLAGS="$LDFLAGS -L$ans"
 +   fi
 +   AC_CHECK_LIB([crypto],[DES_crypt],[AC_SUBST(LCRYPTO,[-lcrypto])])
 +   AC_CHECK_LIB([ssl],[SSL_CTX_new],[AC_SUBST(LSSL,[-lssl])])
-+   ;;
+     ;;
  esac
 -AC_MSG_RESULT($ans)
  
  AC_MSG_CHECKING(for openssl include directory)
  AC_ARG_WITH(openssl-incdir,
-@@ -2653,15 +2628,13 @@
+@@ -3098,19 +3072,17 @@
  case "$ans" in
   no) ;;
   yes|openssl)
@@ -66,7 +68,12 @@ diff -dur ntp-4.2.0.orig/configure.in ntp-4.2.0/configure.in
  	ans=openssl
  	CPPFLAGS="$CPPFLAGS -I$OPENSSL_INC"
 -	LDFLAGS="$LDFLAGS -L$OPENSSL_LIB"
+ 	case "$need_dash_r" in
+ 	 1) LDFLAGS="$LDFLAGS -R$OPENSSL_LIB"
+ 	    ;;
+ 	esac
 -	AC_SUBST(LCRYPTO, [-lcrypto])
- 	MAKE_NTP_KEYGEN=ntp-keygen
  	AC_DEFINE(OPENSSL, , [Use OpenSSL?])
  	AC_CHECK_FUNCS(EVP_md2 EVP_mdc2)
+     fi
+
