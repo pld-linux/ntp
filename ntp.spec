@@ -3,12 +3,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.0
-Release:	19.1
+Version:	4.2.4p0
+Release:	1
 License:	distributable
 Group:		Daemons
 Source0:	ftp://ftp.udel.edu/pub/ntp/ntp4/%{name}-%{version}.tar.gz
-# Source0-md5:	0f8fabe87cf54f409b57c6283f0c0c3d
+# Source0-md5:	6f381e3764eac481bed9cf7e4d508952
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -21,7 +21,6 @@ Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
-Patch4:		%{name}-gcc4.patch
 Patch5:		%{name}-md5.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
@@ -117,15 +116,20 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 %patch5 -p1
+
+echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 
 %build
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4 -I libopts/m4
 %{__autoconf}
 %{__automake}
 %configure \
+	--with-binsubdir=sbin \
+	--enable-linuxcaps \
+	--enable-getifaddrs \
+	--enable-ipv6 \
 	--with-crypto=openssl
 
 %{__make}
