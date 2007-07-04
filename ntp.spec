@@ -4,7 +4,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p3
-Release:	1
+Release:	2
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -21,6 +21,7 @@ Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
+Patch4:		%{name}-clock_settime.patch
 Patch5:		%{name}-md5.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
@@ -116,6 +117,7 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p0
 %patch5 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
