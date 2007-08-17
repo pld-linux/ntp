@@ -101,7 +101,7 @@ Klient do synchronizacji czasu po NTP (Network Time Protocol).
 %package tools
 Summary:	NTP tools
 Group:		Applications/Networking
-Obsoletes:	%{name}-ntptrace
+Obsoletes:	ntp-ntptrace
 
 %description tools
 This package contains ntp tools:
