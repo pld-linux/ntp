@@ -66,6 +66,13 @@ case "$1" in
 	stop
 	start
 	;;
+  conditionalrestart)
+	# NB! don't remove: dhcpcd calls this
+	if [ -f /var/lock/subsys/ntpd ]; then
+		stop
+		start
+	fi
+  	;;
   *)
 	msg_usage "$0 {start|stop|restart|force-reload|status}"
 	exit 3
