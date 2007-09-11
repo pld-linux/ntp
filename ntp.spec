@@ -1,14 +1,16 @@
+# TODO
+# - update manual pages (from debian?)
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.4p3
-Release:	2
+Version:	4.2.4p4
+Release:	1
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	8a880062c7c170181fd5087abae53a6e
+# Source0-md5:	fcb32a01e1ae3f9ed5bac86b12c7a1cc
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -69,21 +71,6 @@ relógio do seu computador constantemente atualizado.
 
 Este pacote obsoleta o antigo xntp3.
 
-%package ntptrace
-Summary:	Trace a chain of NTP servers back to the primary source
-Summary(pl.UTF-8):	Śledzenie łańcucha serwerów NTP aż do głównego źródła
-Group:		Applications/Networking
-Requires:	%{name} = %{version}-%{release}
-
-%description ntptrace
-ntptrace determines where a given Network Time Protocol (NTP) server
-gets its time from, and follows the chain of NTP servers back to their
-master time source.
-
-%description ntptrace -l pl.UTF-8
-ntptrace określa skąd dany serwer NTP (Network Time Protocol) pobiera
-swój czas i podąża łańcuchem serwerów NTP aż do głównego źródła czasu.
-
 %package doc-html
 Summary:	HTML documentation for ntp
 Summary(pl.UTF-8):	Dokumentacja HTML dla ntp
@@ -110,6 +97,16 @@ Network Time Protocol client.
 
 %description doc-html -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
+
+%package tools
+Summary:	NTP tools
+Group:		Applications/Networking
+Obsoletes:	ntp-ntptrace
+
+%description tools
+This package contains ntp tools:
+- ntptrace: Trace a chain of NTP servers back to the primary source
+- ntp-wait: Wait for NTP server to synchronize
 
 %prep
 %setup -q -a7
@@ -185,18 +182,27 @@ fi
 %doc NEWS TODO WHERE-TO-START conf/*.conf COPYRIGHT
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
-%attr(755,root,root) %{_sbindir}/*
-%attr(754,root,root) /etc/rc.d/init.d/ntpd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
-%{_mandir}/man1/*
-%exclude %{_mandir}/man1/ntpdate*
-%exclude %{_mandir}/man1/ntptrace*
-%exclude %{_sbindir}/ntpdate
-%exclude %{_sbindir}/ntptrace
+%attr(754,root,root) /etc/rc.d/init.d/ntpd
+%attr(755,root,root) %{_sbindir}/ntpd
+%attr(755,root,root) %{_sbindir}/ntpdc
+%attr(755,root,root) %{_sbindir}/ntp-keygen
+%attr(755,root,root) %{_sbindir}/ntpq
+%attr(755,root,root) %{_sbindir}/ntptime
+%attr(755,root,root) %{_sbindir}/sntp
+%attr(755,root,root) %{_sbindir}/tickadj
+%{_mandir}/man1/ntpd.1*
+%{_mandir}/man1/ntpdc.1*
+%{_mandir}/man1/ntpdsim.1*
+%{_mandir}/man1/ntp-keygen.1*
+%{_mandir}/man1/ntpq.1*
+%{_mandir}/man1/ntptime.1*
+%{_mandir}/man1/sntp.1*
 
-%files ntptrace
+%files tools
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/ntptrace
+%attr(755,root,root) %{_sbindir}/ntp-wait
 %{_mandir}/man1/ntptrace*
 
 %files doc-html
