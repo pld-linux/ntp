@@ -95,7 +95,7 @@ Conflicts:	ntp < 4.2.0-3
 %description client
 Network Time Protocol client.
 
-%description doc-html -l pl.UTF-8
+%description client -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
 %package tools
