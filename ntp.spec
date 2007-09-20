@@ -90,6 +90,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 Summary:	Network Time Protocol client
 Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
+Requires(post,preun):	/sbin/chkconfig
 Conflicts:	ntp < 4.2.0-3
 
 %description client
