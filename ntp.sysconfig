@@ -5,4 +5,5 @@ SERVICE_RUN_NICE_LEVEL="+1"
 
 
 # pass additional arguments (like -g)
-NTPD_OPTIONS="-l /var/log/ntpd.log"
+#NTPD_OPTIONS="-l /var/log/ntpd.log"	# this demands logrotate to avid problems
+NTPD_OPTIONS=""
