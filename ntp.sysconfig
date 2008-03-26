@@ -5,4 +5,4 @@ SERVICE_RUN_NICE_LEVEL="+1"
 
 
 # pass additional arguments (like -g)
-NTPD_OPTIONS=""
+NTPD_OPTIONS="-l /var/log/ntpd.log"
