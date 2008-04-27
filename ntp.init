@@ -49,6 +49,16 @@ stop() {
 	fi
 }
 
+condrestart() {
+	if [ -f /var/lock/subsys/ntpd ]; then
+		stop
+		start
+	else
+		msg_not_running ntpd
+		RETVAL=$1
+	fi
+}
+
 RETVAL=0
 # See how we were called.
 case "$1" in
@@ -58,23 +68,23 @@ case "$1" in
   stop)
   	stop
 	;;
+  restart)
+	stop
+	start
+	;;
+  # NB! don't remove 'condrestart': dhcpcd calls this
+  try-restart|condrestart)
+	condrestart 0
+	;;
+  force-reload)
+	condrestart 7
+	;;
   status)
 	status ntpd
 	exit $?
 	;;
-  restart|force-reload)
-	stop
-	start
-	;;
-  condrestart)
-	# NB! don't remove: dhcpcd calls this
-	if [ -f /var/lock/subsys/ntpd ]; then
-		stop
-		start
-	fi
-  	;;
   *)
-	msg_usage "$0 {start|stop|restart|force-reload|condrestart|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|force-reload|condrestart|status}"
 	exit 3
 esac
 
