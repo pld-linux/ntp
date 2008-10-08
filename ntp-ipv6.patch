@@ -1,10 +1,12 @@
---- ntp-4.2.4p5/ntpdate/ntpdate.c~	2008-10-08 17:39:33.485353555 +0200
-+++ ntp-4.2.4p5/ntpdate/ntpdate.c	2008-10-08 17:40:06.661813403 +0200
-@@ -1777,10 +1777,12 @@
+--- ntp-4.2.4p5/ntpdate/ntpdate.c.org	2008-10-08 17:42:22.981586584 +0200
++++ ntp-4.2.4p5/ntpdate/ntpdate.c	2008-10-08 17:42:36.614918959 +0200
+@@ -1776,11 +1776,13 @@
+ 		}
  #ifdef IPV6_V6ONLY
  		/* Restricts AF_INET6 socket to IPv6 communications (see RFC 2553bis-03) */
- 		if (res->ai_family == AF_INET6)
+-		if (res->ai_family == AF_INET6)
 -			if (setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval)) < 0) {
++		if (res->ai_family == AF_INET6) {
 +			int i = setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval));
 +			if (i < 0 && errno != ENOPROTOOPT) {
  				   netsyslog(LOG_ERR, "setsockopt() IPV6_V6ONLY failed: %m");
