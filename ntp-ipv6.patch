@@ -1,21 +1,16 @@
-diff -urN ntp-4.2.0.org/ntpdate/ntpdate.c ntp-4.2.0/ntpdate/ntpdate.c
---- ntp-4.2.0.org/ntpdate/ntpdate.c	2004-05-17 00:41:52.720460048 +0200
-+++ ntp-4.2.0/ntpdate/ntpdate.c	2004-05-17 01:33:48.375808440 +0200
-@@ -1756,12 +1756,14 @@
- 	   }
+--- ntp-4.2.4p5/ntpdate/ntpdate.c~	2008-10-08 17:39:33.485353555 +0200
++++ ntp-4.2.4p5/ntpdate/ntpdate.c	2008-10-08 17:40:06.661813403 +0200
+@@ -1777,10 +1777,12 @@
  #ifdef IPV6_V6ONLY
- 	   /* Restricts AF_INET6 socket to IPv6 communications (see RFC 2553bis-03) */
--	   if (res->ai_family == AF_INET6)
--		if (setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval)) < 0) {
-+	   if (res->ai_family == AF_INET6) {
-+		int i = setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval));
-+		if (i < 0 && errno != ENOPROTOOPT) {
- 			   netsyslog(LOG_ERR, "setsockopt() IPV6_V6ONLY failed: %m");
- 			   exit(1);
- 			   /*NOTREACHED*/
+ 		/* Restricts AF_INET6 socket to IPv6 communications (see RFC 2553bis-03) */
+ 		if (res->ai_family == AF_INET6)
+-			if (setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval)) < 0) {
++			int i = setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval));
++			if (i < 0 && errno != ENOPROTOOPT) {
+ 				   netsyslog(LOG_ERR, "setsockopt() IPV6_V6ONLY failed: %m");
+ 					exit(1);
+ 					/*NOTREACHED*/
++			}
  		}
-+	   }
  #endif
  
- 	   /* Remember the socket family in fd_family structure */
-
