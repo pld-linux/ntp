@@ -5,12 +5,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.4p5
+Version:	4.2.4p6
 Release:	1
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	eb647e07ecbd6e9e07bf8d3dc555490e
+# Source0-md5:	1961c2c12b66b9046d5df37d0a41b181
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
