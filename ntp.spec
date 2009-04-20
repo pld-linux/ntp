@@ -26,6 +26,9 @@ Patch3:		%{name}-openssl_check.patch
 Patch4:		%{name}-clock_settime.patch
 Patch5:		%{name}-md5.patch
 URL:		http://www.ntp.org/
+# https://support.ntp.org/bugs/show_bug.cgi?id=1144
+# Patch or >=4.2.6p7RC2
+BuildRequires:	security(CVE-2009-0159)
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
