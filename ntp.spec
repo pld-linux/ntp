@@ -5,12 +5,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.4p6
-Release:	2
+Version:	4.2.4p7
+Release:	1
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	1961c2c12b66b9046d5df37d0a41b181
+# Source0-md5:	8c19ff62ed4f7d64f8e2aa59cb11f364
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -26,11 +26,9 @@ Patch3:		%{name}-openssl_check.patch
 Patch4:		%{name}-clock_settime.patch
 Patch5:		%{name}-md5.patch
 URL:		http://www.ntp.org/
-# https://support.ntp.org/bugs/show_bug.cgi?id=1144
-# Patch or >=4.2.6p7RC2
-BuildRequires:	security(CVE-2009-0159)
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	libcap-devel
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
