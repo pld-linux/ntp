@@ -1,15 +1,14 @@
-diff -dur ntp-4.2.0.orig/configure.ac ntp-4.2.0/configure.ac
---- ntp-4.2.0.orig/configure.ac	2004-11-19 21:00:04.000000000 +0100
-+++ ntp-4.2.0/configure.ac	2004-11-19 21:53:20.876855603 +0100
-@@ -3012,7 +3012,6 @@
+--- ntp-4.2.4p7/configure.ac.orig	2009-05-19 10:22:32.000000000 +0200
++++ ntp-4.2.4p7/configure.ac	2009-05-19 10:29:41.000000000 +0200
+@@ -3126,7 +3126,6 @@
  AC_SUBST(OPENSSL_INC)
  AC_SUBST(OPENSSL_LIB)
  
--AC_MSG_CHECKING(for openssl library directory)
+-AC_MSG_CHECKING([for openssl library directory])
  AC_ARG_WITH(openssl-libdir,
  	AC_HELP_STRING([--with-openssl-libdir], [+ =/something/reasonable]),
  [ans=$withval],
-@@ -3022,39 +3021,14 @@
+@@ -3136,39 +3135,14 @@
  esac])
  case "$ans" in
   no) ;;
@@ -51,11 +50,11 @@ diff -dur ntp-4.2.0.orig/configure.ac ntp-4.2.0/configure.ac
 +   AC_CHECK_LIB([ssl],[SSL_CTX_new],[AC_SUBST(LSSL,[-lssl])])
      ;;
  esac
--AC_MSG_RESULT($ans)
+-AC_MSG_RESULT([$ans])
  
- AC_MSG_CHECKING(for openssl include directory)
+ AC_MSG_CHECKING([for openssl include directory])
  AC_ARG_WITH(openssl-incdir,
-@@ -3098,19 +3072,17 @@
+@@ -3212,19 +3186,17 @@
  case "$ans" in
   no) ;;
   yes|openssl)
@@ -76,4 +75,3 @@ diff -dur ntp-4.2.0.orig/configure.ac ntp-4.2.0/configure.ac
  	AC_DEFINE(OPENSSL, , [Use OpenSSL?])
  	AC_CHECK_FUNCS(EVP_md2 EVP_mdc2)
      fi
-
