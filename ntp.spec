@@ -1,5 +1,3 @@
-# TODO
-# - update manual pages (from debian?)
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
