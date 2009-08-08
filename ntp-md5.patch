@@ -37,3 +37,23 @@
  #include "ntp_md5.h"
  
  /* Constants for MD5Transform routine.
+--- ntp-4.2.4p7/configure.ac.orig	2009-08-08 16:46:22.000000000 +0200
++++ ntp-4.2.4p7/configure.ac	2009-08-08 17:52:24.000000000 +0200
+@@ -427,17 +427,6 @@
+ esac
+ AC_CHECK_HEADERS(errno.h fcntl.h ieeefp.h math.h)
+ 
+-# HMS: Lame, but fast.
+-if test -f /etc/redhat-release
+-then
+-    :
+-else
+-    AC_CHECK_HEADERS(md5.h, [], [],
+-[#if HAVE_SYS_TYPES_H
+-#include <sys/types.h>
+-#endif
+-])
+-fi
+ AC_CHECK_HEADERS(memory.h netdb.h poll.h)
+ AC_CHECK_HEADERS(sched.h sgtty.h stdlib.h string.h termio.h)
+ AC_CHECK_HEADERS(termios.h timepps.h timex.h unistd.h)
