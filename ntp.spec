@@ -1,10 +1,12 @@
+# TODO
+# - switch trigger from-to ntpd<>openntpd
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p7
-Release:	2
+Release:	3
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -35,6 +37,7 @@ BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts >= 0.4.0.10
+Obsoletes:	openntpd
 Obsoletes:	xntp3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
