@@ -1,0 +1,10 @@
+--- sntp/Makefile.am~	2008-08-10 12:02:42.000000000 +0100
++++ sntp/Makefile.am	2009-12-09 21:30:13.067020682 +0000
+@@ -42,7 +42,6 @@
+ 		autogen-version.def version.def
+ BUILT_SOURCES=	check-autogen-version.def check-version.def	\
+ 		sntp-opts.c sntp-opts.h sntp.1 sntp-opts.texi sntp-opts.menu
+-man_MANS=	sntp.1
+ 
+ 
+ FRC:
