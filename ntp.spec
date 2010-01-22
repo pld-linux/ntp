@@ -1,5 +1,3 @@
-# TODO
-# - switch trigger from-to ntpd<>openntpd
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
@@ -38,6 +36,8 @@ BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts >= 0.4.0.10
+Provides:	ntpdaemon
+Obsoletes:	ntpdaemon
 Obsoletes:	openntpd
 Obsoletes:	xntp3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -95,6 +95,8 @@ Summary:	Network Time Protocol client
 Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
 Requires(post,preun):	/sbin/chkconfig
+Provides:	ntpclient
+Obsoletes:	ntpclient
 Conflicts:	ntp < 4.2.0-3
 
 %description client
