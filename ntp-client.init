@@ -11,6 +11,9 @@
 # Source networking configuration.
 . /etc/sysconfig/network
 
+# if not specified in config
+NTPDATE_USER="ntp"
+
 # Source ntp configuration
 . /etc/sysconfig/ntpdate
 
@@ -26,7 +29,7 @@ fi
 
 start() {
 	show "Syncing time with ntpdate"
-	daemon /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS
+	daemon /usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS
 	RETVAL=$?
 	if [ $RETVAL -eq 0 ]; then
 	   	touch /var/lock/subsys/ntpdate
@@ -55,7 +58,7 @@ restart|force-reload)
 	start
 	;;
 cronsettime)
-	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
+	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
 	RETVAL=$?
 	;;
 *)
