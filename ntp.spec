@@ -1,10 +1,15 @@
+# TODO
+# - fix awkward package naming: put daemon to ntpd, client to ntpdate (FC like)
+#   but make it with grace migration period that ntp would be R ntpd
+# - run as ntp/ntp (fc patches)
+# - default config is too restrictive (ntpq -p should work locally)
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	2
+Release:	3
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -127,20 +132,20 @@ This package contains ntp tools:
 %patch7	-p0
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
+echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
 
 %build
 %{__libtoolize}
 %{__aclocal} -I m4 -I libopts/m4
 %{__autoconf}
 %{__automake}
-
 cd sntp
 %{__libtoolize}
 %{__aclocal} -I libopts/m4
 %{__autoconf}
 %{__automake}
-
 cd ..
+
 %configure \
 	--with-binsubdir=sbin \
 	--enable-linuxcaps \
@@ -157,13 +162,13 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourl
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntp
-install man/*.1  $RPM_BUILD_ROOT%{_mandir}/man1
+cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
+cp -a %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
+install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
+install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
+cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
+cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntp
+cp -a man/*.1  $RPM_BUILD_ROOT%{_mandir}/man1
 
 cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntp <<'EOF'
 #!/bin/sh
@@ -175,7 +180,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add ntpd
-%service ntpd restart "ntpd daemon"
+%service ntpd restart "NTP Daemon"
 
 %preun
 if [ "$1" = "0" ]; then
