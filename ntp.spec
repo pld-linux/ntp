@@ -226,6 +226,13 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del ntpdate
 fi
 
+%triggerpostun -n ntpd -- ntp < 4.2.4p8-3.1
+%triggerpostun -n ntpdate -- ntp-client < 4.2.4p8-3.2
+if [ -f /etc/sysconfig/ntp.rpmsave ]; then
+	cp -f /etc/sysconfig/ntpdate{,.rpmnew}
+	mv -f /etc/sysconfig/ntp.rpmsave /etc/sysconfig/ntpdate
+fi
+
 %files -n ntpd
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf COPYRIGHT
