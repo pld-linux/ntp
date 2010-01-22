@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# ntp		This shell script synchronizes time with ntpdate (NTP client)
+# ntpdate		This shell script synchronizes time with ntpdate (NTP client)
 #
 # chkconfig:	2345 55 10
-# description:	ntp is the NTP client.
+# description:	ntpdate is the NTP client.
 
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -12,7 +12,7 @@
 . /etc/sysconfig/network
 
 # Source ntp configuration
-. /etc/sysconfig/ntp
+. /etc/sysconfig/ntpdate
 
 # Check that networking is up.
 if is_yes "${NETWORKING}"; then
@@ -28,11 +28,11 @@ start() {
 	show "Syncing time with ntpdate (backgrounding)"
 	daemon --fork /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS
 	RETVAL=$?
-	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntp
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntpdate
 }
 
 stop() {
-	rm -f /var/lock/subsys/ntp
+	rm -f /var/lock/subsys/ntpdate
 }
 
 RETVAL=0
