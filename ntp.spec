@@ -90,21 +90,6 @@ sincronizarão o relógio do seu computador com o horário universal
 Instale o pacote ntp se você necessitar de ferramentas para manter o
 relógio do seu computador constantemente atualizado.
 
-%package doc-html
-Summary:	HTML documentation for ntp
-Summary(pl.UTF-8):	Dokumentacja HTML dla ntp
-Summary(pt_BR.UTF-8):	Documentação adicional para o pacote ntp
-Group:		Documentation
-
-%description doc-html
-HTML documentation for ntp.
-
-%description doc-html -l pl.UTF-8
-Dokumentacja do ntp w HTML.
-
-%description doc-html -l pt_BR.UTF-8
-Este pacote contém documentação adicional sobre o NTP versão 4.
-
 %package -n ntpd
 Summary:	The NTP daemon
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
@@ -172,6 +157,21 @@ Obsoletes:	ntp-ntptrace
 This package contains ntp tools:
 - ntptrace: Trace a chain of NTP servers back to the primary source
 - ntp-wait: Wait for NTP server to synchronize
+
+%package doc-html
+Summary:	HTML documentation for ntp
+Summary(pl.UTF-8):	Dokumentacja HTML dla ntp
+Summary(pt_BR.UTF-8):	Documentação adicional para o pacote ntp
+Group:		Documentation
+
+%description doc-html
+HTML documentation for ntp.
+
+%description doc-html -l pl.UTF-8
+Dokumentacja do ntp w HTML.
+
+%description doc-html -l pt_BR.UTF-8
+Este pacote contém documentação adicional sobre o NTP versão 4.
 
 %prep
 %setup -q -a7
