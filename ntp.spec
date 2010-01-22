@@ -6,7 +6,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	3.4
+Release:	3.5
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -95,9 +95,17 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Requires:	rc-scripts >= 0.4.0.10
+Provides:	group(ntp)
 Provides:	ntp = %{version}-%{release}
 Provides:	ntpdaemon
+Provides:	user(ntp)
 Obsoletes:	ntp < 4.2.4p8-4
 Obsoletes:	ntpdaemon
 Obsoletes:	openntpd
@@ -133,6 +141,12 @@ Summary:	Utility to set the date and time via NTP
 Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
 Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Provides:	group(ntp)
 Provides:	user(ntp)
 Conflicts:	ntp < 4.2.0-3
@@ -260,6 +274,10 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre -n ntpd
+%groupadd -g 246 ntp
+%useradd -u 246 -d %{_sysconfdir} -g ntp -c "NTP Daemon" ntp
+
 %post -n ntpd
 /sbin/chkconfig --add ntpd
 %service ntpd restart "NTP Daemon"
@@ -269,6 +287,12 @@ if [ "$1" = "0" ]; then
 	%service ntpd stop
 	/sbin/chkconfig --del ntpd
 	rm -f %{_sysconfdir}/drift
+fi
+
+%postun -n ntp
+if [ "$1" = "0" ]; then
+	%userremove ntp
+	%groupremove ntp
 fi
 
 %pre -n ntpdate
