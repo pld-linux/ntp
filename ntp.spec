@@ -1,13 +1,13 @@
 # TODO
-# - run as ntp/ntp (fc patches)
-# - default config is too restrictive (ntpq -p should work locally)
+# - see if ntpd can be droproot too as ntpdate is patched
+# - ntpd default config is too restrictive (ntpq -p should work locally)
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	3.2
+Release:	3.3
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -134,12 +134,15 @@ Summary:	Utility to set the date and time via NTP
 Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
 Requires(post,preun):	/sbin/chkconfig
-Provides:	ntpclient
-Obsoletes:	ntpclient
+Provides:	group(ntp)
+Provides:	user(ntp)
 Conflicts:	ntp < 4.2.0-3
 # for upgrades
 Provides:	ntp-client = %{version}-%{release}
 Obsoletes:	ntp-client < 4.2.4p8-4
+# virtual
+Provides:	ntpclient
+Obsoletes:	ntpclient
 
 %description -n ntpdate
 ntpdate is a program for retrieving the date and time from NTP
@@ -266,8 +269,12 @@ rm -rf $RPM_BUILD_ROOT
 if [ "$1" = "0" ]; then
 	%service ntpd stop
 	/sbin/chkconfig --del ntpd
-	rm -f /etc/ntp/drift
+	rm -f %{_sysconfdir}/drift
 fi
+
+%pre -n ntpdate
+%groupadd -g 246 ntp
+%useradd -u 246 -d %{_sysconfdir} -g ntp -c "NTP Daemon" ntp
 
 %post -n ntpdate
 /sbin/chkconfig --add ntpdate
@@ -277,6 +284,12 @@ fi
 if [ "$1" = "0" ]; then
 	%service ntpdate stop
 	/sbin/chkconfig --del ntpdate
+fi
+
+%postun -n ntpdate
+if [ "$1" = "0" ]; then
+	%userremove ntp
+	%groupremove ntp
 fi
 
 %triggerpostun -n ntpd -- ntp < 4.2.4p8-3.1

@@ -17,7 +17,7 @@
 # Check that networking is up.
 if is_yes "${NETWORKING}"; then
 	if [ ! -f /var/lock/subsys/network -a "$1" != stop -a "$1" != status ]; then
-		msg_network_down ntp
+		msg_network_down "ntpdate"
 		exit 1
 	fi
 else
@@ -25,10 +25,16 @@ else
 fi
 
 start() {
-	show "Syncing time with ntpdate (backgrounding)"
-	daemon --fork /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS
+	show "Syncing time with ntpdate"
+	daemon /usr/sbin/ntpdate -s $NTPDATE_OPTIONS $NTPDATE_SERVERS
 	RETVAL=$?
-	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ntpdate
+	if [ $RETVAL -eq 0 ]; then
+	   	touch /var/lock/subsys/ntpdate
+		if is_yes "$SYNC_HWCLOCK"; then
+			show "Syncing hardware clock to system time"
+		    /sbin/hwclock --systohc && ok || fail
+		fi
+	fi
 }
 
 stop() {

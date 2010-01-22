@@ -1,8 +1,12 @@
 # Sync time at startup
-NTPDATE_OPTIONS="-o 1 -u"
+NTPDATE_OPTIONS="-o 1 -u -U ntp"
+
 #NTPDATE_SERVERS="ntp.nasa.gov clock.isc.org"
 #NTPDATE_SERVERS="ntp.certum.pl vega.cbk.poznan.pl"
 NTPDATE_SERVERS="pool.ntp.org"
+
+# Set to 'yes' to sync hw clock after successful ntpdate
+SYNC_HWCLOCK="no"
 
 # also run ntpdate from cron
 NTPDATE_CRON="yes"
