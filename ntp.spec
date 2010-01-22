@@ -1,6 +1,4 @@
 # TODO
-# - fix awkward package naming: put daemon to ntpd, client to ntpdate (FC like)
-#   but make it with grace migration period that ntp would be R ntpd
 # - run as ntp/ntp (fc patches)
 # - default config is too restrictive (ntpq -p should work locally)
 %include	/usr/lib/rpm/macros.perl
@@ -9,7 +7,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	3
+Release:	3.1
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -39,12 +37,6 @@ BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.268
-Requires(post,preun):	/sbin/chkconfig
-Requires:	rc-scripts >= 0.4.0.10
-Provides:	ntpdaemon
-Obsoletes:	ntpdaemon
-Obsoletes:	openntpd
-Obsoletes:	xntp3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
@@ -55,18 +47,12 @@ The Network Time Protocol (NTP) is used to synchronize a computer's
 time with another reference time source. The ntp package contains
 utilities and daemons which will synchronize your computer's time to
 Coordinated Universal Time (UTC) via the NTP protocol and NTP servers.
-ntp package includes ntpd (a daemon which continuously adjusts system
-time), while ntp-client package contains ntpdate (a program for
-retrieving the date and time from remote machines via a network).
 
 %description -l pl.UTF-8
 Network Time Protocol (NTP) służy do synchronizacji czasu komputera z
 innym, wzorcowym źródłem czasu. Pakiet ntp zawiera narzędzia i demony
 służące do dokładnego synchronizowania czasu komputera według czasu
-uniwersalnego (UTC) poprzez protokół NTP z serwerami NTP. Pakiet ntp
-zawiera ntpd (demona, który w sposób ciągły aktualizuje czas
-systemowy), natomiast pakiet ntp-client zawiera program ntpdate
-(program do odczytywania daty i czasu z innych maszyn po sieci).
+uniwersalnego (UTC) poprzez protokół NTP z serwerami NTP.
 
 %description -l pt_BR.UTF-8
 Esta é a versão 4 do Network Time Protocol (NTP). Este protocolo é
@@ -77,8 +63,6 @@ sincronizarão o relógio do seu computador com o horário universal
 
 Instale o pacote ntp se você necessitar de ferramentas para manter o
 relógio do seu computador constantemente atualizado.
-
-Este pacote obsoleta o antigo xntp3.
 
 %package doc-html
 Summary:	HTML documentation for ntp
@@ -95,19 +79,62 @@ Dokumentacja do ntp w HTML.
 %description doc-html -l pt_BR.UTF-8
 Este pacote contém documentação adicional sobre o NTP versão 4.
 
-%package client
-Summary:	Network Time Protocol client
+%package -n ntpd
+Summary:	The NTP daemon
+Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
+Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
+Group:		Daemons
+Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts >= 0.4.0.10
+Provides:	ntp = %{version}-%{release}
+Provides:	ntpdaemon
+Obsoletes:	ntp < 4.2.4p8-4
+Obsoletes:	ntpdaemon
+Obsoletes:	openntpd
+Obsoletes:	xntp3
+
+%description -n ntpd
+The Network Time Protocol (NTP) is used to synchronize a computer's
+time with another reference time source. The ntp package contains
+utilities and daemons which will synchronize your computer's time to
+Coordinated Universal Time (UTC) via the NTP protocol and NTP servers.
+
+This package includes ntpd (a daemon which continuously adjusts system
+time)
+
+%description -n ntpd -l pl.UTF-8
+Network Time Protocol (NTP) służy do synchronizacji czasu komputera z
+innym, wzorcowym źródłem czasu. Pakiet ntp zawiera narzędzia i demony
+służące do dokładnego synchronizowania czasu komputera według czasu
+uniwersalnego (UTC) poprzez protokół NTP z serwerami NTP.
+
+Pakiet ntp zawiera ntpd (demona, który w sposób ciągły aktualizuje
+czas systemowy)
+
+%description -n ntpd -l pt_BR.UTF-8
+Esta é a versão 4 do Network Time Protocol (NTP). Este protocolo é
+utilizado para sincronizar o relógio do computador com uma outra
+referência de horário. Este pacote contém utilitários e servidores que
+sincronizarão o relógio do seu computador com o horário universal
+(UTC) através do protocolo NTP e utilizando servidores NTP públicos.
+
+%package -n ntpdate
+Summary:	Utility to set the date and time via NTP
 Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
 Group:		Applications/Networking
 Requires(post,preun):	/sbin/chkconfig
 Provides:	ntpclient
 Obsoletes:	ntpclient
 Conflicts:	ntp < 4.2.0-3
+# for upgrades
+Provides:	ntp-client = %{version}-%{release}
+Obsoletes:	ntp-client < 4.2.4p8-4
 
-%description client
-Network Time Protocol client.
+%description -n ntpdate
+ntpdate is a program for retrieving the date and time from NTP
+servers.
 
-%description client -l pl.UTF-8
+%description -n ntpdate -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
 %package tools
@@ -165,41 +192,41 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourl
 cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
 install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
-install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntp
+install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
 cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
-cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntp
+cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
 cp -a man/*.1  $RPM_BUILD_ROOT%{_mandir}/man1
 
-cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntp <<'EOF'
+cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 #!/bin/sh
-/sbin/service ntp cronsettime
+/sbin/service ntpdate cronsettime
 EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
+%post -n ntpd
 /sbin/chkconfig --add ntpd
 %service ntpd restart "NTP Daemon"
 
-%preun
+%preun -n ntpd
 if [ "$1" = "0" ]; then
 	%service ntpd stop
 	/sbin/chkconfig --del ntpd
 	rm -f /etc/ntp/drift
 fi
 
-%post client
-/sbin/chkconfig --add ntp
-%service ntp restart
+%post -n ntpdate
+/sbin/chkconfig --add ntpdate
+%service ntpdate restart "NTP Date"
 
-%preun client
+%preun -n ntpdate
 if [ "$1" = "0" ]; then
-	%service ntp stop
-	/sbin/chkconfig --del ntp
+	%service ntpdate stop
+	/sbin/chkconfig --del ntpdate
 fi
 
-%files
+%files -n ntpd
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf COPYRIGHT
 %attr(750,root,root) %dir %{_sysconfdir}
@@ -221,6 +248,15 @@ fi
 %{_mandir}/man1/ntptime.1*
 %{_mandir}/man1/sntp.1*
 
+%files -n ntpdate
+%defattr(644,root,root,755)
+%doc COPYRIGHT
+%attr(755,root,root) %{_sbindir}/ntpdate
+%attr(754,root,root) /etc/rc.d/init.d/ntpdate
+%attr(754,root,root) /etc/cron.hourly/ntpdate
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
+%{_mandir}/man1/ntpdate*
+
 %files tools
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/ntptrace
@@ -230,12 +266,3 @@ fi
 %files doc-html
 %defattr(644,root,root,755)
 %doc html/*
-
-%files client
-%defattr(644,root,root,755)
-%doc COPYRIGHT
-%attr(755,root,root) %{_sbindir}/ntpdate
-%attr(754,root,root) /etc/rc.d/init.d/ntp
-%attr(754,root,root) /etc/cron.hourly/ntp
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntp
-%{_mandir}/man1/ntpdate*
