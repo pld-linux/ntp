@@ -133,6 +133,14 @@ echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 %{__aclocal} -I m4 -I libopts/m4
 %{__autoconf}
 %{__automake}
+
+cd sntp
+%{__libtoolize}
+%{__aclocal} -I libopts/m4
+%{__autoconf}
+%{__automake}
+
+cd ..
 %configure \
 	--with-binsubdir=sbin \
 	--enable-linuxcaps \
