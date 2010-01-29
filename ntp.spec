@@ -4,7 +4,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	3.6
+Release:	3.14
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -264,9 +264,12 @@ cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
 cp -a man/*.1  $RPM_BUILD_ROOT%{_mandir}/man1
 
+install -d $RPM_BUILD_ROOT/var/lib/ntp
+touch $RPM_BUILD_ROOT/var/lib/ntp/drift
+
 cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 #!/bin/sh
-/sbin/service ntpdate cronsettime
+exec /sbin/service ntpdate cronsettime
 EOF
 
 %clean
@@ -284,7 +287,7 @@ rm -rf $RPM_BUILD_ROOT
 if [ "$1" = "0" ]; then
 	%service ntpd stop
 	/sbin/chkconfig --del ntpd
-	rm -f %{_sysconfdir}/drift
+	rm -f /var/lib/ntp/drift
 fi
 
 %postun -n ntp
@@ -313,7 +316,18 @@ if [ "$1" = "0" ]; then
 	%groupremove ntp
 fi
 
+%triggerpostun -n ntpd -- ntpd < 4.2.4p8-3.14
+sed -i -e 's,/etc/ntp/drift,/var/lib/ntp/drift,' %{_sysconfdir}/ntp.conf
+mv -f /etc/ntp/ntp.drift /var/lib/ntp/drift
+mv -f /etc/ntp/drift /var/lib/ntp/drift
+%service -q ntpd restart
+
 %triggerpostun -n ntpd -- ntp < 4.2.4p8-3.1
+sed -i -e 's,/etc/ntp/drift,/var/lib/ntp/drift,' %{_sysconfdir}/ntp.conf
+mv -f /etc/ntp/ntp.drift /var/lib/ntp/drift
+mv -f /etc/ntp/drift /var/lib/ntp/drift
+%service -q ntpd restart
+
 %triggerpostun -n ntpdate -- ntp-client < 4.2.4p8-3.2
 if [ -f /etc/sysconfig/ntp.rpmsave ]; then
 	cp -f /etc/sysconfig/ntpdate{,.rpmnew}
@@ -341,6 +355,9 @@ fi
 %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntptime.1*
 %{_mandir}/man1/sntp.1*
+
+%dir %attr(770,root,ntp) /var/lib/ntp
+%attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
 
 %files -n ntpdate
 %defattr(644,root,root,755)
