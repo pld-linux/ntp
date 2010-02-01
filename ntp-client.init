@@ -27,17 +27,19 @@ else
 	exit 0
 fi
 
-start() {
-	show "Syncing time with ntpdate"
-	daemon /usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS
-	RETVAL=$?
-	if [ $RETVAL -eq 0 ]; then
-	   	touch /var/lock/subsys/ntpdate
-		if is_yes "$SYNC_HWCLOCK"; then
-			show "Syncing hardware clock to system time"
-		    /sbin/hwclock --systohc && ok || fail
-		fi
+ntpdate_background() {
+	/usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS || return $?
+
+	if is_yes "$SYNC_HWCLOCK"; then
+		/sbin/hwclock --systohc
 	fi
+}
+
+start() {
+	show "Syncing time with ntpdate (backgrounding)"
+	ntpdate_background &
+	touch /var/lock/subsys/ntpdate
+	ok
 }
 
 stop() {
@@ -58,7 +60,7 @@ restart|force-reload)
 	start
 	;;
 cronsettime)
-	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS > /dev/null 2>&1
+	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS
 	RETVAL=$?
 	;;
 *)
