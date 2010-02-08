@@ -4,7 +4,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	5
+Release:	6
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -316,16 +316,16 @@ if [ "$1" = "0" ]; then
 	%groupremove ntp
 fi
 
-%triggerpostun -n ntpd -- ntpd < 4.2.4p8-3.14
-sed -i -e 's,/etc/ntp/drift,/var/lib/ntp/drift,' %{_sysconfdir}/ntp.conf
-mv -f /etc/ntp/ntp.drift /var/lib/ntp/drift
-mv -f /etc/ntp/drift /var/lib/ntp/drift
-%service -q ntpd restart
+%triggerun -n ntpd -- ntp < 4.2.4p8-3.14
+# Prevent preun from ntp from working
+chmod a-x /etc/rc.d/init.d/ntpd
 
-%triggerpostun -n ntpd -- ntp < 4.2.4p8-3.1
+%triggerpostun -n ntpd -- ntp < 4.2.4p8-3.14
+# Restore what triggerun removed
+chmod 754 /etc/rc.d/init.d/ntpd
 sed -i -e 's,/etc/ntp/drift,/var/lib/ntp/drift,' %{_sysconfdir}/ntp.conf
-mv -f /etc/ntp/ntp.drift /var/lib/ntp/drift
-mv -f /etc/ntp/drift /var/lib/ntp/drift
+mv -f /etc/ntp/ntp.drift /var/lib/ntp/drift 2>/dev/null
+mv -f /etc/ntp/drift /var/lib/ntp/drift 2>/dev/null
 %service -q ntpd restart
 
 %triggerpostun -n ntpdate -- ntp-client < 4.2.4p8-3.2
