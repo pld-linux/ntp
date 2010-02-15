@@ -4,7 +4,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	7
+Release:	8
 License:	distributable
 Group:		Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -104,7 +104,7 @@ Provides:	group(ntp)
 Provides:	ntp = %{version}-%{release}
 Provides:	ntpdaemon
 Provides:	user(ntp)
-Obsoletes:	ntp < 4.2.4p8-4
+Obsoletes:	ntp < 4.2.4p8-6
 Obsoletes:	ntpdaemon
 Obsoletes:	openntpd
 Obsoletes:	xntp3
@@ -150,7 +150,7 @@ Provides:	user(ntp)
 Conflicts:	ntp < 4.2.0-3
 # for upgrades
 Provides:	ntp-client = %{version}-%{release}
-Obsoletes:	ntp-client < 4.2.4p8-4
+Obsoletes:	ntp-client < 4.2.4p8-6
 # virtual
 Provides:	ntpclient
 Obsoletes:	ntpclient
