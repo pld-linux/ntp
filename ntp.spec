@@ -6,7 +6,7 @@ Name:		ntp
 Version:	4.2.4p8
 Release:	10
 License:	distributable
-Group:		Daemons
+Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
 # Source0-md5:	fe137056e7e611798a46971a783567ce
 Source1:	%{name}.conf
@@ -262,7 +262,7 @@ install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
 install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
 cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
-cp -a man/*.1  $RPM_BUILD_ROOT%{_mandir}/man1
+cp -a man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -d $RPM_BUILD_ROOT/var/lib/ntp
 touch $RPM_BUILD_ROOT/var/lib/ntp/drift
