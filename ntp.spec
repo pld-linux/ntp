@@ -4,7 +4,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.4p8
-Release:	10
+Release:	11
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -16,6 +16,7 @@ Source4:	%{name}.sysconfig
 Source5:	%{name}-client.init
 Source6:	%{name}-client.sysconfig
 Source7:	%{name}-manpages.tar.gz
+Source8:	%{name}.upstart
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
@@ -59,7 +60,7 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.561
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
@@ -99,7 +100,7 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires:	rc-scripts >= 0.4.0.10
+Requires:	rc-scripts >= 0.4.3.0
 Provides:	group(ntp)
 Provides:	ntp = %{version}-%{release}
 Provides:	ntpdaemon
@@ -133,6 +134,19 @@ utilizado para sincronizar o relógio do computador com uma outra
 referência de horário. Este pacote contém utilitários e servidores que
 sincronizarão o relógio do seu computador com o horário universal
 (UTC) através do protocolo NTP e utilizando servidores NTP públicos.
+
+%package -n ntpd-upstart
+Summary:	Upstart job description for the NTP daemon
+Summary(pl.UTF-8):	Opis zadania Upstart dla demona NTP
+Group:		Daemons
+Requires:	ntpd = %{version}-%{release}
+Requires:	upstart >= 0.6
+
+%description -n ntpd-upstart
+Upstart job description for the NTP daemon.
+
+%description -n ntpd-upstart -l pl.UTF-8
+Opis zadania Upstart dla demona NTP.
 
 %package -n ntpdate
 Summary:	Utility to set the date and time via NTP
@@ -251,7 +265,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourly},%{_mandir}/man1}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourly,init},%{_mandir}/man1}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -262,6 +276,7 @@ install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
 install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
 cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
+install -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
 cp -a man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -d $RPM_BUILD_ROOT/var/lib/ntp
@@ -290,11 +305,18 @@ if [ "$1" = "0" ]; then
 	rm -f /var/lib/ntp/drift
 fi
 
+%post -n ntpd-upstart
+%upstart_post ntpd
+
+%postun -n ntpd-upstart
+%upstart_postun ntpd
+
 %postun -n ntp
 if [ "$1" = "0" ]; then
 	%userremove ntp
 	%groupremove ntp
 fi
+
 
 %pre -n ntpdate
 %groupadd -g 246 ntp
@@ -358,6 +380,10 @@ fi
 
 %dir %attr(770,root,ntp) /var/lib/ntp
 %attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
+
+%files -n ntpd-upstart
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
 
 %files -n ntpdate
 %defattr(644,root,root,755)

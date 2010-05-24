@@ -1,0 +1,21 @@
+description "NTP daemon"
+
+start on pld.network-started
+stop on pld.shutdown-started
+
+env NTPD_USER="ntp"
+env NTPD_OPTIONS=""
+
+respawn
+
+pre-start script
+	# do not bother to start if not configured
+	[ -f /etc/ntp/ntp.conf ] || /sbin/initctl stop
+end script
+
+script
+	# Source old-style ntp service configuration
+	[ -f /etc/sysconfig/ntpd ] && . /etc/sysconfig/ntpd
+		
+	exec /usr/sbin/ntpd -n -c /etc/ntp/ntp.conf -p /var/run/ntpd.pid ${NTPD_USER:+-u $NTPD_USER} $NTPD_OPTIONS
+end script
