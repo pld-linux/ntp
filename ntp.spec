@@ -1,9 +1,8 @@
-#
 # TODO:
-#	- check which of the 'FC patches' are actually needed and update them
-#	as needed
 #	- ntpdseem.1 manual page 'disappeared'
 #	- warning: Installed (but unpackaged) file(s) found:
+#   - package ntpsnmpd - NTP SNMP MIB agent
+#		/usr/sbin/ntpsnmpd
 #		/usr/share/man/man1/ntpsnmpd.1.gz
 #
 %include	/usr/lib/rpm/macros.perl
@@ -32,32 +31,20 @@ Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
 Patch4:		%{name}-nano.patch
 Patch5:		%{name}-ntpdc-link_order.patch
-# FC patches
-Patch101:	%{name}-4.2.4p4-kernel.patch
-Patch102:	%{name}-4.2.4p0-droproot.patch
-Patch103:	%{name}-4.2.4-groups.patch
-Patch104:	%{name}-4.2.4p7-daemonpll.patch
-Patch106:	%{name}-4.2.4p2-tentative.patch
-Patch107:	%{name}-4.2.4p2-noseed.patch
-Patch108:	%{name}-4.2.4p4-multilisten.patch
-Patch109:	%{name}-4.2.4-html2man.patch
-Patch110:	%{name}-4.2.4p5-htmldoc.patch
-Patch111:	%{name}-4.2.4p2-filegen.patch
-Patch112:	%{name}-4.2.4-sprintf.patch
-Patch114:	%{name}-4.2.4p8-mlock.patch
-Patch115:	%{name}-4.2.4p2-clockselect.patch
-Patch117:	%{name}-4.2.4p7-sleep.patch
-Patch118:	%{name}-4.2.4p7-bcast.patch
-Patch119:	%{name}-4.2.4p0-retcode.patch
-Patch120:	%{name}-4.2.4p2-noif.patch
-Patch122:	%{name}-4.2.4p4-cmsgalign.patch
-Patch124:	%{name}-4.2.4p4-resinit.patch
-Patch125:	%{name}-4.2.4p5-rtnetlink.patch
-Patch126:	%{name}-4.2.4p7-stamode.patch
-Patch127:	%{name}-4.2.4p5-driftonexit.patch
-Patch129:	%{name}-4.2.4p7-minpoll.patch
-Patch130:	%{name}-4.2.4p7-freqmode.patch
-Patch133:	%{name}-4.2.4p7-getprecision.patch
+# FC patches + 100
+Patch101:	%{name}-4.2.6p1-sleep.patch
+Patch102:	%{name}-4.2.6p1-droproot.patch
+Patch103:	%{name}-4.2.6p1-bcast.patch
+Patch104:	%{name}-4.2.6p1-cmsgalign.patch
+Patch105:	%{name}-4.2.6p1-linkfastmath.patch
+Patch106:	%{name}-4.2.6p1-tentative.patch
+Patch107:	%{name}-4.2.6p1-retcode.patch
+Patch108:	%{name}-4.2.6p1-rtnetlink.patch
+Patch109:	%{name}-4.2.6p1-html2man.patch
+Patch110:	%{name}-4.2.6p1-htmldoc.patch
+Patch112:	%{name}-4.2.4p7-getprecision.patch
+Patch113:	%{name}-4.2.6p1-logdefault.patch
+Patch114:	%{name}-4.2.6p1-mlock.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -217,33 +204,19 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch5 -p1
 
 ## FC patches
-%if 0
 %patch101 -p1
 %patch102 -p1
 %patch103 -p1
 %patch104 -p1
+%patch105 -p1
 %patch106 -p1
 %patch107 -p1
 %patch108 -p1
 %patch109 -p1
 %patch110 -p1
-%patch111 -p1
 %patch112 -p1
+%patch113 -p1
 %patch114 -p1
-%patch115 -p1
-%patch117 -p1
-%patch118 -p1
-%patch119 -p1
-%patch120 -p1
-%patch122 -p1
-%patch124 -p1
-%patch125 -p1
-%patch126 -p1
-%patch127 -p1
-%patch129 -p1
-%patch130 -p1
-%patch133 -p1
-%endif
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
