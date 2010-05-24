@@ -1,3 +1,11 @@
+#
+# TODO:
+#	- check which of the 'FC patches' are actually needed and update them
+#	as needed
+#	- ntpdseem.1 manual page 'disappeared'
+#	- warning: Installed (but unpackaged) file(s) found:
+#		/usr/share/man/man1/ntpsnmpd.1.gz
+#
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
@@ -22,10 +30,8 @@ Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
-Patch4:		%{name}-clock_settime.patch
-Patch5:		%{name}-md5.patch
-Patch6:		%{name}-nano.patch
-Patch7:		%{name}-manpage.patch
+Patch4:		%{name}-nano.patch
+Patch5:		%{name}-ntpdc-link_order.patch
 # FC patches
 Patch101:	%{name}-4.2.4p4-kernel.patch
 Patch102:	%{name}-4.2.4p0-droproot.patch
@@ -207,37 +213,35 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p0
+%patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7	-p0
 
-# FC patches
-%patch101 -p1
-%patch102 -p1
-%patch103 -p1
-%patch104 -p1
-%patch106 -p1
-%patch107 -p1
-%patch108 -p1
-%patch109 -p1
-%patch110 -p1
-%patch111 -p1
-%patch112 -p1
-%patch114 -p1
-%patch115 -p1
-%patch117 -p1
-%patch118 -p1
-%patch119 -p1
-%patch120 -p1
-%patch122 -p1
-%patch124 -p1
-%patch125 -p1
-%patch126 -p1
-%patch127 -p1
-%patch129 -p1
-%patch130 -p1
-%patch133 -p1
+#%# FC patches
+#%%patch101 -p1
+#%%patch102 -p1
+#%%patch103 -p1
+#%%patch104 -p1
+#%%patch106 -p1
+#%%patch107 -p1
+#%%patch108 -p1
+#%%patch109 -p1
+#%%patch110 -p1
+#%%patch111 -p1
+#%%patch112 -p1
+#%%patch114 -p1
+#%%patch115 -p1
+#%%patch117 -p1
+#%%patch118 -p1
+#%%patch119 -p1
+#%%patch120 -p1
+#%%patch122 -p1
+#%%patch124 -p1
+#%%patch125 -p1
+#%%patch126 -p1
+#%%patch127 -p1
+#%%patch129 -p1
+#%%patch130 -p1
+#%%patch133 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
@@ -249,16 +253,18 @@ echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
 %{__automake}
 cd sntp
 %{__libtoolize}
-%{__aclocal} -I libopts/m4
+%{__aclocal} -I ../m4 -I libopts/m4
 %{__autoconf}
 %{__automake}
 cd ..
 
+CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 %configure \
 	--with-binsubdir=sbin \
 	--enable-linuxcaps \
 	--enable-getifaddrs \
 	--enable-ipv6 \
+	--with-lineeditlibs=readline \
 	--with-crypto=openssl
 
 %{__make}
@@ -372,7 +378,7 @@ fi
 %attr(755,root,root) %{_sbindir}/tickadj
 %{_mandir}/man1/ntpd.1*
 %{_mandir}/man1/ntpdc.1*
-%{_mandir}/man1/ntpdsim.1*
+#%{_mandir}/man1/ntpdsim.1*
 %{_mandir}/man1/ntp-keygen.1*
 %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntptime.1*

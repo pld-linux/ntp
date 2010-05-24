@@ -1,5 +1,6 @@
---- ntp-4.2.6p1/configure.ac.orig	2010-05-24 19:32:21.000000000 +0200
-+++ ntp-4.2.6p1/configure.ac	2010-05-24 19:36:00.000000000 +0200
+diff -dur -x '*.orig' ntp-4.2.6p1.orig/configure.ac ntp-4.2.6p1/configure.ac
+--- ntp-4.2.6p1.orig/configure.ac	2010-05-24 20:26:21.000000000 +0200
++++ ntp-4.2.6p1/configure.ac	2010-05-24 20:32:57.000000000 +0200
 @@ -3247,7 +3247,6 @@
  AC_SUBST(OPENSSL_INC)
  AC_SUBST(OPENSSL_LIB)
@@ -8,10 +9,18 @@
  AC_ARG_WITH(openssl-libdir,
  	AC_HELP_STRING([--with-openssl-libdir], [+ =/something/reasonable]),
  [ans=$withval],
-@@ -3265,31 +3264,14 @@
- esac
+@@ -3257,39 +3256,14 @@
+ esac])
  case "$ans" in
   no) ;;
+- yes) # Look in:
+-    ans="/usr/lib /usr/lib/openssl /usr/sfw/lib /usr/local/lib /usr/local/ssl/lib /lib"
+-    ;;
+- *) # Look where they said
+-    ;;
+-esac
+-case "$ans" in
+- no) ;;
 - *) # Look for libcrypto.a and libssl.a:
 -    for i in $ans no
 -    do
@@ -47,7 +56,22 @@
  
  AC_MSG_CHECKING([for openssl include directory])
  AC_ARG_WITH(openssl-incdir,
-@@ -3335,7 +3317,7 @@
+@@ -3301,14 +3275,6 @@
+ esac])
+ case "$ans" in
+  no) ;;
+- yes) # look in:
+-    ans="/usr/include /usr/sfw/include /usr/local/include /usr/local/ssl/include"
+-    ;;
+- *) # Look where they said
+-    ;;
+-esac
+-case "$ans" in
+- no) ;;
+  *) # look for openssl/opensslconf.h:
+     for i in $ans no
+     do
+@@ -3335,7 +3301,7 @@
   no)
      ;;
   yes|openssl)
@@ -56,7 +80,7 @@
      then
  	ans=no
      else
-@@ -3349,11 +3331,9 @@
+@@ -3349,11 +3315,9 @@
   yes)
      # We have OpenSSL inc/lib - use them.
      CPPFLAGS="$CPPFLAGS -I$OPENSSL_INC"
@@ -68,3 +92,4 @@
      AC_DEFINE(OPENSSL, , [Use OpenSSL?])
  esac
  
+Only in ntp-4.2.6p1: configure.ac~
