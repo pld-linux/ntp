@@ -216,32 +216,34 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch4 -p1
 %patch5 -p1
 
-#%# FC patches
-#%%patch101 -p1
-#%%patch102 -p1
-#%%patch103 -p1
-#%%patch104 -p1
-#%%patch106 -p1
-#%%patch107 -p1
-#%%patch108 -p1
-#%%patch109 -p1
-#%%patch110 -p1
-#%%patch111 -p1
-#%%patch112 -p1
-#%%patch114 -p1
-#%%patch115 -p1
-#%%patch117 -p1
-#%%patch118 -p1
-#%%patch119 -p1
-#%%patch120 -p1
-#%%patch122 -p1
-#%%patch124 -p1
-#%%patch125 -p1
-#%%patch126 -p1
-#%%patch127 -p1
-#%%patch129 -p1
-#%%patch130 -p1
-#%%patch133 -p1
+## FC patches
+%if 0
+%patch101 -p1
+%patch102 -p1
+%patch103 -p1
+%patch104 -p1
+%patch106 -p1
+%patch107 -p1
+%patch108 -p1
+%patch109 -p1
+%patch110 -p1
+%patch111 -p1
+%patch112 -p1
+%patch114 -p1
+%patch115 -p1
+%patch117 -p1
+%patch118 -p1
+%patch119 -p1
+%patch120 -p1
+%patch122 -p1
+%patch124 -p1
+%patch125 -p1
+%patch126 -p1
+%patch127 -p1
+%patch129 -p1
+%patch130 -p1
+%patch133 -p1
+%endif
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
