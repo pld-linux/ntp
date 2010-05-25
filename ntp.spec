@@ -1,7 +1,6 @@
 # TODO:
 #	- ntpdseem.1 manual page 'disappeared'
-#	- warning: Installed (but unpackaged) file(s) found:
-#   - package ntpsnmpd - NTP SNMP MIB agent
+#	- package ntpsnmpd - NTP SNMP MIB agent:
 #		/usr/sbin/ntpsnmpd
 #		/usr/share/man/man1/ntpsnmpd.1.gz
 #
