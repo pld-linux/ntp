@@ -1,8 +1,11 @@
 # TODO:
-#	- ntpdseem.1 manual page 'disappeared'
 #	- package ntpsnmpd - NTP SNMP MIB agent:
 #		/usr/sbin/ntpsnmpd
 #		/usr/share/man/man1/ntpsnmpd.1.gz
+#	- enable and package ntpdsim?
+#
+# Conditional build:
+%bcond_without	avahi  # disable DNS-SD support via Avahi
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
@@ -30,6 +33,7 @@ Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-openssl_check.patch
 Patch4:		%{name}-nano.patch
 Patch5:		%{name}-ntpdc-link_order.patch
+Patch6:		%{name}-no_avahi.patch
 # FC patches + 100
 Patch101:	%{name}-4.2.6p1-sleep.patch
 Patch102:	%{name}-4.2.6p1-droproot.patch
@@ -47,6 +51,7 @@ Patch114:	%{name}-4.2.6p1-mlock.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
+%{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7d
@@ -201,6 +206,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%{!?with_avahi:%patch6 -p1}
 
 ## FC patches
 %patch101 -p1
@@ -352,7 +358,6 @@ fi
 %attr(755,root,root) %{_sbindir}/tickadj
 %{_mandir}/man1/ntpd.1*
 %{_mandir}/man1/ntpdc.1*
-#%{_mandir}/man1/ntpdsim.1*
 %{_mandir}/man1/ntp-keygen.1*
 %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntptime.1*

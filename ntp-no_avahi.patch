@@ -1,0 +1,17 @@
+--- ntp-4.2.6p1/configure.ac.orig	2010-05-25 08:52:27.000000000 +0200
++++ ntp-4.2.6p1/configure.ac	2010-05-25 09:05:44.000000000 +0200
+@@ -416,14 +416,6 @@
+ 
+ AC_HEADER_STDC
+ AC_CHECK_HEADERS(bstring.h)
+-AC_CHECK_HEADER(dns_sd.h,
+-	[AC_CHECK_LIB(dns_sd,
+-			DNSServiceRegister,
+-			[AC_DEFINE(HAVE_DNSREGISTRATION, 1,
+-				[Use Rendezvous/DNS-SD registration])])])
+-case "$ac_cv_lib_dns_sd_DNSServiceRegister" in
+- yes) LIBS="-ldns_sd $LIBS" ;;
+-esac
+ AC_CHECK_HEADERS(errno.h fcntl.h ieeefp.h kvm.h math.h)
+ 
+ AC_CHECK_HEADERS(md5.h, [], [],
