@@ -1,19 +1,17 @@
 # TODO:
-#	- package ntpsnmpd - NTP SNMP MIB agent:
-#		/usr/sbin/ntpsnmpd
-#		/usr/share/man/man1/ntpsnmpd.1.gz
-#	- enable and package ntpdsim?
+# - enable and package ntpdsim?
+# - net-snmp-ntpd needs initscript
 #
 # Conditional build:
 %bcond_without	avahi  # disable DNS-SD support via Avahi
-#
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p1
-Release:	0.1
+Release:	0.4
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -62,6 +60,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
 %define		_bindir		%{_sbindir}
+%define		mibdir		%{_datadir}/mibs
 
 %description
 The Network Time Protocol (NTP) is used to synchronize a computer's
@@ -173,6 +172,25 @@ servers.
 %description -n ntpdate -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
 
+%package -n mibs-ntp
+Summary:	MIBs for NTP time entities
+Group:		Applications/System
+Requires:	mibs-dirs
+
+%description -n mibs-ntp
+The Management Information Base for NTP time entities.
+
+%package -n net-snmp-ntpd
+Summary:	NTP SNMP subagent for Net-SNMP
+Group:		Daemons
+Requires(post,preun):	/sbin/chkconfig
+Requires:	net-snmp
+Requires:	rc-scripts
+Suggests:	mibs-ntp
+
+%description -n net-snmp-ntpd
+NTP SNMP AgentX subagent for Net-SNMP.
+
 %package tools
 Summary:	NTP tools
 Group:		Applications/Networking
@@ -272,6 +290,9 @@ cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 #!/bin/sh
 exec /sbin/service ntpdate cronsettime
 EOF
+
+install -d $RPM_BUILD_ROOT%{mibdir}
+cp -a ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -378,6 +399,17 @@ fi
 %attr(754,root,root) /etc/cron.hourly/ntpdate
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
 %{_mandir}/man1/ntpdate*
+
+%files -n mibs-ntp
+%defattr(644,root,root,755)
+%{mibdir}/ntpv4-mib.mib
+
+%files -n net-snmp-ntpd
+%defattr(644,root,root,755)
+# TODO: -n mibs-ntpd for the mib file if it is needed
+%doc ntpsnmpd/README ntpsnmpd/ntpv4-mib.mib
+%attr(755,root,root) %{_sbindir}/ntpsnmpd
+%{_mandir}/man1/ntpsnmpd.1*
 
 %files tools
 %defattr(644,root,root,755)
