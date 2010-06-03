@@ -52,6 +52,7 @@ BuildRequires:	automake
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libtool
+BuildRequires:	net-snmp-devel
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	readline-devel >= 4.2
 BuildRequires:	rpm-perlprov >= 4.1-13
