@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p1
-Release:	0.4
+Release:	0.5
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -51,6 +51,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
+BuildRequires:	libnl-devel
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
 BuildRequires:	openssl-devel >= 0.9.7d
