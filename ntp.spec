@@ -408,8 +408,7 @@ fi
 
 %files -n net-snmp-ntpd
 %defattr(644,root,root,755)
-# TODO: -n mibs-ntpd for the mib file if it is needed
-%doc ntpsnmpd/README ntpsnmpd/ntpv4-mib.mib
+%doc ntpsnmpd/README
 %attr(755,root,root) %{_sbindir}/ntpsnmpd
 %{_mandir}/man1/ntpsnmpd.1*
 
