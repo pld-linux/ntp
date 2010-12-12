@@ -2,7 +2,7 @@
 #
 # ntpdate		This shell script synchronizes time with ntpdate (NTP client)
 #
-# chkconfig:	2345 55 10
+# chkconfig:	2345 16 89
 # description:	ntpdate is the NTP client.
 
 # Source function library.
