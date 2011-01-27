@@ -14,9 +14,6 @@
 # if not specified in config
 NTPDATE_USER="ntp"
 
-# Source clock configuration
-[ -r /etc/sysconfig/clock ] &&  . /etc/sysconfig/clock
-
 # Source ntp configuration
 . /etc/sysconfig/ntpdate
 
@@ -34,22 +31,7 @@ ntpdate_background() {
 	/usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS || return $?
 
 	if is_yes "$SYNC_HWCLOCK"; then
-		CLOCKFLAGS="--systohc"
-		if is_yes "$UTC" ; then
-			CLOCKFLAGS="$CLOCKFLAGS --utc"
-		else
-			CLOCKFLAGS="$CLOCKFLAGS --localtime"
-		fi
-
-		if is_yes "$ARC" ; then
-			CLOCKFLAGS="$CLOCKFLAGS -A"
-		fi
-
-		if is_yes "$SRM" ; then
-			CLOCKFLAGS="$CLOCKFLAGS -S"
-		fi
-
-		/sbin/hwclock $CLOCKFLAGS
+		/sbin/hwclock --systohc
 	fi
 }
 
