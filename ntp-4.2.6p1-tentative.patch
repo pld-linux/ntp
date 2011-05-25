@@ -1,6 +1,6 @@
-diff -up ntp-4.2.6p1/lib/isc/unix/interfaceiter.c.tentative ntp-4.2.6p1/lib/isc/unix/interfaceiter.c
---- ntp-4.2.6p1/lib/isc/unix/interfaceiter.c.tentative	2009-12-09 08:36:35.000000000 +0100
-+++ ntp-4.2.6p1/lib/isc/unix/interfaceiter.c	2010-03-04 17:50:17.000000000 +0100
+diff -up ntp-4.2.6p3/lib/isc/unix/interfaceiter.c.tentative ntp-4.2.6p3/lib/isc/unix/interfaceiter.c
+--- ntp-4.2.6p3/lib/isc/unix/interfaceiter.c.tentative	2010-12-25 10:40:35.000000000 +0100
++++ ntp-4.2.6p3/lib/isc/unix/interfaceiter.c	2011-01-05 17:49:44.429413622 +0100
 @@ -45,6 +45,8 @@
  #include <isc/types.h>
  #include <isc/util.h>
@@ -10,15 +10,14 @@ diff -up ntp-4.2.6p1/lib/isc/unix/interfaceiter.c.tentative ntp-4.2.6p1/lib/isc/
  /* Must follow <isc/net.h>. */
  #ifdef HAVE_NET_IF6_H
  #include <net/if6.h>
-@@ -223,6 +225,11 @@ linux_if_inet6_current(isc_interfaceiter
- 	}
- 	iter->current.af = AF_INET6;
- 	iter->current.flags = INTERFACE_F_UP;
-+
+@@ -253,6 +255,10 @@ linux_if_inet6_current(isc_interfaceiter
+ 		iter->current.flags |= INTERFACE_F_MULTICAST;
+ #endif
+ 
 +	/* ignore tentative address */
-+	if (flag4 & IFA_F_TENTATIVE)
++	if (flags & IFA_F_TENTATIVE)
 +		iter->current.flags &= ~INTERFACE_F_UP;
 +
  	isc_netaddr_fromin6(&iter->current.address, &addr6);
+ 	iter->current.ifindex = ifindex;
  	if (isc_netaddr_islinklocal(&iter->current.address)) {
- 		isc_netaddr_setzone(&iter->current.address,

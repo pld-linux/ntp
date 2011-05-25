@@ -10,12 +10,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.6p1
-Release:	4
+Version:	4.2.6p3
+Release:	1
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	0510396dfbde40678b92f808ec07c0d2
+# Source0-md5:	59876a9009b098ff59767ee45a88ebd2
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -28,10 +28,8 @@ Source8:	%{name}.upstart
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
-Patch3:		%{name}-openssl_check.patch
-Patch4:		%{name}-nano.patch
-Patch5:		%{name}-ntpdc-link_order.patch
-Patch6:		%{name}-no_avahi.patch
+Patch3:		%{name}-nano.patch
+Patch4:		%{name}-no_avahi.patch
 # FC patches + 100
 Patch101:	%{name}-4.2.6p1-sleep.patch
 Patch102:	%{name}-4.2.6p1-droproot.patch
@@ -46,6 +44,10 @@ Patch110:	%{name}-4.2.6p1-htmldoc.patch
 Patch112:	%{name}-4.2.4p7-getprecision.patch
 Patch113:	%{name}-4.2.6p1-logdefault.patch
 Patch114:	%{name}-4.2.6p1-mlock.patch
+Patch116:	%{name}-4.2.6p3-nosyspeer.patch
+Patch117:	%{name}-4.2.6p3-broadcastdelay.patch
+Patch118:	%{name}-4.2.6p3-delaycalib.patch
+Patch119:	%{name}-4.2.6p3-ntpdaterecv.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -225,9 +227,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%{!?with_avahi:%patch6 -p1}
+%{!?with_avahi:%patch4 -p1}
 
 ## FC patches
 %patch101 -p1
@@ -243,13 +243,17 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch112 -p1
 %patch113 -p1
 %patch114 -p1
+%patch116 -p1
+%patch117 -p1
+%patch118 -p1
+%patch119 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
 
 %build
 %{__libtoolize}
-%{__aclocal} -I m4 -I libopts/m4
+%{__aclocal} -I m4 -I sntp/libopts/m4
 %{__autoconf}
 %{__automake}
 cd sntp
