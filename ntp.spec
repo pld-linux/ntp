@@ -394,9 +394,11 @@ fi
 %dir %attr(770,root,ntp) /var/lib/ntp
 %attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
 
+%if "%{pld_release}" != "ti"
 %files -n ntpd-upstart
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
+%endif
 
 %files -n ntpdate
 %defattr(644,root,root,755)
