@@ -24,7 +24,7 @@ Source5:	%{name}-client.init
 Source6:	%{name}-client.sysconfig
 Source7:	%{name}-manpages.tar.gz
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
-Source8:	ntpd.upstart
+Source8:	ntp.upstart
 Source9:	ntpdate.upstart
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
