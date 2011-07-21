@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p3
-Release:	1
+Release:	2
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -24,7 +24,8 @@ Source5:	%{name}-client.init
 Source6:	%{name}-client.sysconfig
 Source7:	%{name}-manpages.tar.gz
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
-Source8:	%{name}.upstart
+Source8:	ntpd.upstart
+Source9:	ntpdate.upstart
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
@@ -107,6 +108,7 @@ Provides:	ntpdaemon
 Provides:	user(ntp)
 Obsoletes:	ntp < 4.2.4p8-6
 Obsoletes:	ntpdaemon
+Obsoletes:	ntpd-upstart
 Obsoletes:	openntpd
 Obsoletes:	xntp3
 
@@ -134,19 +136,6 @@ utilizado para sincronizar o relógio do computador com uma outra
 referência de horário. Este pacote contém utilitários e servidores que
 sincronizarão o relógio do seu computador com o horário universal
 (UTC) através do protocolo NTP e utilizando servidores NTP públicos.
-
-%package -n ntpd-upstart
-Summary:	Upstart job description for the NTP daemon
-Summary(pl.UTF-8):	Opis zadania Upstart dla demona NTP
-Group:		Daemons
-Requires:	ntpd = %{version}-%{release}
-Requires:	upstart >= 0.6
-
-%description -n ntpd-upstart
-Upstart job description for the NTP daemon.
-
-%description -n ntpd-upstart -l pl.UTF-8
-Opis zadania Upstart dla demona NTP.
 
 %package -n ntpdate
 Summary:	Utility to set the date and time via NTP
@@ -287,7 +276,8 @@ install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
 install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
 cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
-install -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
+cp -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
+cp -p %{SOURCE9} $RPM_BUILD_ROOT/etc/init/ntpdate.conf
 cp -a man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -d $RPM_BUILD_ROOT/var/lib/ntp
@@ -318,12 +308,6 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del ntpd
 	rm -f /var/lib/ntp/drift
 fi
-
-%post -n ntpd-upstart
-%upstart_post ntpd
-
-%postun -n ntpd-upstart
-%upstart_postun ntpd
 
 %postun -n ntp
 if [ "$1" = "0" ]; then
@@ -377,6 +361,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
+%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
 %attr(755,root,root) %{_sbindir}/ntpd
 %attr(755,root,root) %{_sbindir}/ntpdc
 %attr(755,root,root) %{_sbindir}/ntp-keygen
@@ -394,17 +379,12 @@ fi
 %dir %attr(770,root,ntp) /var/lib/ntp
 %attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
 
-%if "%{pld_release}" != "ti"
-%files -n ntpd-upstart
-%defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
-%endif
-
 %files -n ntpdate
 %defattr(644,root,root,755)
 %doc COPYRIGHT
 %attr(755,root,root) %{_sbindir}/ntpdate
 %attr(754,root,root) /etc/rc.d/init.d/ntpdate
+%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpdate.conf
 %attr(754,root,root) /etc/cron.hourly/ntpdate
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
 %{_mandir}/man1/ntpdate*
