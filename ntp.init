@@ -9,6 +9,8 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+upstart_controlled
+
 # Source networking configuration.
 . /etc/sysconfig/network
 
@@ -61,8 +63,6 @@ condrestart() {
 		RETVAL=$1
 	fi
 }
-
-upstart_controlled
 
 RETVAL=0
 # See how we were called.

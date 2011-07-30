@@ -8,6 +8,8 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+upstart_controlled --except cronsettime
+
 # Source networking configuration.
 . /etc/sysconfig/network
 
@@ -45,8 +47,6 @@ start() {
 stop() {
 	rm -f /var/lock/subsys/ntpdate
 }
-
-upstart_controlled --except cronsettime
 
 RETVAL=0
 # See how we were called.
