@@ -1,6 +1,6 @@
 description "Synchronizes time with ntpdate (NTP client)"
 
-# TODO: act on "have default gateway" 
+# TODO: act on "have default gateway"
 # start on net-device-added INTERFACE!=lo
 # TODO: run before ntpd
 
@@ -17,7 +17,7 @@ normal exit 0 1
 script
 	# Source old-style ntp service configuration
 	[ -f /etc/sysconfig/ntpdate ] && . /etc/sysconfig/ntpdate
-		
+
 	/usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS
 
 	if [ "$SYNC_HWCLOCK" = "yes" ]; then

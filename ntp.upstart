@@ -16,6 +16,6 @@ end script
 script
 	# Source old-style ntp service configuration
 	[ -f /etc/sysconfig/ntpd ] && . /etc/sysconfig/ntpd
-		
+
 	exec /usr/sbin/ntpd -n -c /etc/ntp/ntp.conf -p /var/run/ntpd.pid ${NTPD_USER:+-u $NTPD_USER} $NTPD_OPTIONS
 end script
