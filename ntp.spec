@@ -58,6 +58,7 @@ BuildRequires:	libnl-devel
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
 BuildRequires:	openssl-devel >= 0.9.7d
+BuildRequires:	pciutils-devel
 BuildRequires:	readline-devel >= 4.2
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.561
