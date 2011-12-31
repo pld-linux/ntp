@@ -40,15 +40,11 @@ Patch105:	%{name}-4.2.6p1-linkfastmath.patch
 Patch106:	%{name}-4.2.6p1-tentative.patch
 Patch107:	%{name}-4.2.6p1-retcode.patch
 Patch108:	%{name}-4.2.6p1-rtnetlink.patch
-Patch109:	%{name}-4.2.6p1-html2man.patch
-Patch110:	%{name}-4.2.6p1-htmldoc.patch
-Patch112:	%{name}-4.2.4p7-getprecision.patch
-Patch113:	%{name}-4.2.6p1-logdefault.patch
-Patch114:	%{name}-4.2.6p1-mlock.patch
-Patch116:	%{name}-4.2.6p3-nosyspeer.patch
-Patch117:	%{name}-4.2.6p3-broadcastdelay.patch
-Patch118:	%{name}-4.2.6p3-delaycalib.patch
-Patch119:	%{name}-4.2.6p3-ntpdaterecv.patch
+Patch109:	%{name}-4.2.4p7-getprecision.patch
+Patch110:	%{name}-4.2.6p1-logdefault.patch
+Patch111:	%{name}-4.2.6p1-mlock.patch
+Patch112:	%{name}-4.2.6p3-broadcastdelay.patch
+Patch113:	%{name}-4.2.6p3-delaycalib.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -228,19 +224,11 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch106 -p1
 %patch107 -p1
 %patch108 -p1
-# already applied
-#%patch109 -p1
-# already applied
-#%patch110 -p1
+%patch109 -p1
+%patch110 -p1
+%patch111 -p1
 %patch112 -p1
 %patch113 -p1
-%patch114 -p1
-# already applied
-#%patch116 -p1
-%patch117 -p1
-%patch118 -p1
-# already applied
-#%patch119 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
