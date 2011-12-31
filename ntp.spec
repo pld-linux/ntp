@@ -10,12 +10,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.6p3
-Release:	4
+Version:	4.2.6p5
+Release:	1
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	59876a9009b098ff59767ee45a88ebd2
+# Source0-md5:	00df80a84ec9528fcfb09498075525bc
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}.init
@@ -228,15 +228,19 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch106 -p1
 %patch107 -p1
 %patch108 -p1
-%patch109 -p1
-%patch110 -p1
+# already applied
+#%patch109 -p1
+# already applied
+#%patch110 -p1
 %patch112 -p1
 %patch113 -p1
 %patch114 -p1
-%patch116 -p1
+# already applied
+#%patch116 -p1
 %patch117 -p1
 %patch118 -p1
-%patch119 -p1
+# already applied
+#%patch119 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac

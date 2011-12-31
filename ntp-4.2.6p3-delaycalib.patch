@@ -3,8 +3,8 @@ diff -up ntp-4.2.6p3/ntpd/ntp_proto.c.delaycalib ntp-4.2.6p3/ntpd/ntp_proto.c
 +++ ntp-4.2.6p3/ntpd/ntp_proto.c	2010-11-25 15:21:55.987625500 +0100
 @@ -1498,7 +1498,7 @@ process_packet(
  		 */
- 		if (peer->cast_flags & MDF_BCLNT) {
- 			peer->cast_flags &= ~MDF_BCLNT;
+ 		if (FLAG_BC_VOL & peer->flags) {
+ 			peer->flags &= ~FLAG_BC_VOL;
 -			peer->delay = (peer->offset - p_offset) * 2;
 +			peer->delay = fabs(peer->offset - p_offset) * 2;
  		}

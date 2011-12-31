@@ -1,14 +1,3 @@
-diff -up ntp-4.2.6p3/configure.rtnetlink ntp-4.2.6p3/configure
---- ntp-4.2.6p3/configure.rtnetlink	2011-01-04 03:03:47.000000000 +0100
-+++ ntp-4.2.6p3/configure	2011-01-05 17:39:29.342985208 +0100
-@@ -25858,6 +25858,7 @@ else
- /* end confdefs.h.  */
- 
- 		#include <stddef.h>
-+		#include <sys/socket.h>
- 		#include <linux/rtnetlink.h>
- 
- int
 diff -up ntp-4.2.6p3/ntpd/ntp_io.c.rtnetlink ntp-4.2.6p3/ntpd/ntp_io.c
 --- ntp-4.2.6p3/ntpd/ntp_io.c.rtnetlink	2011-01-05 16:03:19.328001089 +0100
 +++ ntp-4.2.6p3/ntpd/ntp_io.c	2011-01-05 16:03:19.349001911 +0100
