@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Source ntp configuration
+. /etc/sysconfig/ntpdate
+
+/usr/sbin/ntpdate -s -U ntp $NTPDATE_OPTIONS $NTPDATE_SERVERS
+RETVAL=$?
+
+if [ $RETVAL -eq 0 -a "$SYNC_HWCLOCK" = "yes"]; then
+	/sbin/hwclock --systohc
+	RETVAL=$?
+fi
+exit $RETVAL
