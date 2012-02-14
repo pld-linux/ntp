@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p5
-Release:	1
+Release:	2
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -26,6 +26,9 @@ Source7:	%{name}-manpages.tar.gz
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
 Source8:	ntp.upstart
 Source9:	ntpdate.upstart
+Source10:	ntpdate-wrapper
+Source11:	ntpd.service
+Source12:	ntpdate.service
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
@@ -105,7 +108,6 @@ Provides:	ntpdaemon
 Provides:	user(ntp)
 Obsoletes:	ntp < 4.2.4p8-6
 Obsoletes:	ntpdaemon
-Obsoletes:	ntpd-upstart
 Obsoletes:	openntpd
 Obsoletes:	xntp3
 
@@ -133,6 +135,19 @@ utilizado para sincronizar o relógio do computador com uma outra
 referência de horário. Este pacote contém utilitários e servidores que
 sincronizarão o relógio do seu computador com o horário universal
 (UTC) através do protocolo NTP e utilizando servidores NTP públicos.
+
+%package -n ntpd-upstart
+Summary:	Upstart job description for the NTP daemon
+Summary(pl.UTF-8):	Opis zadania Upstart dla demona NTP
+Group:		Daemons
+Requires:	ntpd = %{version}-%{release}
+Requires:	upstart >= 0.6
+
+%description -n ntpd-upstart
+Upstart job description for the NTP daemon.
+
+%description -n ntpd-upstart -l pl.UTF-8
+Opis zadania Upstart dla demona NTP.
 
 %package -n ntpdate
 Summary:	Utility to set the date and time via NTP
@@ -162,6 +177,19 @@ servers.
 
 %description -n ntpdate -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
+
+%package -n ntpdate-upstart
+Summary:	Upstart job description for NTP client
+Summary(pl.UTF-8):	Opis zadania Upstart dla klienta NTP
+Group:		Daemons
+Requires:	ntpdate = %{version}-%{release}
+Requires:	upstart >= 0.6
+
+%description -n ntpdate-upstart
+Upstart job description for the NTP client.
+
+%description -n ntpdate-upstart -l pl.UTF-8
+Opis zadania Upstart dla klienta NTP.
 
 %package -n mibs-ntp
 Summary:	MIBs for NTP time entities
@@ -258,7 +286,8 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,cron.hourly,init},%{_mandir}/man1}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_mandir}/man1,%{systemdunitdir}} \
+	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,cron.hourly,init}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -271,6 +300,11 @@ cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
 cp -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
 cp -p %{SOURCE9} $RPM_BUILD_ROOT/etc/init/ntpdate.conf
+
+install %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
+install %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
+install %{SOURCE12} $RPM_BUILD_ROOT%{systemdunitdir}/ntpdate.service
+
 cp -a man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -d $RPM_BUILD_ROOT/var/lib/ntp
@@ -278,7 +312,7 @@ touch $RPM_BUILD_ROOT/var/lib/ntp/drift
 
 cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 #!/bin/sh
-exec /sbin/service ntpdate cronsettime
+exec /usr/sbin/ntpdate-wrapper
 EOF
 
 install -d $RPM_BUILD_ROOT%{mibdir}
@@ -294,6 +328,7 @@ rm -rf $RPM_BUILD_ROOT
 %post -n ntpd
 /sbin/chkconfig --add ntpd
 %service ntpd restart "NTP Daemon"
+%systemd_post ntpd.service
 
 %preun -n ntpd
 if [ "$1" = "0" ]; then
@@ -301,13 +336,20 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del ntpd
 	rm -f /var/lib/ntp/drift
 fi
+%systemd_preun ntpd.service
 
 %postun -n ntp
 if [ "$1" = "0" ]; then
 	%userremove ntp
 	%groupremove ntp
 fi
+%systemd_reload
 
+%post -n ntpd-upstart
+%upstart_post ntpd
+
+%postun -n ntpd-upstart
+%upstart_postun ntpd
 
 %pre -n ntpdate
 %groupadd -g 246 ntp
@@ -316,18 +358,27 @@ fi
 %post -n ntpdate
 /sbin/chkconfig --add ntpdate
 %service ntpdate restart "NTP Date"
+%systemd_post ntpdate.service
 
 %preun -n ntpdate
 if [ "$1" = "0" ]; then
 	%service ntpdate stop
 	/sbin/chkconfig --del ntpdate
 fi
+%systemd_preun ntpdate.service
 
 %postun -n ntpdate
 if [ "$1" = "0" ]; then
 	%userremove ntp
 	%groupremove ntp
 fi
+%systemd_reload
+
+%post -n ntpdate-upstart
+%upstart_post ntpdate
+
+%postun -n ntpdate-upstart
+%upstart_postun ntpdate
 
 %triggerun -n ntpd -- ntp < 4.2.4p8-3.14
 # Prevent preun from ntp from working
@@ -340,12 +391,21 @@ sed -i -e 's,/etc/ntp/drift,/var/lib/ntp/drift,' %{_sysconfdir}/ntp.conf
 mv -f /etc/ntp/ntp.drift /var/lib/ntp/drift 2>/dev/null
 mv -f /etc/ntp/drift /var/lib/ntp/drift 2>/dev/null
 %service -q ntpd restart
+%systemd_trigger ntpd.service
+%systemd_post ntpdate
+
+%triggerpostun -n ntpd -- ntpd < 4.2.6p5-2
+%systemd_trigger ntpd.service
 
 %triggerpostun -n ntpdate -- ntp-client < 4.2.4p8-3.2
 if [ -f /etc/sysconfig/ntp.rpmsave ]; then
 	cp -f /etc/sysconfig/ntpdate{,.rpmnew}
 	mv -f /etc/sysconfig/ntp.rpmsave /etc/sysconfig/ntpdate
 fi
+%systemd_trigger ntpdate.service
+
+%triggerpostun -n ntpdate -- ntpdate < 4.2.6p5-2
+%systemd_trigger ntpdate.service
 
 %files -n ntpd
 %defattr(644,root,root,755)
@@ -354,7 +414,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
-%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
+%{systemdunitdir}/ntpd.service
 %attr(755,root,root) %{_sbindir}/ntpd
 %attr(755,root,root) %{_sbindir}/ntpdc
 %attr(755,root,root) %{_sbindir}/ntp-keygen
@@ -372,15 +432,24 @@ fi
 %dir %attr(770,root,ntp) /var/lib/ntp
 %attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
 
+%files -n ntpd-upstart
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
+
 %files -n ntpdate
 %defattr(644,root,root,755)
 %doc COPYRIGHT
 %attr(755,root,root) %{_sbindir}/ntpdate
+%attr(755,root,root) %{_sbindir}/ntpdate-wrapper
 %attr(754,root,root) /etc/rc.d/init.d/ntpdate
-%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpdate.conf
 %attr(754,root,root) /etc/cron.hourly/ntpdate
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
+%{systemdunitdir}/ntpdate.service
 %{_mandir}/man1/ntpdate*
+
+%files -n ntpdate-upstart
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpdate.conf
 
 %files -n mibs-ntp
 %defattr(644,root,root,755)

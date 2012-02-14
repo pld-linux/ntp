@@ -6,6 +6,3 @@ SERVICE_RUN_NICE_LEVEL="+1"
 # pass additional arguments (like -g)
 #NTPD_OPTIONS="-l /var/log/ntpd.log" # this demands logrotate to avoid problems
 NTPD_OPTIONS=""
-
-# switch user to this user when running ntpd(1)
-NTPD_USER="ntp"
