@@ -6,7 +6,7 @@
 /usr/sbin/ntpdate -s -U ntp $NTPDATE_OPTIONS $NTPDATE_SERVERS
 RETVAL=$?
 
-if [ $RETVAL -eq 0 -a "$SYNC_HWCLOCK" = "yes"]; then
+if [ $RETVAL -eq 0 -a "$SYNC_HWCLOCK" = "yes" ]; then
 	/sbin/hwclock --systohc
 	RETVAL=$?
 fi
