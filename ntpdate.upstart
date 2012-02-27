@@ -7,20 +7,9 @@ description "Synchronizes time with ntpdate (NTP client)"
 start on pld.network-started
 stop on pld.shutdown-started
 
-env NTPDATE_USER="ntp"
-
 task
 
 # mark that ntpdate fail is ok (task marked as done and hwclock skipped)
 normal exit 0 1
 
-script
-	# Source old-style ntp service configuration
-	[ -f /etc/sysconfig/ntpdate ] && . /etc/sysconfig/ntpdate
-
-	/usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS
-
-	if [ "$SYNC_HWCLOCK" = "yes" ]; then
-		/sbin/hwclock --systohc
-	fi
-end script
+exec /usr/sbin/ntpdate-wrapper
