@@ -1,0 +1,4 @@
+- changed all BuildRoot definitons
+- removed all applnkdir defs
+- changed some prereqs/requires
+- removed duplicate empty lines
