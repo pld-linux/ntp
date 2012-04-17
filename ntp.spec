@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p5
-Release:	4
+Release:	5
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -101,8 +101,9 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
+Requires(post,preun,postun):	systemd-units >= 38
 Requires:	rc-scripts >= 0.4.3.0
-Requires:	systemd-units >= 37-0.10
+Requires:	systemd-units >= 38
 Provides:	group(ntp)
 Provides:	ntp = %{version}-%{release}
 Provides:	ntpdaemon
@@ -161,8 +162,9 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
+Requires(post,preun,postun):	systemd-units >= 38
 Requires:	rc-scripts >= 0.4.3.0
-Requires:	systemd-units >= 37-0.10
+Requires:	systemd-units >= 38
 Provides:	group(ntp)
 Provides:	user(ntp)
 Conflicts:	ntp < 4.2.0-3
