@@ -10,7 +10,6 @@ diff -ur ntp-4.2.6p5/lib/isc/unix/ifiter_ioctl.c ntp-4.2.6p5.new/lib/isc/unix/if
  					 isc_msgcat_get(isc_msgcat,
  							ISC_MSGSET_IFITERIOCTL,
  							ISC_MSG_BUFFERMAX,
-Only in ntp-4.2.6p5.new/lib/isc/unix: ifiter_ioctl.c~
 diff -ur ntp-4.2.6p5/ntpd/ntp_config.c ntp-4.2.6p5.new/ntpd/ntp_config.c
 --- ntp-4.2.6p5/ntpd/ntp_config.c	2012-10-22 11:43:38.000000000 +0100
 +++ ntp-4.2.6p5.new/ntpd/ntp_config.c	2012-10-22 11:38:02.000000000 +0100
@@ -23,7 +22,6 @@ diff -ur ntp-4.2.6p5/ntpd/ntp_config.c ntp-4.2.6p5.new/ntpd/ntp_config.c
  		}
  	}
  }
-Only in ntp-4.2.6p5.new/ntpd: ntp_config.c~
 diff -ur ntp-4.2.6p5/ntpd/ntp_control.c ntp-4.2.6p5.new/ntpd/ntp_control.c
 --- ntp-4.2.6p5/ntpd/ntp_control.c	2011-12-09 02:00:53.000000000 +0000
 +++ ntp-4.2.6p5.new/ntpd/ntp_control.c	2012-10-22 11:37:11.000000000 +0100
@@ -45,7 +43,6 @@ diff -ur ntp-4.2.6p5/ntpd/ntp_control.c ntp-4.2.6p5.new/ntpd/ntp_control.c
  	}
  	record_proto_stats(statstr);
  #if DEBUG
-Only in ntp-4.2.6p5.new/ntpd: ntp_control.c~
 diff -ur ntp-4.2.6p5/ntpd/ntpd.c ntp-4.2.6p5.new/ntpd/ntpd.c
 --- ntp-4.2.6p5/ntpd/ntpd.c	2012-10-22 11:43:38.000000000 +0100
 +++ ntp-4.2.6p5.new/ntpd/ntpd.c	2012-10-22 11:39:33.000000000 +0100
@@ -67,4 +64,3 @@ diff -ur ntp-4.2.6p5/ntpd/ntpd.c ntp-4.2.6p5.new/ntpd/ntpd.c
  
  	if (++unexpected_error_cnt == MAX_UNEXPECTED_ERRORS)
  	{
-Only in ntp-4.2.6p5.new/ntpd: ntpd.c~
