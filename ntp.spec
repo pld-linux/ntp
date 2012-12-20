@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p5
-Release:	5
+Release:	6
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -307,9 +307,9 @@ cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
 cp -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
 cp -p %{SOURCE9} $RPM_BUILD_ROOT/etc/init/ntpdate.conf
 
-install %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
-install %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
-install %{SOURCE12} $RPM_BUILD_ROOT%{systemdunitdir}/ntpdate.service
+install -p %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
+cp -p %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
+cp -p %{SOURCE12} $RPM_BUILD_ROOT%{systemdunitdir}/ntpdate.service
 
 cp -a man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
@@ -318,6 +318,10 @@ touch $RPM_BUILD_ROOT/var/lib/ntp/drift
 
 cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 #!/bin/sh
+# Source ntpdate configuration
+. /etc/sysconfig/ntpdate
+
+is_yes "$NTPDATE_CRON" || exit 0
 exec /usr/sbin/ntpdate-wrapper
 EOF
 

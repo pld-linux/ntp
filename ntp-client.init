@@ -8,7 +8,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-upstart_controlled --except cronsettime
+upstart_controlled
 
 # Source networking configuration.
 . /etc/sysconfig/network
@@ -60,10 +60,6 @@ stop)
 restart|force-reload)
 	stop
 	start
-	;;
-cronsettime)
-	is_yes "$NTPDATE_CRON" && /usr/sbin/ntpdate -s ${NTPDATE_USER:+-U $NTPDATE_USER} $NTPDATE_OPTIONS $NTPDATE_SERVERS
-	RETVAL=$?
 	;;
 *)
 	msg_usage "$0 {start|restart|force-reload}"
