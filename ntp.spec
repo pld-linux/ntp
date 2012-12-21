@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p5
-Release:	6
+Release:	7
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -318,6 +318,9 @@ touch $RPM_BUILD_ROOT/var/lib/ntp/drift
 
 cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 #!/bin/sh
+# Source function library.
+. /etc/rc.d/init.d/functions
+
 # Source ntpdate configuration
 . /etc/sysconfig/ntpdate
 
