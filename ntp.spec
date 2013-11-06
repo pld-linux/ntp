@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p5
-Release:	7
+Release:	8
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -285,6 +285,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 	--enable-linuxcaps \
 	--enable-getifaddrs \
 	--enable-ipv6 \
+	--enable-ntp-signd \
 	--with-lineeditlibs=readline \
 	--with-crypto=openssl
 
