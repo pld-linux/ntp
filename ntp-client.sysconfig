@@ -9,4 +9,4 @@ NTPDATE_SERVERS="pool.ntp.org"
 SYNC_HWCLOCK="no"
 
 # also run ntpdate from cron
-NTPDATE_CRON="yes"
+NTPDATE_CRON="no"
