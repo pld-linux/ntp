@@ -24,11 +24,11 @@ Source5:	%{name}-client.init
 Source6:	%{name}-client.sysconfig
 Source7:	%{name}-manpages.tar.gz
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
-Source8:	ntp.upstart
-Source9:	ntpdate.upstart
-Source10:	ntpdate-wrapper
-Source11:	ntpd.service
-Source12:	ntpdate.service
+Source8:	%{name}.upstart
+Source9:	%{name}date.upstart
+Source10:	%{name}date-wrapper
+Source11:	%{name}d.service
+Source12:	%{name}date.service
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
@@ -299,12 +299,13 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_mandir}/man1,%{systemdunitdir}} \
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
-cp -a %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
+
 install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
 install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
-cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
-cp -a %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
+cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
+cp -p %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
 cp -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
 cp -p %{SOURCE9} $RPM_BUILD_ROOT/etc/init/ntpdate.conf
 
@@ -312,7 +313,7 @@ install -p %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
 cp -p %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
 cp -p %{SOURCE12} $RPM_BUILD_ROOT%{systemdunitdir}/ntpdate.service
 
-cp -a man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
+cp -p man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -d $RPM_BUILD_ROOT/var/lib/ntp
 touch $RPM_BUILD_ROOT/var/lib/ntp/drift
@@ -326,11 +327,11 @@ cat > $RPM_BUILD_ROOT/etc/cron.hourly/ntpdate <<'EOF'
 . /etc/sysconfig/ntpdate
 
 is_yes "$NTPDATE_CRON" || exit 0
-exec /usr/sbin/ntpdate-wrapper
+exec %{_sbindir}/ntpdate-wrapper
 EOF
 
 install -d $RPM_BUILD_ROOT%{mibdir}
-cp -a ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
+cp -p ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -425,7 +426,8 @@ fi
 %defattr(644,root,root,755)
 %doc NEWS TODO WHERE-TO-START conf/*.conf COPYRIGHT
 %attr(750,root,root) %dir %{_sysconfdir}
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/keys
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ntp.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
 %{systemdunitdir}/ntpd.service
