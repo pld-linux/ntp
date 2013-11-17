@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.6p5
-Release:	8
+Release:	9
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -29,6 +29,8 @@ Source9:	%{name}date.upstart
 Source10:	%{name}date-wrapper
 Source11:	%{name}d.service
 Source12:	%{name}date.service
+Source13:	http://www.ietf.org/timezones/data/leap-seconds.list
+# Source13-md5:	8f5f173e799fc1832a87eea00319c2f8
 Patch0:		%{name}-time.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
@@ -301,6 +303,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_mandir}/man1,%{systemdunitdir}} \
 
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/keys
+cp -p %{SOURCE13} $RPM_BUILD_ROOT%{_sysconfdir}/ntp.leapseconds
 
 install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
 install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
@@ -428,6 +431,7 @@ fi
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/keys
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ntp.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ntp.leapseconds
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
 %{systemdunitdir}/ntpd.service
