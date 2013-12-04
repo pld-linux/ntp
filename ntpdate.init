@@ -51,17 +51,17 @@ stop() {
 RETVAL=0
 # See how we were called.
 case "$1" in
-start)
+  start)
 	start
 	;;
-stop)
+  stop)
 	stop
 	;;
-restart|force-reload)
+  restart|force-reload)
 	stop
 	start
 	;;
-*)
+  *)
 	msg_usage "$0 {start|restart|force-reload}"
 	exit 3
 esac
