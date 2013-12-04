@@ -18,10 +18,10 @@ Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version
 # Source0-md5:	00df80a84ec9528fcfb09498075525bc
 Source1:	%{name}.conf
 Source2:	%{name}.keys
-Source3:	%{name}.init
-Source4:	%{name}.sysconfig
-Source5:	%{name}-client.init
-Source6:	%{name}-client.sysconfig
+Source3:	%{name}d.init
+Source4:	%{name}d.sysconfig
+Source5:	%{name}date.init
+Source6:	%{name}date.sysconfig
 Source7:	%{name}-manpages.tar.gz
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
 Source8:	%{name}.upstart
