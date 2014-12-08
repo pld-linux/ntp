@@ -1,6 +1,7 @@
 [Unit]
 Description=Network Time Service
 After=syslog.target ntpdate.service
+Conflicts=systemd-timesyncd.service
 
 [Service]
 EnvironmentFile=/etc/sysconfig/ntpd
