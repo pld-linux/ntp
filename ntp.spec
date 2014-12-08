@@ -296,6 +296,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_mandir}/man1,%{systemdunitdir}} \
+	$RPM_BUILD_ROOT%{_libexecdir}/systemd/ntp-units.d \
 	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,cron.hourly,init}
 
 %{__make} install \
@@ -315,6 +316,8 @@ cp -p %{SOURCE9} $RPM_BUILD_ROOT/etc/init/ntpdate.conf
 install -p %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
 cp -p %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
 cp -p %{SOURCE12} $RPM_BUILD_ROOT%{systemdunitdir}/ntpdate.service
+echo 'ntpd.service' > \
+        $RPM_BUILD_ROOT%{_libexecdir}/systemd/ntp-units.d/50-ntpd.list
 
 cp -p man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
@@ -435,6 +438,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
 %{systemdunitdir}/ntpd.service
+%{_libexecdir}/systemd/ntp-units.d/50-ntpd.list
 %attr(755,root,root) %{_sbindir}/ntpd
 %attr(755,root,root) %{_sbindir}/ntpdc
 %attr(755,root,root) %{_sbindir}/ntp-keygen
