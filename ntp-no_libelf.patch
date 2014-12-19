@@ -1,15 +1,14 @@
-diff -ur ntp-4.1.1a.orig/configure.ac ntp-4.1.1a/configure.ac
---- ntp-4.1.1a.orig/configure.ac	Thu Mar 28 23:42:00 2002
-+++ ntp-4.1.1a/configure.ac	Thu Nov 21 11:56:41 2002
-@@ -687,9 +687,9 @@
-  yes)
-     ;;
-  *)
--    AC_CHECK_LIB([elf], [nlist])	dnl Only needed for tickadj...
-+    #AC_CHECK_LIB([elf], [nlist])	dnl Only needed for tickadj...
-     dnl AC_CHECK_LIB(kvm, main, , , -lelf)
--    AC_CHECK_LIB([kvm], [main])		dnl We already know about -lelf here...
-+    #AC_CHECK_LIB([kvm], [main])		dnl We already know about -lelf here...
-     AC_CHECK_LIB([ld], [nlist])
-     AC_CHECK_LIB([mld], [nlist])
+--- ntp-4.2.8/configure.ac~	2014-12-19 12:56:53.000000000 +0100
++++ ntp-4.2.8/configure.ac	2014-12-19 17:04:09.696796977 +0100
+@@ -422,9 +422,9 @@
+     # nlist stuff is only needed for tickadj.
+     saved_LIBS="$LIBS"
+     LIBS=
+-    AC_SEARCH_LIBS([nlist], [elf ld mld])
++    #AC_SEARCH_LIBS([nlist], [elf ld mld])
+     # XXX ac_cv_search_nlist will be 'none required', 'no', or '-l...'
+-    AC_SEARCH_LIBS([kvm_open], [kvm])	dnl We already know about -lelf here...
++    #AC_SEARCH_LIBS([kvm_open], [kvm])	dnl We already know about -lelf here...
+     # XXX ac_cv_search_kvm_open will be 'none required', 'no', or '-l...'
      AC_CHECK_HEADERS([nlist.h sys/var.h])
+     case "$ac_cv_header_nlist_h" in

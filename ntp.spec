@@ -1,6 +1,7 @@
 # TODO:
 # - enable and package ntpdsim?
 # - net-snmp-ntpd needs initscript
+# - update FC patches
 #
 # Conditional build:
 %bcond_without	avahi  # disable DNS-SD support via Avahi
@@ -10,12 +11,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.6p5
-Release:	11
+Version:	4.2.8
+Release:	0.1
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	00df80a84ec9528fcfb09498075525bc
+# Source0-md5:	6972a626be6150db8cfbd0b63d8719e7
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}d.init
@@ -31,12 +32,11 @@ Source11:	%{name}d.service
 Source12:	%{name}date.service
 Source13:	http://www.ietf.org/timezones/data/leap-seconds.list
 # Source13-md5:	e99a84cf28b14c77fba76c05565604ac
-Patch0:		%{name}-time.patch
+Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-nano.patch
 Patch4:		%{name}-no_avahi.patch
-Patch5:		%{name}-format-security.patch
 # FC patches + 100
 Patch101:	%{name}-4.2.6p1-sleep.patch
 Patch102:	%{name}-4.2.6p1-droproot.patch
@@ -53,10 +53,13 @@ Patch112:	%{name}-4.2.6p3-broadcastdelay.patch
 Patch113:	%{name}-4.2.6p3-delaycalib.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
+BuildRequires:	autogen-devel
 BuildRequires:	automake
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
+BuildRequires:	libevent-devel
 BuildRequires:	libnl-devel
+BuildRequires:	libseccomp-devel
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
 BuildRequires:	openssl-devel >= 0.9.7d
@@ -249,34 +252,35 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch2 -p1
 %patch3 -p1
 %{!?with_avahi:%patch4 -p1}
-%patch5 -p1
 
 ## FC patches
-%patch101 -p1
-%patch102 -p1
-%patch103 -p1
-%patch104 -p1
-%patch105 -p1
-%patch106 -p1
-%patch107 -p1
-%patch108 -p1
-%patch109 -p1
-%patch110 -p1
-%patch111 -p1
-%patch112 -p1
-%patch113 -p1
+#%patch101 -p1
+#%patch102 -p1
+#%patch103 -p1
+#%patch104 -p1
+#%patch105 -p1
+#%patch106 -p1
+#%patch107 -p1
+#%patch108 -p1
+#%patch109 -p1
+#%patch110 -p1
+#%patch111 -p1
+#%patch112 -p1
+#%patch113 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
 
+rm sntp/m4/{lt*,libtool}.m4 sntp/libevent/m4/{lt*,libtool}.m4
+
 %build
 %{__libtoolize}
-%{__aclocal} -I m4 -I sntp/libopts/m4
+%{__aclocal} -I sntp/m4 -I sntp/libopts/m4 -I sntp/libevent/m4
 %{__autoconf}
 %{__automake}
 cd sntp
 %{__libtoolize}
-%{__aclocal} -I ../m4 -I libopts/m4
+%{__aclocal} -I libopts/m4 -I libevent/m4
 %{__autoconf}
 %{__automake}
 cd ..
@@ -286,10 +290,13 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 	--with-binsubdir=sbin \
 	--enable-linuxcaps \
 	--enable-getifaddrs \
+	--enable-libseccomp \
 	--enable-ipv6 \
 	--enable-ntp-signd \
 	--with-lineeditlibs=readline \
-	--with-crypto=openssl
+	--with-crypto=openssl \
+	--disable-local-libopts \
+	--disable-local-libevent
 
 %{__make}
 
@@ -338,6 +345,8 @@ EOF
 
 install -d $RPM_BUILD_ROOT%{mibdir}
 cp -p ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
+
+rm -rf $RPM_BUILD_ROOT%{_docdir}/ntp4
 
 %clean
 rm -rf $RPM_BUILD_ROOT

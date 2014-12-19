@@ -1,0 +1,28 @@
+--- ntp-4.2.8/sntp/sntp-opts.h~	2014-12-19 17:52:37.000000000 +0100
++++ ntp-4.2.8/sntp/sntp-opts.h	2014-12-19 17:52:53.564675157 +0100
+@@ -35,6 +35,12 @@
+  *  representations about the suitability this software for any purpose. It
+  *  is provided "as is" without express or implied warranty.
+  */
++
++
++
++#include <sysexits.h>
++
++
+ /**
+  *  This file contains the programmatic interface to the Automated
+  *  Options generated for the sntp program.
+--- ntp-4.2.8/sntp/main.c~	2014-12-19 12:56:54.000000000 +0100
++++ ntp-4.2.8/sntp/main.c	2014-12-19 17:55:10.928020260 +0100
+@@ -1,5 +1,10 @@
+ #include <config.h>
+ 
++
++
++#include <sysexits.h>
++
++
+ #include <event2/util.h>
+ #include <event2/event.h>
+ 
