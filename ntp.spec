@@ -2,6 +2,14 @@
 # - enable and package ntpdsim?
 # - net-snmp-ntpd needs initscript
 # - update FC patches
+# - unpackaged files:
+#        /usr/sbin/calc_tickadj
+#        /usr/share/doc/sntp/sntp.html
+#        /usr/share/man/man1/calc_tickadj.1.gz
+#        /usr/share/man/man1/ntp-wait.1.gz
+#        /usr/share/man/man5/ntp.conf.5.gz
+#        /usr/share/man/man5/ntp.keys.5.gz
+#        /usr/share/ntp/lib/NTP/Util.pm
 #
 # Conditional build:
 %bcond_without	avahi  # disable DNS-SD support via Avahi
