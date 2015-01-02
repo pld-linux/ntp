@@ -50,7 +50,6 @@ Patch109:	%{name}-4.2.4p7-getprecision.patch
 Patch110:	%{name}-4.2.6p1-logdefault.patch
 Patch111:	%{name}-4.2.6p1-mlock.patch
 Patch112:	%{name}-4.2.6p3-broadcastdelay.patch
-Patch113:	%{name}-4.2.6p3-delaycalib.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	autogen-devel
@@ -255,18 +254,17 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 
 ## FC patches
 #%patch101 -p1
-#%patch102 -p1
+%patch102 -p1
 #%patch103 -p1
-#%patch104 -p1
-#%patch105 -p1
-#%patch106 -p1
-#%patch107 -p1
-#%patch108 -p1
-#%patch109 -p1
+%patch104 -p1
+%patch105 -p1
+#%patch106 -p1 looks like obsolete
+%patch107 -p1
+%patch108 -p1
+#%patch109 -p1 upstream already decreased to 20e-9, not needed then?
 #%patch110 -p1
 #%patch111 -p1
 #%patch112 -p1
-#%patch113 -p1
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
@@ -346,7 +344,7 @@ EOF
 install -d $RPM_BUILD_ROOT%{mibdir}
 cp -p ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
 
-rm -rf $RPM_BUILD_ROOT%{_docdir}/ntp4
+rm -r $RPM_BUILD_ROOT%{_docdir}/ntp4
 
 %clean
 rm -rf $RPM_BUILD_ROOT

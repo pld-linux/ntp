@@ -1,10 +1,9 @@
-diff -up ntp-4.2.6p1/ntpd/ntp_proto.c.retcode ntp-4.2.6p1/ntpd/ntp_proto.c
---- ntp-4.2.6p1/ntpd/ntp_proto.c.retcode	2009-12-09 08:36:36.000000000 +0100
-+++ ntp-4.2.6p1/ntpd/ntp_proto.c	2010-03-03 16:06:00.000000000 +0100
-@@ -269,7 +269,7 @@ transmit(
- 					    "ntpd: no servers found");
- 					printf(
- 					    "ntpd: no servers found\n");
+--- ntp-4.2.8/ntpd/ntp_proto.c~	2014-12-19 13:56:54.000000000 +0200
++++ ntp-4.2.8/ntpd/ntp_proto.c	2015-01-02 10:43:42.190506414 +0200
+@@ -326,7 +326,7 @@
+ 					if (!msyslog_term)
+ 						printf(
+ 						    "ntpd: no servers found\n");
 -					exit (0);
 +					exit (1);
  				}
