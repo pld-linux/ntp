@@ -43,13 +43,10 @@ Patch102:	%{name}-4.2.6p1-droproot.patch
 Patch103:	%{name}-4.2.6p1-bcast.patch
 Patch104:	%{name}-4.2.6p1-cmsgalign.patch
 Patch105:	%{name}-4.2.6p1-linkfastmath.patch
-Patch106:	%{name}-4.2.6p1-tentative.patch
 Patch107:	%{name}-4.2.6p1-retcode.patch
 Patch108:	%{name}-4.2.6p1-rtnetlink.patch
-Patch109:	%{name}-4.2.4p7-getprecision.patch
-Patch110:	%{name}-4.2.6p1-logdefault.patch
+Patch110:	%{name}-logdefault.patch
 Patch111:	%{name}-4.2.6p1-mlock.patch
-Patch112:	%{name}-4.2.6p3-broadcastdelay.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf
 BuildRequires:	autogen-devel
@@ -274,18 +271,15 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 #%patch103 -p1
 %patch104 -p1
 %patch105 -p1
-#%patch106 -p1 looks like obsolete
 %patch107 -p1
 %patch108 -p1
-#%patch109 -p1 upstream already decreased to 20e-9, not needed then?
-#%patch110 -p1
-#%patch111 -p1
-#%patch112 -p1
+%patch110 -p1
+#%patch111 -p1  -- obsolete?
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
 
-rm sntp/m4/{lt*,libtool}.m4 sntp/libevent/m4/{lt*,libtool}.m4
+%{__rm} sntp/m4/{lt*,libtool}.m4 sntp/libevent/m4/{lt*,libtool}.m4
 
 %build
 %{__libtoolize}

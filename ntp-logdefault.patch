@@ -1,0 +1,11 @@
+--- ntp-4.2.8/ntpd/ntpd.c.orig	2014-12-19 12:58:06.000000000 +0100
++++ ntp-4.2.8/ntpd/ntpd.c	2015-01-08 16:32:21.460203962 +0100
+@@ -477,7 +477,7 @@ ntpdmain(
+ 	    || HAVE_OPT(SAVECONFIGQUIT))
+ 		nofork = TRUE;
+ 
+-	init_logging(progname, NLOG_SYNCMASK, TRUE);
++	init_logging(progname, NLOG_SYNCMASK | NLOG_EVENT | NLOG_STATUS, TRUE);
+ 	/* honor -l/--logfile option to log to a file */
+ 	if (HAVE_OPT(LOGFILE)) {
+ 		logfilename = OPT_ARG(LOGFILE);
