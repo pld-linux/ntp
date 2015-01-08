@@ -2,14 +2,6 @@
 # - enable and package ntpdsim?
 # - net-snmp-ntpd needs initscript
 # - update FC patches
-# - unpackaged files:
-#        /usr/sbin/calc_tickadj
-#        /usr/share/doc/sntp/sntp.html
-#        /usr/share/man/man1/calc_tickadj.1.gz
-#        /usr/share/man/man1/ntp-wait.1.gz
-#        /usr/share/man/man5/ntp.conf.5.gz
-#        /usr/share/man/man5/ntp.keys.5.gz
-#        /usr/share/ntp/lib/NTP/Util.pm
 #
 # Conditional build:
 %bcond_without	avahi  # disable DNS-SD support via Avahi
@@ -210,14 +202,19 @@ Opis zadania Upstart dla klienta NTP.
 
 %package -n mibs-ntp
 Summary:	MIBs for NTP time entities
+Summary(pl.UTF-8):	Pliki MIB dla elementów czasu NTP
 Group:		Applications/System
 Requires:	mibs-dirs
 
 %description -n mibs-ntp
 The Management Information Base for NTP time entities.
 
+%description -n mibs-ntp -l pl.UTF-8
+Pliki MIB (Management Information Base) dla elementów czasu NTP
+
 %package -n net-snmp-ntpd
 Summary:	NTP SNMP subagent for Net-SNMP
+Summary(pl.UTF-8):	Podagent SNMP NTP dla usługi Net-SNMP
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	net-snmp
@@ -227,15 +224,26 @@ Suggests:	mibs-ntp
 %description -n net-snmp-ntpd
 NTP SNMP AgentX subagent for Net-SNMP.
 
+%description -n net-snmp-ntpd -l pl.UTF-8
+Podagent SNMP AgentX NTP dla usługi Net-SNMP.
+
 %package tools
 Summary:	NTP tools
+Summary(pl.UTF-8):	Narzędzia NTP
 Group:		Applications/Networking
 Obsoletes:	ntp-ntptrace
 
 %description tools
-This package contains ntp tools:
+This package contains NTP tools:
 - ntptrace: Trace a chain of NTP servers back to the primary source
 - ntp-wait: Wait for NTP server to synchronize
+- calc_tickadj: Calculate optimal value for tick given ntp drift file
+
+%description tools -l pl.UTF-8
+Ten pakiet zawiera narzędzia NTP:
+- ntptrace: śledzenie łańcucha serwerów NTP aż do oryginalnego źródła
+- ntp-wait: oczekiwanie na synchronizację serwera NTP
+- calc_tickadj: obliczenie optymalnej wartości dla pliku dryfu ntp
 
 %package doc-html
 Summary:	HTML documentation for ntp
@@ -352,7 +360,7 @@ EOF
 install -d $RPM_BUILD_ROOT%{mibdir}
 cp -p ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
 
-rm -r $RPM_BUILD_ROOT%{_docdir}/ntp4
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/{ntp4,sntp}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -467,6 +475,8 @@ fi
 %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntptime.1*
 %{_mandir}/man1/sntp.1*
+%{_mandir}/man5/ntp.conf.5*
+%{_mandir}/man5/ntp.keys.5*
 
 %dir %attr(770,root,ntp) /var/lib/ntp
 %attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
@@ -484,7 +494,7 @@ fi
 %attr(754,root,root) /etc/cron.hourly/ntpdate
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
 %{systemdunitdir}/ntpdate.service
-%{_mandir}/man1/ntpdate*
+%{_mandir}/man1/ntpdate.1*
 
 %files -n ntpdate-upstart
 %defattr(644,root,root,755)
@@ -502,9 +512,14 @@ fi
 
 %files tools
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/ntptrace
+%attr(755,root,root) %{_sbindir}/calc_tickadj
 %attr(755,root,root) %{_sbindir}/ntp-wait
-%{_mandir}/man1/ntptrace*
+%attr(755,root,root) %{_sbindir}/ntptrace
+%dir %{_datadir}/ntp
+%{_datadir}/ntp/lib
+%{_mandir}/man1/calc_tickadj.1*
+%{_mandir}/man1/ntp-wait.1*
+%{_mandir}/man1/ntptrace.1*
 
 %files doc-html
 %defattr(644,root,root,755)
