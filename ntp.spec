@@ -12,7 +12,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8
-Release:	0.1
+Release:	0.3
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -455,7 +455,8 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpd
 %attr(754,root,root) /etc/rc.d/init.d/ntpd
 %{systemdunitdir}/ntpd.service
-%{_libexecdir}/systemd/ntp-units.d/50-ntpd.list
+# dir not handled by systemd in pld
+#%{_libexecdir}/systemd/ntp-units.d/50-ntpd.list
 %attr(755,root,root) %{_sbindir}/ntpd
 %attr(755,root,root) %{_sbindir}/ntpdc
 %attr(755,root,root) %{_sbindir}/ntp-keygen
