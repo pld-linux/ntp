@@ -9,8 +9,6 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-upstart_controlled
-
 # Source networking configuration.
 . /etc/sysconfig/network
 

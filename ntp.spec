@@ -12,7 +12,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8
-Release:	2
+Release:	3
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -25,8 +25,6 @@ Source5:	%{name}date.init
 Source6:	%{name}date.sysconfig
 Source7:	%{name}-manpages.tar.gz
 # Source7-md5:	208fcc9019e19ab26d28e4597290bffb
-Source8:	%{name}.upstart
-Source9:	%{name}date.upstart
 Source10:	%{name}date-wrapper
 Source11:	%{name}d.service
 Source12:	%{name}date.service
@@ -140,19 +138,6 @@ referência de horário. Este pacote contém utilitários e servidores que
 sincronizarão o relógio do seu computador com o horário universal
 (UTC) através do protocolo NTP e utilizando servidores NTP públicos.
 
-%package -n ntpd-upstart
-Summary:	Upstart job description for the NTP daemon
-Summary(pl.UTF-8):	Opis zadania Upstart dla demona NTP
-Group:		Daemons
-Requires:	ntpd = %{version}-%{release}
-Requires:	upstart >= 0.6
-
-%description -n ntpd-upstart
-Upstart job description for the NTP daemon.
-
-%description -n ntpd-upstart -l pl.UTF-8
-Opis zadania Upstart dla demona NTP.
-
 %package -n ntpdate
 Summary:	Utility to set the date and time via NTP
 Summary(pl.UTF-8):	Klient do synchronizacji czasu po NTP (Network Time Protocol)
@@ -183,19 +168,6 @@ servers.
 
 %description -n ntpdate -l pl.UTF-8
 Klient do synchronizacji czasu po NTP (Network Time Protocol).
-
-%package -n ntpdate-upstart
-Summary:	Upstart job description for NTP client
-Summary(pl.UTF-8):	Opis zadania Upstart dla klienta NTP
-Group:		Daemons
-Requires:	ntpdate = %{version}-%{release}
-Requires:	upstart >= 0.6
-
-%description -n ntpdate-upstart
-Upstart job description for the NTP client.
-
-%description -n ntpdate-upstart -l pl.UTF-8
-Opis zadania Upstart dla klienta NTP.
 
 %package -n mibs-ntp
 Summary:	MIBs for NTP time entities
@@ -312,7 +284,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_mandir}/man1,%{systemdunitdir}} \
 	$RPM_BUILD_ROOT%{_libexecdir}/systemd/ntp-units.d \
-	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,cron.hourly,init}
+	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,cron.hourly}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -325,8 +297,6 @@ install -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpd
 install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/ntpdate
 cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/ntpd
 cp -p %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
-cp -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/ntpd.conf
-cp -p %{SOURCE9} $RPM_BUILD_ROOT/etc/init/ntpdate.conf
 
 install -p %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
 cp -p %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
@@ -383,12 +353,6 @@ if [ "$1" = "0" ]; then
 fi
 %systemd_reload
 
-%post -n ntpd-upstart
-%upstart_post ntpd
-
-%postun -n ntpd-upstart
-%upstart_postun ntpd
-
 %pre -n ntpdate
 %groupadd -g 246 ntp
 %useradd -u 246 -d %{_sysconfdir} -g ntp -c "NTP Daemon" ntp
@@ -411,12 +375,6 @@ if [ "$1" = "0" ]; then
 	%groupremove ntp
 fi
 %systemd_reload
-
-%post -n ntpdate-upstart
-%upstart_post ntpdate
-
-%postun -n ntpdate-upstart
-%upstart_postun ntpdate
 
 %triggerun -n ntpd -- ntp < 4.2.4p8-3.14
 # Prevent preun from ntp from working
@@ -476,10 +434,6 @@ fi
 %dir %attr(770,root,ntp) /var/lib/ntp
 %attr(640,ntp,ntp) %ghost /var/lib/ntp/drift
 
-%files -n ntpd-upstart
-%defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpd.conf
-
 %files -n ntpdate
 %defattr(644,root,root,755)
 %doc COPYRIGHT
@@ -490,10 +444,6 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
 %{systemdunitdir}/ntpdate.service
 %{_mandir}/man1/ntpdate.1*
-
-%files -n ntpdate-upstart
-%defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) /etc/init/ntpdate.conf
 
 %files -n mibs-ntp
 %defattr(644,root,root,755)
