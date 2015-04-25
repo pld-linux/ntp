@@ -278,7 +278,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 	--disable-local-libopts \
 	--disable-local-libevent
 
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
