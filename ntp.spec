@@ -11,12 +11,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.8
-Release:	4
+Version:	4.2.8p3
+Release:	1
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	6972a626be6150db8cfbd0b63d8719e7
+# Source0-md5:	b98b0cbb72f6df04608e1dd5f313808b
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}d.init
@@ -324,7 +324,7 @@ EOF
 install -d $RPM_BUILD_ROOT%{mibdir}
 cp -p ntpsnmpd/ntpv4-mib.mib $RPM_BUILD_ROOT%{mibdir}
 
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/{ntp4,sntp}
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/{ntp,sntp}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -422,12 +422,14 @@ fi
 %attr(755,root,root) %{_sbindir}/ntptime
 %attr(755,root,root) %{_sbindir}/sntp
 %attr(755,root,root) %{_sbindir}/tickadj
+%attr(755,root,root) %{_sbindir}/update-leap
 %{_mandir}/man1/ntpd.1*
 %{_mandir}/man1/ntpdc.1*
 %{_mandir}/man1/ntp-keygen.1*
 %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntptime.1*
 %{_mandir}/man1/sntp.1*
+%{_mandir}/man1/update-leap.1*
 %{_mandir}/man5/ntp.conf.5*
 %{_mandir}/man5/ntp.keys.5*
 

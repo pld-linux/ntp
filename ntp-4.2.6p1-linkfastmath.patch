@@ -1,11 +1,12 @@
---- ntp-4.2.8/ntpd/Makefile.in~	2014-12-19 14:42:16.000000000 +0200
-+++ ntp-4.2.8/ntpd/Makefile.in	2015-01-02 10:29:27.339577618 +0200
-@@ -537,7 +537,7 @@
+diff -ruN ntp-4.2.8p3.orig/ntpd/Makefile.in ntp-4.2.8p3/ntpd/Makefile.in
+--- ntp-4.2.8p3.orig/ntpd/Makefile.in	2015-06-29 22:24:11.000000000 +0200
++++ ntp-4.2.8p3/ntpd/Makefile.in	2015-07-29 20:26:43.269520417 +0200
+@@ -647,7 +647,7 @@
  # longer a reason to have ntpdbase-opts.def split off of ntpd-opts.def.
  LDADD_NTPD_COMMON = $(LDADD_LIBNTP) $(LIBOPTS_LDADD) $(PTHREAD_LIBS) \
  	$(LIBM) $(LDADD_NTP) $(LSCF)
--ntpd_LDADD = $(LDADD) ../libntp/libntp.a $(LDADD_LIBNTP) $(LIBM) $(LDADD_NTPD_COMMON)
-+ntpd_LDADD = $(LDADD) ../libntp/libntp.a $(LDADD_LIBNTP) $(LIBM) -ffast-math $(LDADD_NTPD_COMMON)
+-ntpd_LDADD = $(LDADD) ../libntp/libntp.a $(LDADD_NTPD_COMMON) $(LDADD_LIBUTIL)
++ntpd_LDADD = $(LDADD) ../libntp/libntp.a $(LDADD_NTPD_COMMON) -ffast-math $(LDADD_LIBUTIL)
  ntpdsim_LDADD = $(LDADD) ../libntp/libntpsim.a $(LDADD_NTPD_COMMON)
  ntpdsim_CPPFLAGS = $(AM_CPPFLAGS) -DSIM
  check_y2k_LDADD = $(LDADD) ../libntp/libntp.a $(LDADD_LIBNTP) $(LIBM) $(LDADD_LIBNTP) $(PTHREAD_LIBS)
