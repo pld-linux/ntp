@@ -5,6 +5,7 @@
 #
 # Conditional build:
 %bcond_without	avahi  # disable DNS-SD support via Avahi
+%bcond_with	seccomp		# enable experimental support for libseccomp sandboxing
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
@@ -12,7 +13,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8p3
-Release:	1
+Release:	2
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -53,7 +54,7 @@ BuildRequires:	automake
 BuildRequires:	libcap-devel
 BuildRequires:	libevent-devel
 BuildRequires:	libnl-devel
-BuildRequires:	libseccomp-devel
+%{?with_seccomp:BuildRequires:	libseccomp-devel}
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
 BuildRequires:	openssl-devel >= 0.9.7d
@@ -270,7 +271,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 	--with-binsubdir=sbin \
 	--enable-linuxcaps \
 	--enable-getifaddrs \
-	--enable-libseccomp \
+	%{?with_seccomp:--enable-libseccomp} \
 	--enable-ipv6 \
 	--enable-ntp-signd \
 	--with-lineeditlibs=readline \
