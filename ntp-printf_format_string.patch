@@ -1,0 +1,12 @@
+diff -ruNp ntp-4.2.8p3.orig/sntp/unity/unity.c ntp-4.2.8p3/sntp/unity/unity.c
+--- ntp-4.2.8p3.orig/sntp/unity/unity.c	2015-06-24 16:45:12.000000000 +0200
++++ ntp-4.2.8p3/sntp/unity/unity.c	2015-08-01 23:09:13.789456521 +0200
+@@ -327,7 +327,7 @@ void UnityConcludeTest(void)
+ 			}
+ 
+ 			printf("| ");
+-			printf(Unity.XFAILMessage);
++			printf("%s", Unity.XFAILMessage);
+ 			Unity.XFAILMessage = NULL;
+ 		}
+ 		else
