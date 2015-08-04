@@ -6,7 +6,7 @@ diff -ruNp ntp-4.2.8p3.orig/sntp/unity/unity.c ntp-4.2.8p3/sntp/unity/unity.c
  
  			printf("| ");
 -			printf(Unity.XFAILMessage);
-+			puts(Unity.XFAILMessage);
++			fputs(Unity.XFAILMessage, stdout);
  			Unity.XFAILMessage = NULL;
  		}
  		else
