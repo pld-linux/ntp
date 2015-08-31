@@ -4,7 +4,8 @@
 # - update FC patches
 #
 # Conditional build:
-%bcond_without	avahi  # disable DNS-SD support via Avahi
+%bcond_without	avahi	# disable DNS-SD support via Avahi
+%bcond_without	sntp	# disable building sntp and sntp/tests
 %bcond_with	seccomp		# enable experimental support for libseccomp sandboxing
 
 %include	/usr/lib/rpm/macros.perl
@@ -53,7 +54,7 @@ BuildRequires:	autogen-devel
 BuildRequires:	automake >= 1:1.10
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
-BuildRequires:	libevent-devel >= 2.0
+%{?with_sntp:BuildRequires:	libevent-devel >= 2.0}
 BuildRequires:	libnl-devel
 %{?with_seccomp:BuildRequires:	libseccomp-devel}
 BuildRequires:	libtool
@@ -272,7 +273,12 @@ cd sntp
 %{__aclocal} -I m4 -I libopts/m4 -I libevent/m4
 %{__autoconf}
 %{__automake}
-cd ..
+cd libevent
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__automake}
+cd ../..
 
 CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 %configure \
@@ -280,6 +286,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 	--enable-linuxcaps \
 	--enable-getifaddrs \
 	%{?with_seccomp:--enable-libseccomp} \
+	%{__with_without sntp} \
 	--enable-ipv6 \
 	--enable-ntp-signd \
 	--with-lineeditlibs=readline \
