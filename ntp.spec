@@ -282,6 +282,7 @@ cd ../..
 
 CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 %configure \
+	--disable-silent-rules \
 	--with-binsubdir=sbin \
 	--enable-linuxcaps \
 	--enable-getifaddrs \
