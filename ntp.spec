@@ -53,7 +53,7 @@ BuildRequires:	autogen-devel
 BuildRequires:	automake >= 1:1.10
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
-BuildRequires:	libevent-devel
+BuildRequires:	libevent-devel >= 2.0
 BuildRequires:	libnl-devel
 %{?with_seccomp:BuildRequires:	libseccomp-devel}
 BuildRequires:	libtool
