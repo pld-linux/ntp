@@ -48,9 +48,9 @@ Patch108:	%{name}-4.2.6p1-rtnetlink.patch
 Patch110:	%{name}-logdefault.patch
 Patch111:	%{name}-4.2.6p1-mlock.patch
 URL:		http://www.ntp.org/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.61
 BuildRequires:	autogen-devel
-BuildRequires:	automake
+BuildRequires:	automake >= 1:1.10
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libevent-devel
