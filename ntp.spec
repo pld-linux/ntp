@@ -13,12 +13,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.8p3
-Release:	2
+Version:	4.2.8p4
+Release:	1
 License:	distributable
 Group:		Networking/Daemons
 Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	b98b0cbb72f6df04608e1dd5f313808b
+# Source0-md5:	6af96862b09324a8ef965ca76b759c8b
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}d.init
@@ -31,13 +31,12 @@ Source10:	%{name}date-wrapper
 Source11:	%{name}d.service
 Source12:	%{name}date.service
 Source13:	http://www.ietf.org/timezones/data/leap-seconds.list
-# Source13-md5:	e99a84cf28b14c77fba76c05565604ac
+# Source13-md5:	d1fae8b3c943370cf152ea9f81cd429f
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-nano.patch
 Patch4:		%{name}-no_avahi.patch
-Patch5:		%{name}-printf_format_string.patch
 # FC patches + 100
 Patch101:	%{name}-4.2.6p1-sleep.patch
 Patch102:	%{name}-4.2.6p1-droproot.patch
@@ -245,7 +244,6 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch2 -p1
 %patch3 -p1
 %{!?with_avahi:%patch4 -p1}
-%patch5 -p1
 
 ## FC patches
 #%patch101 -p1
