@@ -2,6 +2,7 @@
 # - enable and package ntpdsim?
 # - net-snmp-ntpd needs initscript
 # - update FC patches
+# - update man pages (from Debian?)
 #
 # Conditional build:
 %bcond_without	avahi	# disable DNS-SD support via Avahi
@@ -13,12 +14,12 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.8p5
-Release:	3
+Version:	4.2.8p8
+Release:	1
 License:	distributable
 Group:		Networking/Daemons
-Source0:	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	9f02b2a0acc1617ce2716d529a58d2d8
+Source0:	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
+# Source0-md5:	4a8636260435b230636f053ffd070e34
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}d.init
