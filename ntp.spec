@@ -50,7 +50,7 @@ Patch110:	%{name}-logdefault.patch
 Patch111:	%{name}-4.2.6p1-mlock.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf >= 2.61
-BuildRequires:	autogen-devel
+BuildRequires:	autogen-devel >= 5.18.4
 BuildRequires:	automake >= 1:1.10
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
@@ -107,7 +107,7 @@ Requires(pre):	/usr/sbin/useradd
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	rc-scripts >= 0.4.3.0
 Requires:	systemd-units >= 38
-Requires:	autogen-libs >= 5.18.12
+Requires:	autogen-libs >= 5.18.4
 Provides:	group(ntp)
 Provides:	ntp = %{version}-%{release}
 Provides:	ntpdaemon
