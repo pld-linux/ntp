@@ -37,7 +37,6 @@ Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-nano.patch
-Patch4:		%{name}-no_avahi.patch
 # FC patches + 100
 Patch101:	%{name}-4.2.6p1-sleep.patch
 Patch102:	%{name}-4.2.6p1-droproot.patch
@@ -245,7 +244,6 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%{!?with_avahi:%patch4 -p1}
 
 ## FC patches
 #%patch101 -p1
