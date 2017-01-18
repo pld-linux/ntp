@@ -15,7 +15,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8p8
-Release:	5
+Release:	6
 License:	distributable
 Group:		Networking/Daemons
 Source0:	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -437,14 +437,12 @@ fi
 %attr(755,root,root) %{_sbindir}/ntptime
 %attr(755,root,root) %{_sbindir}/sntp
 %attr(755,root,root) %{_sbindir}/tickadj
-%attr(755,root,root) %{_sbindir}/update-leap
 %{_mandir}/man1/ntpd.1*
 %{_mandir}/man1/ntpdc.1*
 %{_mandir}/man1/ntp-keygen.1*
 %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntptime.1*
 %{_mandir}/man1/sntp.1*
-%{_mandir}/man1/update-leap.1*
 %{_mandir}/man5/ntp.conf.5*
 %{_mandir}/man5/ntp.keys.5*
 
@@ -477,11 +475,13 @@ fi
 %attr(755,root,root) %{_sbindir}/calc_tickadj
 %attr(755,root,root) %{_sbindir}/ntp-wait
 %attr(755,root,root) %{_sbindir}/ntptrace
+%attr(755,root,root) %{_sbindir}/update-leap
 %dir %{_datadir}/ntp
 %{_datadir}/ntp/lib
 %{_mandir}/man1/calc_tickadj.1*
 %{_mandir}/man1/ntp-wait.1*
 %{_mandir}/man1/ntptrace.1*
+%{_mandir}/man1/update-leap.1*
 
 %files doc-html
 %defattr(644,root,root,755)
