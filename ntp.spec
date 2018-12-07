@@ -15,7 +15,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8p12
-Release:	1
+Release:	2
 License:	distributable
 Group:		Networking/Daemons
 Source0:	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
@@ -31,8 +31,8 @@ Source7:	%{name}-manpages.tar.gz
 Source10:	%{name}date-wrapper
 Source11:	%{name}d.service
 Source12:	%{name}date.service
-Source13:	http://www.ietf.org/timezones/data/leap-seconds.list
-# Source13-md5:	8a163c7649ea4fe6aa57ddefbcddc83c
+Source13:	https://www.ietf.org/timezones/data/leap-seconds.list
+# Source13-md5:	52518f58e3513167fdc00e3fb0062825
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
