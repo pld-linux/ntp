@@ -9,7 +9,6 @@
 %bcond_without	sntp	# disable building sntp and sntp/tests
 %bcond_with	seccomp		# enable experimental support for libseccomp sandboxing
 
-%include	/usr/lib/rpm/macros.perl
 Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
