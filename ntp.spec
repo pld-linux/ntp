@@ -31,7 +31,7 @@ Source10:	%{name}date-wrapper
 Source11:	%{name}d.service
 Source12:	%{name}date.service
 Source13:	https://www.ietf.org/timezones/data/leap-seconds.list
-# Source13-md5:	52518f58e3513167fdc00e3fb0062825
+# Source13-md5:	961f9b603309f2d12dcb420c054eff5f
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
