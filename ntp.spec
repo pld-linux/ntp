@@ -179,9 +179,7 @@ Summary:	MIBs for NTP time entities
 Summary(pl.UTF-8):	Pliki MIB dla elementów czasu NTP
 Group:		Applications/System
 Requires:	mibs-dirs
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description -n mibs-ntp
 The Management Information Base for NTP time entities.
@@ -227,9 +225,7 @@ Summary:	HTML documentation for ntp
 Summary(pl.UTF-8):	Dokumentacja HTML dla ntp
 Summary(pt_BR.UTF-8):	Documentação adicional para o pacote ntp
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description doc-html
 HTML documentation for ntp.
