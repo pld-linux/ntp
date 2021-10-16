@@ -1,6 +1,7 @@
---- ntp-4.2.8/html/ntpdate.html~	2014-12-19 13:56:51.000000000 +0200
-+++ ntp-4.2.8/html/ntpdate.html	2015-01-02 10:27:05.538902307 +0200
-@@ -27,7 +27,7 @@
+diff -urNp -x '*.orig' ntp-4.2.8p12.org/html/ntpdate.html ntp-4.2.8p12/html/ntpdate.html
+--- ntp-4.2.8p12.org/html/ntpdate.html	2018-08-14 13:51:07.000000000 +0200
++++ ntp-4.2.8p12/html/ntpdate.html	2021-10-15 23:43:00.522149878 +0200
+@@ -27,7 +27,7 @@ href="ntpd.html"><tt>ntpd</tt> - Network
  page and/or the <a href="sntp.html"><tt>sntp</tt> - Simple Network Time
  Protocol (SNTP) Client</a> page.  After a suitable period of mourning, the <tt>ntpdate</tt> program will be retired from this distribution.</p>
  <h4>Synopsis</h4>
@@ -9,7 +10,7 @@
  <h4>Description</h4>
  <p><tt>ntpdate</tt> sets the local date and time by polling the Network Time Protocol (NTP) server(s) given as the <i>server</i> arguments to determine the correct time. It must be run as root on the local host. A number of samples are obtained from each of the servers specified and a subset of the NTP clock filter and selection algorithms are applied to select the best of these. Note that the accuracy and reliability of <tt>ntpdate</tt> depends on the number of servers, the number of polls each time it is run and the interval between runs.</p>
  <p><tt>ntpdate</tt> can be run manually as necessary to set the host clock, or it can be run from the host startup script to set the clock at boot time. This is useful in some cases to set the clock initially before starting the NTP daemon <tt>ntpd</tt>. It is also possible to run <tt>ntpdate</tt> from a <tt>cron</tt> script. However, it is important to note that <tt>ntpdate</tt> with contrived <tt>cron</tt> scripts is no substitute for the NTP daemon, which uses sophisticated algorithms to maximize accuracy and reliability while minimizing resource use. Finally, since <tt>ntpdate</tt> does not discipline the host clock frequency as does <tt>ntpd</tt>, the accuracy using <tt>ntpdate</tt> is limited.</p>
-@@ -68,6 +68,11 @@
+@@ -68,6 +68,11 @@ Protocol (SNTP) Client</a> page.  After
    <dd>Direct <tt>ntpdate</tt> to use an unprivileged port for outgoing packets. This is most useful when behind a firewall that blocks incoming traffic to privileged ports, and you want to synchronize with hosts beyond the firewall. Note that the <tt>-d</tt> option always uses unprivileged ports.
    <dt><tt>-<i>v</i></tt></dt>
    <dd>Be verbose. This option will cause <tt>ntpdate</tt>'s version identification string to be logged.</dd>
@@ -21,9 +22,9 @@
  </dl>
  <h4>Diagnostics</h4>
  <tt>ntpdate</tt>'s exit status is zero if it finds a server and updates the clock, and nonzero otherwise.
-diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
---- ntp-4.2.6p1/ntpdate/ntpdate.c.droproot	2009-12-09 08:36:35.000000000 +0100
-+++ ntp-4.2.6p1/ntpdate/ntpdate.c	2010-03-03 15:33:06.000000000 +0100
+diff -urNp -x '*.orig' ntp-4.2.8p12.org/ntpdate/ntpdate.c ntp-4.2.8p12/ntpdate/ntpdate.c
+--- ntp-4.2.8p12.org/ntpdate/ntpdate.c	2021-10-15 23:43:00.362150298 +0200
++++ ntp-4.2.8p12/ntpdate/ntpdate.c	2021-10-15 23:43:00.522149878 +0200
 @@ -48,6 +48,12 @@
  
  #include <arpa/inet.h>
@@ -37,7 +38,7 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
  #ifdef SYS_VXWORKS
  # include "ioLib.h"
  # include "sockLib.h"
-@@ -152,6 +158,11 @@ int simple_query = 0;
+@@ -147,6 +153,11 @@ int simple_query = 0;
  int unpriv_port = 0;
  
  /*
@@ -48,8 +49,8 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
 +/*
   * Program name.
   */
- char *progname;
-@@ -293,6 +304,88 @@ void clear_globals()
+ char const *progname;
+@@ -288,6 +299,88 @@ void clear_globals()
  static ni_namelist *getnetinfoservers (void);
  #endif
  
@@ -138,7 +139,7 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
  /*
   * Main program.  Initialize us and loop waiting for I/O and/or
   * timer expiries.
-@@ -340,6 +433,8 @@ ntpdatemain (
+@@ -335,6 +428,8 @@ ntpdatemain (
  
  	init_lib();	/* sets up ipv4_works, ipv6_works */
  
@@ -147,7 +148,7 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
  	/* Check to see if we have IPv6. Otherwise default to IPv4 */
  	if (!ipv6_works)
  		ai_fam_templ = AF_INET;
-@@ -351,7 +446,7 @@ ntpdatemain (
+@@ -346,7 +441,7 @@ ntpdatemain (
  	/*
  	 * Decode argument list
  	 */
@@ -156,7 +157,7 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
  		switch (c)
  		{
  		case '4':
-@@ -429,6 +524,14 @@ ntpdatemain (
+@@ -423,6 +518,14 @@ ntpdatemain (
  		case 'u':
  			unpriv_port = 1;
  			break;
@@ -171,8 +172,8 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
  		case '?':
  			++errflg;
  			break;
-@@ -438,7 +541,7 @@ ntpdatemain (
- 	
+@@ -432,7 +535,7 @@ ntpdatemain (
+ 
  	if (errflg) {
  		(void) fprintf(stderr,
 -		    "usage: %s [-46bBdqsuv] [-a key#] [-e delay] [-k file] [-p samples] [-o version#] [-t timeo] server ...\n",
@@ -180,7 +181,7 @@ diff -up ntp-4.2.6p1/ntpdate/ntpdate.c.droproot ntp-4.2.6p1/ntpdate/ntpdate.c
  		    progname);
  		exit(2);
  	}
-@@ -544,6 +647,24 @@ ntpdatemain (
+@@ -546,6 +649,24 @@ ntpdatemain (
  	initializing = 0;
  	was_alarmed = 0;
  

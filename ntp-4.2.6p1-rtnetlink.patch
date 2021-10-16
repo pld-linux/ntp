@@ -1,9 +1,9 @@
-diff -up ntp-4.2.6p3/ntpd/ntp_io.c.rtnetlink ntp-4.2.6p3/ntpd/ntp_io.c
---- ntp-4.2.6p3/ntpd/ntp_io.c.rtnetlink	2011-01-05 16:03:19.328001089 +0100
-+++ ntp-4.2.6p3/ntpd/ntp_io.c	2011-01-05 16:03:19.349001911 +0100
-@@ -4549,10 +4549,7 @@ init_async_notifications()
+diff -urNp -x '*.orig' ntp-4.2.8p12.org/ntpd/ntp_io.c ntp-4.2.8p12/ntpd/ntp_io.c
+--- ntp-4.2.8p12.org/ntpd/ntp_io.c	2021-10-15 23:43:02.012145954 +0200
++++ ntp-4.2.8p12/ntpd/ntp_io.c	2021-10-15 23:43:02.175478857 +0200
+@@ -4832,10 +4832,7 @@ init_async_notifications()
  #ifdef HAVE_RTNETLINK
- 	memset(&sa, 0, sizeof(sa));
+ 	ZERO(sa);
  	sa.nl_family = PF_NETLINK;
 -	sa.nl_groups = RTMGRP_LINK | RTMGRP_IPV4_IFADDR
 -		       | RTMGRP_IPV6_IFADDR | RTMGRP_IPV4_ROUTE

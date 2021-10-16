@@ -1,6 +1,7 @@
---- ntp-4.2.4p7/include/ntp_syscall.h
-+++ ntp-4.2.4p7/include/ntp_syscall.h
-@@ -14,5 +14,13 @@
+diff -urNp -x '*.orig' ntp-4.2.8p12.org/include/ntp_syscall.h ntp-4.2.8p12/include/ntp_syscall.h
+--- ntp-4.2.8p12.org/include/ntp_syscall.h	2011-03-26 03:03:33.000000000 +0100
++++ ntp-4.2.8p12/include/ntp_syscall.h	2021-10-15 23:43:00.115484280 +0200
+@@ -10,6 +10,14 @@
  # include <sys/timex.h>
  #endif
  
@@ -13,4 +14,5 @@
 +#endif
 +
  #ifndef NTP_SYSCALLS_LIBC
- #ifdef NTP_SYSCALLS_STD
+ # ifdef NTP_SYSCALLS_STD
+ #  define ntp_adjtime(t)	syscall(SYS_ntp_adjtime, (t))

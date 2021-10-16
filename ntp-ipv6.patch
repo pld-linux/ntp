@@ -1,7 +1,7 @@
 diff -durN -x '*.orig' ntp-4.2.6p1.orig/ntpdate/ntpdate.c ntp-4.2.6p1/ntpdate/ntpdate.c
 --- ntp-4.2.6p1.orig/ntpdate/ntpdate.c	2010-05-24 19:28:54.000000000 +0200
 +++ ntp-4.2.6p1/ntpdate/ntpdate.c	2010-05-24 19:30:19.000000000 +0200
-@@ -1729,11 +1729,13 @@
+@@ -1729,9 +1729,11 @@
  		}
  #ifdef IPV6_V6ONLY
  		/* Restricts AF_INET6 socket to IPv6 communications (see RFC 2553bis-03) */
@@ -10,9 +10,7 @@ diff -durN -x '*.orig' ntp-4.2.6p1.orig/ntpdate/ntpdate.c ntp-4.2.6p1/ntpdate/nt
 +		if (res->ai_family == AF_INET6) {
 +			int i = setsockopt(fd[nbsock], IPPROTO_IPV6, IPV6_V6ONLY, (void*) &optval, sizeof(optval));
 +			if ( i < 0 && errno != ENOPROTOOPT ) {
- 				   msyslog(LOG_ERR, "setsockopt() IPV6_V6ONLY failed: %m");
- 					exit(1);
- 					/*NOTREACHED*/
+ 				msyslog(LOG_ERR, "setsockopt() IPV6_V6ONLY failed: %m");
 +			}
  		}
  #endif
