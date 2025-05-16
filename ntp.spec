@@ -239,22 +239,22 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 
 %prep
 %setup -q -a7
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
+%patch -P3 -p1
+%patch -P4 -p1
 
 ## FC patches
-#%patch101 -p1
-%patch102 -p1
-#%patch103 -p1
-%patch104 -p1
-%patch105 -p1
-%patch107 -p1
-%patch108 -p1
-%patch110 -p1
-#%patch111 -p1  -- obsolete?
+#%patch -P101 -p1
+%patch -P102 -p1
+#%patch -P103 -p1
+%patch -P104 -p1
+%patch -P105 -p1
+%patch -P107 -p1
+%patch -P108 -p1
+%patch -P110 -p1
+#%patch -P111 -p1  -- obsolete?
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
