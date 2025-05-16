@@ -1,0 +1,61 @@
+--- ntp-4.2.8p18/libntp/a_md5encrypt.c.orig	2024-05-07 13:21:31.000000000 +0200
++++ ntp-4.2.8p18/libntp/a_md5encrypt.c	2025-05-16 20:12:50.358752811 +0200
+@@ -10,6 +10,7 @@
+ #include "ntp_stdlib.h"
+ #include "ntp.h"
+ #include "isc/string.h"
++#include <openssl/md5.h>
+ 
+ typedef struct {
+ 	const void *	buf;
+@@ -279,9 +280,9 @@ addr2refid(sockaddr_u *addr)
+ 		return (NSRCADR(addr));
+ 	}
+ 	/* MD5 is not used for authentication here. */
+-	MD5Init(&md5_ctx);
+-	MD5Update(&md5_ctx, (void *)&SOCK_ADDR6(addr), sizeof(SOCK_ADDR6(addr)));
+-	MD5Final(u.digest, &md5_ctx);
++	MD5_Init(&md5_ctx);
++	MD5_Update(&md5_ctx, (void *)&SOCK_ADDR6(addr), sizeof(SOCK_ADDR6(addr)));
++	MD5_Final(u.digest, &md5_ctx);
+ #ifdef WORDS_BIGENDIAN
+ 	u.addr_refid = BYTESWAP32(u.addr_refid);
+ #endif
+--- ntp-4.2.8p18/ntpd/ntp_control.c.orig	2024-05-07 13:21:15.000000000 +0200
++++ ntp-4.2.8p18/ntpd/ntp_control.c	2025-05-16 20:45:58.407982624 +0200
+@@ -15,6 +15,7 @@
+ # include <netinet/in.h>
+ #endif
+ #include <arpa/inet.h>
++#include <openssl/md5.h>
+ 
+ #include "ntpd.h"
+ #include "ntp_io.h"
+@@ -3663,18 +3664,18 @@ static u_int32 derive_nonce(
+ 		last_salt_update = current_time;
+ 	}
+ 
+-	MD5Init(&ctx);
+-	MD5Update(&ctx, salt, sizeof(salt));
+-	MD5Update(&ctx, &ts_i, sizeof(ts_i));
+-	MD5Update(&ctx, &ts_f, sizeof(ts_f));
++	MD5_Init(&ctx);
++	MD5_Update(&ctx, salt, sizeof(salt));
++	MD5_Update(&ctx, &ts_i, sizeof(ts_i));
++	MD5_Update(&ctx, &ts_f, sizeof(ts_f));
+ 	if (IS_IPV4(addr)) {
+-		MD5Update(&ctx, &SOCK_ADDR4(addr), sizeof(SOCK_ADDR4(addr)));
++		MD5_Update(&ctx, &SOCK_ADDR4(addr), sizeof(SOCK_ADDR4(addr)));
+ 	} else {
+-		MD5Update(&ctx, &SOCK_ADDR6(addr), sizeof(SOCK_ADDR6(addr)));
++		MD5_Update(&ctx, &SOCK_ADDR6(addr), sizeof(SOCK_ADDR6(addr)));
+ 	}
+-	MD5Update(&ctx, &NSRCPORT(addr), sizeof(NSRCPORT(addr)));
+-	MD5Update(&ctx, salt, sizeof(salt));
+-	MD5Final(d.digest, &ctx);
++	MD5_Update(&ctx, &NSRCPORT(addr), sizeof(NSRCPORT(addr)));
++	MD5_Update(&ctx, salt, sizeof(salt));
++	MD5_Final(d.digest, &ctx);
+ 
+ 	return d.extract;
+ }

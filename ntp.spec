@@ -13,12 +13,13 @@ Summary:	Network Time Protocol utilities
 Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
-Version:	4.2.8p15
+Version:	4.2.8p18
 Release:	1
 License:	distributable
 Group:		Networking/Daemons
+# also https://downloads.nwtime.org/ntp/
 Source0:	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
-# Source0-md5:	e1e6b23d2fc75cced41801dbcd6c2561
+# Source0-md5:	516bdabd94ab7c824e9771390761a46c
 Source1:	%{name}.conf
 Source2:	%{name}.keys
 Source3:	%{name}d.init
@@ -36,17 +37,12 @@ Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-nano.patch
-Patch4:		threadstack-sysconf.patch
+Patch4:		%{name}-openssl.patch
 # FC patches + 100
-Patch101:	%{name}-4.2.6p1-sleep.patch
 Patch102:	%{name}-4.2.6p1-droproot.patch
-Patch103:	%{name}-4.2.6p1-bcast.patch
-Patch104:	%{name}-4.2.6p1-cmsgalign.patch
-Patch105:	%{name}-4.2.6p1-linkfastmath.patch
 Patch107:	%{name}-4.2.6p1-retcode.patch
 Patch108:	%{name}-4.2.6p1-rtnetlink.patch
 Patch110:	%{name}-logdefault.patch
-Patch111:	%{name}-4.2.6p1-mlock.patch
 URL:		http://www.ntp.org/
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	autogen-devel >= 5.18.12
@@ -63,6 +59,7 @@ BuildRequires:	pciutils-devel
 # AUTO: -- checking for pkg-config... no
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel >= 4.2
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.626
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -207,7 +204,7 @@ Podagent SNMP AgentX NTP dla usługi Net-SNMP.
 Summary:	NTP tools
 Summary(pl.UTF-8):	Narzędzia NTP
 Group:		Applications/Networking
-Obsoletes:	ntp-ntptrace
+Obsoletes:	ntp-ntptrace < 4.2.4p3-3
 
 %description tools
 This package contains NTP tools:
@@ -246,15 +243,10 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch -P4 -p1
 
 ## FC patches
-#%patch -P101 -p1
 %patch -P102 -p1
-#%patch -P103 -p1
-%patch -P104 -p1
-%patch -P105 -p1
 %patch -P107 -p1
 %patch -P108 -p1
 %patch -P110 -p1
-#%patch -P111 -p1  -- obsolete?
 
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> configure.ac
 echo 'AM_CONDITIONAL([NEED_LIBOPTS], false)' >> sntp/configure.ac
@@ -280,25 +272,25 @@ cd ../..
 
 CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
 %configure \
+	--enable-getifaddrs \
+	--enable-ipv6 \
+	%{?with_seccomp:--enable-libseccomp} \
+	--enable-linuxcaps \
+	--disable-local-libopts \
+	--disable-local-libevent \
+	--enable-ntp-signd \
 	--disable-silent-rules \
 	--with-binsubdir=sbin \
-	--enable-linuxcaps \
-	--enable-getifaddrs \
-	%{?with_seccomp:--enable-libseccomp} \
-	%{__with_without sntp} \
-	--enable-ipv6 \
-	--enable-ntp-signd \
+	--with-crypto \
 	--with-lineeditlibs=readline \
-	--with-crypto=openssl \
-	--disable-local-libopts \
-	--disable-local-libevent
+	%{__with_without sntp}
 
 %{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_mandir}/man1,%{systemdunitdir}} \
-	$RPM_BUILD_ROOT%{_libexecdir}/systemd/ntp-units.d \
+	$RPM_BUILD_ROOT/lib/systemd/ntp-units.d \
 	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,cron.hourly}
 
 %{__make} install \
@@ -316,8 +308,7 @@ cp -p %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/ntpdate
 install -p %{SOURCE10} $RPM_BUILD_ROOT%{_sbindir}/ntpdate-wrapper
 cp -p %{SOURCE11} $RPM_BUILD_ROOT%{systemdunitdir}/ntpd.service
 cp -p %{SOURCE12} $RPM_BUILD_ROOT%{systemdunitdir}/ntpdate.service
-echo 'ntpd.service' > \
-        $RPM_BUILD_ROOT%{_libexecdir}/systemd/ntp-units.d/50-ntpd.list
+echo 'ntpd.service' >$RPM_BUILD_ROOT/lib/systemd/ntp-units.d/50-ntpd.list
 
 cp -p man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
@@ -458,6 +449,7 @@ fi
 %attr(754,root,root) /etc/cron.hourly/ntpdate
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ntpdate
 %{systemdunitdir}/ntpdate.service
+/lib/systemd/ntp-units.d/50-ntpd.list
 %{_mandir}/man1/ntpdate.1*
 
 %files -n mibs-ntp
