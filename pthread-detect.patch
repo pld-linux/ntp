@@ -1,0 +1,11 @@
+--- ntp-4.2.8p18/sntp/m4/openldap-thread-check.m4~	2023-05-31 12:31:39.000000000 +0200
++++ ntp-4.2.8p18/sntp/m4/openldap-thread-check.m4	2025-12-31 02:07:24.533312800 +0100
+@@ -265,7 +265,7 @@
+ #ifndef NULL
+ #define NULL (void*)0
+ #endif
+-]], [[pthread_detach(NULL);]])],[ol_cv_func_pthread_detach=yes],[ol_cv_func_pthread_detach=no])
++]], [[pthread_detach(0);]])],[ol_cv_func_pthread_detach=yes],[ol_cv_func_pthread_detach=no])
+ 			])
+ 
+ 			if test $ol_cv_func_pthread_detach = no ; then

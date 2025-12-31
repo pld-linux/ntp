@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8p18
-Release:	1
+Release:	2
 License:	distributable
 Group:		Networking/Daemons
 # also https://downloads.nwtime.org/ntp/
@@ -38,6 +38,7 @@ Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-nano.patch
 Patch4:		%{name}-openssl.patch
+Patch5:		pthread-detect.patch
 # FC patches + 100
 Patch102:	%{name}-4.2.6p1-droproot.patch
 Patch107:	%{name}-4.2.6p1-retcode.patch
@@ -241,6 +242,7 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch -P2 -p1
 %patch -P3 -p1
 %patch -P4 -p1
+%patch -P5 -p1
 
 ## FC patches
 %patch -P102 -p1
