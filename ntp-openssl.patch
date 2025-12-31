@@ -59,3 +59,14 @@
  
  	return d.extract;
  }
+--- ntp-4.2.8p18/include/ntp_md5.h~	2024-05-07 13:21:16.000000000 +0200
++++ ntp-4.2.8p18/include/ntp_md5.h	2025-12-31 12:47:12.883312430 +0100
+@@ -8,7 +8,7 @@
+ 
+ /* Use the system MD5 or fall back on libisc's */
+ # if defined HAVE_MD5_H && defined HAVE_MD5INIT
+-#  include <md5.h>
++#  include <openssl/md5.h>
+ # else
+ #  include "isc/md5.h"
+    typedef isc_md5_t		MD5_CTX;

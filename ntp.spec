@@ -63,6 +63,7 @@ BuildRequires:	readline-devel >= 4.2
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.626
+BuildConflicts:	libmd5-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ntp
@@ -272,7 +273,7 @@ cd libevent
 %{__automake}
 cd ../..
 
-CPPFLAGS="%{rpmcppflags} -I/usr/include/readline"
+CPPFLAGS="%{rpmcppflags} -I/usr/include/readline -I/usr/include/openssl"
 %configure \
 	--enable-getifaddrs \
 	--enable-ipv6 \
