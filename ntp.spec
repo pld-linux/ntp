@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8p18
-Release:	2
+Release:	3
 License:	distributable
 Group:		Networking/Daemons
 # also https://downloads.nwtime.org/ntp/
