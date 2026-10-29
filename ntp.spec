@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Narzędzia do synchronizacji czasu (Network Time Protocol)
 Summary(pt_BR.UTF-8):	Network Time Protocol versão 4
 Name:		ntp
 Version:	4.2.8p18
-Release:	3
+Release:	4
 License:	distributable
 Group:		Networking/Daemons
 # also https://downloads.nwtime.org/ntp/
@@ -31,14 +31,19 @@ Source7:	%{name}-manpages.tar.gz
 Source10:	%{name}date-wrapper
 Source11:	%{name}d.service
 Source12:	%{name}date.service
-Source13:	https://www.ietf.org/timezones/data/leap-seconds.list
-# Source13-md5:	961f9b603309f2d12dcb420c054eff5f
+Source13:	https://data.iana.org/time-zones/data/leap-seconds.list
+# Source13-md5:	026074d5bb81bb0932bf3be9e01a58cc
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-no_libelf.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-nano.patch
 Patch4:		%{name}-openssl.patch
 Patch5:		pthread-detect.patch
+Patch6:		%{name}-bug3928-bind-fail-crash.patch
+Patch7:		%{name}-CVE-2026-102485.patch
+Patch8:		%{name}-CVE-2026-102484.patch
+Patch9:		%{name}-CVE-2026-18321.patch
+Patch10:	%{name}-glibc-2.43.patch
 # FC patches + 100
 Patch102:	%{name}-4.2.6p1-droproot.patch
 Patch107:	%{name}-4.2.6p1-retcode.patch
@@ -51,12 +56,10 @@ BuildRequires:	automake >= 1:1.10
 %{?with_avahi:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	libcap-devel
 %{?with_sntp:BuildRequires:	libevent-devel >= 2.0}
-BuildRequires:	libnl-devel
 %{?with_seccomp:BuildRequires:	libseccomp-devel}
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
 BuildRequires:	openssl-devel >= 0.9.7d
-BuildRequires:	pciutils-devel
 # AUTO: -- checking for pkg-config... no
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel >= 4.2
@@ -244,6 +247,11 @@ Este pacote contém documentação adicional sobre o NTP versão 4.
 %patch -P3 -p1
 %patch -P4 -p1
 %patch -P5 -p1
+%patch -P6 -p1
+%patch -P7 -p1
+%patch -P8 -p1
+%patch -P9 -p1
+%patch -P10 -p1
 
 ## FC patches
 %patch -P102 -p1
@@ -275,6 +283,7 @@ cd ../..
 
 CPPFLAGS="%{rpmcppflags} -I/usr/include/readline -I/usr/include/openssl"
 %configure \
+	%{!?with_avahi:ac_cv_header_dns_sd_h=no} \
 	--enable-getifaddrs \
 	--enable-ipv6 \
 	%{?with_seccomp:--enable-libseccomp} \
